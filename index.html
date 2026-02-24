@@ -891,8 +891,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Grouping</div><div class="h-sub">Strategic paper<br>clustering</div></div>
     </div>
     <div class="h-tier" style="margin-top:4px">
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R1</div><div class="h-sub">Parallel analysis<br>(thematic groups)</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R2</div><div class="h-sub">Recombined groups<br>(cross-cutting)</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R1</div><div class="h-sub">Row groups<br>(Latin Square)</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R2</div><div class="h-sub">Column groups<br>(Latin Square)</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Synthesis</div><div class="h-sub">Thematic<br>synthesis</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Peer Review</div><div class="h-sub">Quality gate<br>+ fact-check</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Citation<br>Review</div><div class="h-sub">Link &amp; citation<br>verification</div></div>
@@ -916,9 +916,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <tr><td><strong>1. Search</strong></td><td>Search footsoldier</td><td>Iterative corpus search (min 3 rounds, self-assessment). CO launches retrieve + search lieutenant in parallel.</td></tr>
       <tr><td><strong>2. Retrieve</strong></td><td>Retrieve footsoldier</td><td>Fetches full texts for all found papers. Runs parallel with search lieutenant assessment.</td></tr>
       <tr><td><strong>3. Landscape</strong></td><td>Landscape + Landscape Analysis</td><td>Assembles 41Q landscape data from corpus (no LLM), then LLM-driven field mapping and thematic analysis.</td></tr>
-      <tr><td><strong>4. Grouping</strong></td><td>Grouping footsoldier</td><td>Strategic thematic clustering into groups for parallel reading. Produces Round 1 (thematic) and Round 2 (recombined) group assignments.</td></tr>
-      <tr><td><strong>5. Reading R1</strong></td><td>Up to 5 parallel readers</td><td>Each reader analyzes papers in its thematic group. Reports include cross-paper tensions, shared arguments, and gaps.</td></tr>
-      <tr><td><strong>6. Reading R2</strong></td><td>Up to 5 parallel readers</td><td>Papers recombined into cross-cutting groups. R2 readers receive R1 reports to challenge and extend.</td></tr>
+      <tr><td><strong>4. Grouping</strong></td><td>Grouping footsoldier</td><td>Latin Square grouping: papers arranged in a grid. Round 1 reads rows (thematic groups), Round 2 reads columns (recombined). Every paper appears in two analytical contexts.</td></tr>
+      <tr><td><strong>5. Reading R1</strong></td><td>Up to 5 parallel readers</td><td>Row groups: each reader analyzes papers in its thematic cluster. Reports include cross-paper tensions, shared arguments, and gaps.</td></tr>
+      <tr><td><strong>6. Reading R2</strong></td><td>Up to 5 parallel readers</td><td>Column groups: papers recombined across themes. R2 readers receive R1 reports to challenge and extend.</td></tr>
       <tr><td><strong>7. Assessment</strong></td><td>Reading lieutenant</td><td>Assesses per-reader quality, flags thin reports, identifies key themes for synthesis.</td></tr>
       <tr><td><strong>8. Synthesis</strong></td><td>Synthesis footsoldier + lieutenant</td><td>Unified thematic synthesis of all R1 and R2 reports. Lieutenant does final quality check.</td></tr>
       <tr><td><strong>9. Peer Review</strong></td><td>Peer review footsoldier (optional)</td><td>Dual review: intellectual critique + fact-checking. Can be skipped for speed.</td></tr>
@@ -1299,7 +1299,7 @@ const searchData = [
   {t:'paper-fetch',d:'Download papers from 15+ publishers via 3-tier cascade',tag:'Skill',c:'#818cf8',s:'#skills'},
   {t:'CO Hierarchy',d:'3-tier command: CO (strategic) → 9 footsoldier types (workers) → 4 Lieutenants (assessors)',tag:'Architecture',c:'#fbbf24',s:'#agents'},
   {t:'MCP Tools',d:'18 tools: 12 corpus search (search, paper, analysis, raptor, etc.) + 6 GitHub repo exploration',tag:'Architecture',c:'#38bdf8',s:'#agents'},
-  {t:'Two-Round Reading',d:'Thematic groups (R1) then recombined cross-cutting groups (R2) for deep cross-paper analysis',tag:'Architecture',c:'#fbbf24',s:'#agents'},
+  {t:'Latin Square Reading',d:'Papers in grid: Row groups (R1) then Column groups (R2) — every paper in two analytical contexts',tag:'Architecture',c:'#fbbf24',s:'#agents'},
   {t:'Ingest Pipeline',d:'11-stage per-paper pipeline: download → rename → markdown (6-tier) → embed → enrich → analyze → RAPTOR → verify → drive → Zotero → report',tag:'Architecture',c:'#2dd4bf',s:'#corpus'},
   {t:'41-Question Analysis',d:'Semantic analysis across research core, methodology, AI-specific, meta, advanced',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
   {t:'RAPTOR Summaries',d:'Hierarchical summaries: document + section level per paper',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
