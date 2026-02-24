@@ -559,17 +559,20 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </div>
     </div>
 
-    <div class="card" data-search="slack-index slack-search search-minty semantic chromadb voyage index messages">
+    <div class="card" data-search="slack-index slack-search search-minty semantic chromadb voyage index messages agentic rrf">
       <div class="card-head" onclick="toggleCard(this)">
         <div class="card-icon" style="background:rgba(129,140,248,.15)">&#128270;</div>
-        <div><div class="card-title">slack-index / slack-search</div><div class="card-sub"><span class="tag tag-polling">4h index</span> <span class="tag tag-persistent">Persistent bot</span> <span class="health-ok">&#9679;</span></div></div>
+        <div><div class="card-title">slack-index / search-minty</div><div class="card-sub"><span class="tag tag-polling">4h index</span> <span class="tag tag-persistent">Persistent bot</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Two-part system: (a) Periodic indexer embeds all public Slack messages into ChromaDB using Voyage AI voyage-3 embeddings. (b) Persistent Socket Mode bot (<code>@search-minty</code>) responds to @mentions by running agentic search with multi-query Reciprocal Rank Fusion (RRF).</p>
-        <div class="detail-row"><span class="detail-label">Index model</span><span class="detail-val">Voyage AI voyage-3 (no LLM)</span></div>
-        <div class="detail-row"><span class="detail-label">Search agent</span><span class="detail-val">Claude Opus (agentic search pipeline, explicitly praised and must not be replaced)</span></div>
-        <div class="detail-row"><span class="detail-label">Store</span><span class="detail-val">ChromaDB at <code>data/slack_index/</code></span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>index_slack.py</code>, <code>watcher.py</code>, <code>search_dispatch.py</code></span></div>
+        <p>Two-part system. The <strong>indexer</strong> runs every 4 hours, incrementally embedding all public Slack messages into ChromaDB via Voyage AI voyage-3, with per-channel watermarks and thread replies concatenated into parent documents.</p>
+        <p>The <strong>search bot</strong> (<code>@search-minty</code>) is a persistent Socket Mode daemon. When @mentioned, it spawns a full Claude Opus agent with Bash-only tool access. The agent classifies intent, generates 3&ndash;5 semantically diverse query variants, executes them via <code>search_dispatch.py</code>, and synthesizes results into flowing prose with inline Slack permalink citations.</p>
+        <div class="detail-row"><span class="detail-label">Search strategy</span><span class="detail-val">Multi-query Reciprocal Rank Fusion (RRF, k=60). Agent generates diverse-angle queries, not synonyms. Scores fused across retrieval passes.</span></div>
+        <div class="detail-row"><span class="detail-label">Resilience</span><span class="detail-val">3-tier: Primary agent &rarr; Relief officer (fresh context) &rarr; Direct search + formatter. Never returns a hard error.</span></div>
+        <div class="detail-row"><span class="detail-label">UX</span><span class="detail-val">Haiku-generated contextual placeholder while Opus works. Whimsical progress messages after 2 min. Catch-up sweep on restart recovers missed queries.</span></div>
+        <div class="detail-row"><span class="detail-label">Filters</span><span class="detail-val"><code>in:#channel</code>, <code>from:user</code>, <code>days:N</code>. Self-referential detection: "my posts" auto-maps to requesting user.</span></div>
+        <div class="detail-row"><span class="detail-label">Index</span><span class="detail-val">ChromaDB at <code>data/slack_index/</code>, Voyage voyage-3 embeddings</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>index_slack.py</code>, <code>watcher.py</code>, <code>search_dispatch.py</code>, <code>agents/search_agent.md</code></span></div>
       </div>
     </div>
 
@@ -873,27 +876,28 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <p>Minty is the interactive research management agent. It delegates work to specialized subagents, each with fresh context windows.</p>
 
   <h3>The CO Hierarchy (Deep Research)</h3>
-  <p>For complex research queries, the corpus-agent uses a military-inspired three-tier command structure:</p>
+  <p>For complex research queries, the corpus-agent uses a military-inspired three-tier command structure. An autonomous <strong>Commanding Officer</strong> (Opus with Bash/Read/Grep tools) runs the operation, dispatching footsoldiers and lieutenants, reading their reports, and making strategic decisions at each phase gate: proceed, supplement, retry, skip, or redirect.</p>
 
   <div class="hierarchy">
     <div class="h-tier">
-      <div class="h-node" style="border-color:var(--accent)"><div class="h-title" style="color:var(--accent)">Commanding Officer</div><div class="h-sub">Opus &bull; Strategic decisions<br>Plans operations, reads briefings,<br>decides proceed/retry/skip</div></div>
+      <div class="h-node" style="border-color:var(--accent)"><div class="h-title" style="color:var(--accent)">Commanding Officer</div><div class="h-sub">Opus &bull; Autonomous strategist<br>Dispatches workers, reads briefings,<br>decides proceed/retry/skip/redirect</div></div>
     </div>
     <div class="h-connector"></div>
     <div class="h-tier">
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Search</div><div class="h-sub">Iterative corpus<br>search</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Retrieve</div><div class="h-sub">Paper content<br>retrieval</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape</div><div class="h-sub">Field mapping<br>analysis</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape<br>Analysis</div><div class="h-sub">Deep landscape<br>assessment</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Grouping</div><div class="h-sub">Thematic paper<br>clustering</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Search</div><div class="h-sub">Iterative corpus<br>search (min 3 rounds)</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Retrieve</div><div class="h-sub">Full text<br>retrieval</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape</div><div class="h-sub">Raw data<br>assembly</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape<br>Analysis</div><div class="h-sub">LLM-driven<br>field mapping</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Grouping</div><div class="h-sub">Strategic paper<br>clustering</div></div>
     </div>
     <div class="h-tier" style="margin-top:4px">
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers</div><div class="h-sub">Paper analysis<br>(Latin Square)</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R1</div><div class="h-sub">Parallel analysis<br>(thematic groups)</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R2</div><div class="h-sub">Recombined groups<br>(cross-cutting)</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Synthesis</div><div class="h-sub">Thematic<br>synthesis</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Peer Review</div><div class="h-sub">Quality gate<br>+ fact-check</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Citation<br>Review</div><div class="h-sub">Link &amp; citation<br>verification</div></div>
     </div>
-    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Footsoldiers (Opus) &mdash; 9 specialized worker types</div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Footsoldiers (Opus) &mdash; agentic workers with tool access, up to 5 concurrent per phase</div>
     <div class="h-connector"></div>
     <div class="h-tier">
       <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Search Lt.</div><div class="h-sub">Coverage<br>assessment</div></div>
@@ -901,10 +905,28 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Reading Lt.</div><div class="h-sub">Reader output<br>quality</div></div>
       <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Synthesis Lt.</div><div class="h-sub">Final quality<br>gate</div></div>
     </div>
-    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Lieutenants &mdash; assess quality but don't redo work</div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Lieutenants (one-shot) &mdash; assess quality, recommend proceed/supplement/retry</div>
   </div>
 
-  <div class="callout"><p><strong>Latin Square Reading:</strong> Papers are arranged in a grid. Round 1 reads rows (thematic groups). Round 2 reads columns (recombined groups). Every paper appears in two different analytical contexts, maximizing cross-paper connections.</p></div>
+  <h3>Deep Research Pipeline</h3>
+  <p>The CO follows a recommended playbook but can deviate — skipping phases for narrow queries or adding search rounds for broad ones. The standard pipeline:</p>
+  <table class="ref-table">
+    <thead><tr><th>Phase</th><th>Workers</th><th>What happens</th></tr></thead>
+    <tbody>
+      <tr><td><strong>1. Search</strong></td><td>Search footsoldier</td><td>Iterative corpus search (min 3 rounds, self-assessment). CO launches retrieve + search lieutenant in parallel.</td></tr>
+      <tr><td><strong>2. Retrieve</strong></td><td>Retrieve footsoldier</td><td>Fetches full texts for all found papers. Runs parallel with search lieutenant assessment.</td></tr>
+      <tr><td><strong>3. Landscape</strong></td><td>Landscape + Landscape Analysis</td><td>Assembles 41Q landscape data from corpus (no LLM), then LLM-driven field mapping and thematic analysis.</td></tr>
+      <tr><td><strong>4. Grouping</strong></td><td>Grouping footsoldier</td><td>Strategic thematic clustering into groups for parallel reading. Produces Round 1 (thematic) and Round 2 (recombined) group assignments.</td></tr>
+      <tr><td><strong>5. Reading R1</strong></td><td>Up to 5 parallel readers</td><td>Each reader analyzes papers in its thematic group. Reports include cross-paper tensions, shared arguments, and gaps.</td></tr>
+      <tr><td><strong>6. Reading R2</strong></td><td>Up to 5 parallel readers</td><td>Papers recombined into cross-cutting groups. R2 readers receive R1 reports to challenge and extend.</td></tr>
+      <tr><td><strong>7. Assessment</strong></td><td>Reading lieutenant</td><td>Assesses per-reader quality, flags thin reports, identifies key themes for synthesis.</td></tr>
+      <tr><td><strong>8. Synthesis</strong></td><td>Synthesis footsoldier + lieutenant</td><td>Unified thematic synthesis of all R1 and R2 reports. Lieutenant does final quality check.</td></tr>
+      <tr><td><strong>9. Peer Review</strong></td><td>Peer review footsoldier (optional)</td><td>Dual review: intellectual critique + fact-checking. Can be skipped for speed.</td></tr>
+      <tr><td><strong>10. Citation Review</strong></td><td>Citation review footsoldier</td><td>Verifies all paper citations are Drive links, checks for hallucinated references.</td></tr>
+    </tbody>
+  </table>
+
+  <div class="callout"><p><strong>Resilience:</strong> If the CO exhausts its context window, a relief officer is spawned with the CO's progress. If that also fails, a legacy fallback runs the pipeline as a monolithic script. The system never returns empty-handed if papers were found.</p></div>
 
   <h3>Worker Agent Types</h3>
   <table class="ref-table">
@@ -1258,7 +1280,7 @@ const searchData = [
   {t:'corpus-agent',d:'@robo-minty Slack bot for research queries over 1,619 papers, 18 MCP tools',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
   {t:'corpus-ingest',d:'11-stage paper ingestion: 24 concurrent workers, 6-tier markdown cascade, embed, analyze, RAPTOR, Zotero',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'cli-health-probe',d:'Sentinel daemon: probes CLI auth every 10m, emails alerts on failure/recovery',tag:'Daemon',c:'#94a3b8',s:'#daemons'},
-  {t:'slack-index / slack-search',d:'Semantic Slack search via ChromaDB + agentic RRF',tag:'Daemon',c:'#818cf8',s:'#daemons'},
+  {t:'search-minty',d:'Agentic Slack search: Opus agent with multi-query RRF fusion, 3-tier resilience, contextual UX',tag:'Daemon',c:'#818cf8',s:'#daemons'},
   {t:'workspace-index',d:'Semantic workspace file search via ChromaDB',tag:'Daemon',c:'#818cf8',s:'#daemons'},
   {t:'rclone-sync',d:'Google Drive bisync + daily corpus backups',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'vault.py',d:'Single-tier credential management (login keychain)',tag:'Infra',c:'#f87171',s:'#infra'},
@@ -1277,7 +1299,7 @@ const searchData = [
   {t:'paper-fetch',d:'Download papers from 15+ publishers via 3-tier cascade',tag:'Skill',c:'#818cf8',s:'#skills'},
   {t:'CO Hierarchy',d:'3-tier command: CO (strategic) → 9 footsoldier types (workers) → 4 Lieutenants (assessors)',tag:'Architecture',c:'#fbbf24',s:'#agents'},
   {t:'MCP Tools',d:'18 tools: 12 corpus search (search, paper, analysis, raptor, etc.) + 6 GitHub repo exploration',tag:'Architecture',c:'#38bdf8',s:'#agents'},
-  {t:'Latin Square Reading',d:'Papers in grid: Row groups (R1) then Column groups (R2) for cross-analysis',tag:'Architecture',c:'#fbbf24',s:'#agents'},
+  {t:'Two-Round Reading',d:'Thematic groups (R1) then recombined cross-cutting groups (R2) for deep cross-paper analysis',tag:'Architecture',c:'#fbbf24',s:'#agents'},
   {t:'Ingest Pipeline',d:'11-stage per-paper pipeline: download → rename → markdown (6-tier) → embed → enrich → analyze → RAPTOR → verify → drive → Zotero → report',tag:'Architecture',c:'#2dd4bf',s:'#corpus'},
   {t:'41-Question Analysis',d:'Semantic analysis across research core, methodology, AI-specific, meta, advanced',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
   {t:'RAPTOR Summaries',d:'Hierarchical summaries: document + section level per paper',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
