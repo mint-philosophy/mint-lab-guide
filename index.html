@@ -1,0 +1,1373 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="theme-color" content="#0b1120">
+<title>Agentic Infrastructure for the MINT Lab</title>
+<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22MINT%20Lab%20Infrastructure%22%2C%22short_name%22%3A%22MINT%20Infra%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1120%22%2C%22theme_color%22%3A%22%230b1120%22%2C%22start_url%22%3A%22.%22%7D">
+<style>
+:root {
+  --bg: #0b1120; --bg2: #131c31; --bg3: #1a2540; --bg4: #223058;
+  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
+  --accent: #38bdf8; --accent2: #818cf8; --accent3: #a78bfa;
+  --green: #4ade80; --orange: #fb923c; --red: #f87171; --pink: #f472b6;
+  --yellow: #fbbf24; --teal: #2dd4bf;
+  --border: #1e3a5f; --card: #0f1b32; --card-hover: #162040;
+  --sidebar-w: 240px; --radius: 12px;
+}
+* { margin:0; padding:0; box-sizing:border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 32px; }
+body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* Sidebar */
+nav.sidebar {
+  position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh;
+  background: var(--bg2); border-right: 1px solid var(--border);
+  padding: 24px 0; overflow-y: auto; z-index: 100;
+  display: flex; flex-direction: column;
+}
+nav.sidebar .logo { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
+nav.sidebar .logo h2 { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: .5px; }
+nav.sidebar .logo p { font-size: 11px; color: var(--text3); margin-top: 2px; }
+nav.sidebar a.nav-link {
+  display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px;
+  color: var(--text2); transition: all .2s; border-left: 3px solid transparent;
+}
+nav.sidebar a.nav-link:hover { color: var(--text); background: var(--bg3); text-decoration: none; }
+nav.sidebar a.nav-link.active { color: var(--accent); background: rgba(56,189,248,.06); border-left-color: var(--accent); }
+nav.sidebar a.nav-link .icon { font-size: 16px; width: 22px; text-align: center; flex-shrink:0; }
+
+/* Search */
+.search-trigger { margin: 8px 16px; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text3); font-size: 12px; cursor: pointer; display:flex; align-items:center; gap:8px; }
+.search-trigger:hover { border-color: var(--accent); }
+.search-trigger kbd { background: var(--bg3); padding: 1px 6px; border-radius: 4px; font-size: 10px; }
+.search-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:200; backdrop-filter:blur(4px); justify-content:center; padding-top:15vh; }
+.search-overlay.open { display:flex; }
+.search-box { width:560px; max-width:90vw; background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; max-height:60vh; display:flex; flex-direction:column; }
+.search-box input { width:100%; padding:16px 20px; background:transparent; border:none; color:var(--text); font-size:16px; outline:none; border-bottom:1px solid var(--border); }
+.search-results { overflow-y:auto; padding:8px; }
+.search-results .sr-item { padding:10px 14px; border-radius:8px; cursor:pointer; }
+.search-results .sr-item:hover { background:var(--bg3); }
+.search-results .sr-item .sr-title { font-size:14px; font-weight:600; }
+.search-results .sr-item .sr-desc { font-size:12px; color:var(--text3); margin-top:2px; }
+.search-results .sr-item .sr-tag { display:inline-block; font-size:10px; padding:1px 7px; border-radius:4px; margin-right:6px; font-weight:600; }
+
+/* Main Content */
+main { margin-left: var(--sidebar-w); min-height: 100vh; }
+section { padding: 48px 48px 64px; border-bottom: 1px solid var(--border); max-width: 1100px; }
+section:last-child { border-bottom:none; }
+h1 { font-size: 36px; font-weight: 800; letter-spacing: -.5px; line-height: 1.2; }
+h1 .gradient { background: linear-gradient(135deg, var(--accent), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
+h2 { font-size: 24px; font-weight: 700; margin-bottom: 16px; display:flex; align-items:center; gap:10px; }
+h2 .icon { font-size: 24px; }
+h3 { font-size: 17px; font-weight: 600; margin: 20px 0 8px; color: var(--text); }
+p { color: var(--text2); margin-bottom: 12px; }
+p.lead { font-size: 17px; line-height: 1.7; color: var(--text2); }
+
+/* Hero */
+.hero { padding: 80px 48px 48px; text-align: center; position: relative; overflow: hidden; max-width: none; }
+.hero::before { content:''; position:absolute; top:-40%; left:20%; width:60%; height:80%; background:radial-gradient(ellipse, rgba(56,189,248,.08), transparent 70%); pointer-events:none; }
+.hero h1 { font-size: 42px; margin-bottom: 12px; }
+.hero .subtitle { font-size: 18px; color: var(--text2); max-width: 640px; margin: 0 auto 32px; }
+
+/* Stats Row */
+.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 24px 0; }
+.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; transition: transform .2s, border-color .2s; }
+.stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
+.stat-card .num { font-size: 32px; font-weight: 800; color: var(--accent); }
+.stat-card .label { font-size: 12px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
+
+/* Cards grid */
+.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px; }
+.card {
+  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
+  overflow: hidden; transition: border-color .2s, transform .2s; cursor: pointer;
+}
+.card:hover { border-color: var(--accent); transform: translateY(-1px); }
+.card .card-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+.card .card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink:0; }
+.card .card-title { font-size: 15px; font-weight: 700; }
+.card .card-sub { font-size: 12px; color: var(--text3); }
+.card .card-body { padding: 0 18px 16px; display: none; }
+.card.open .card-body { display: block; }
+.card .card-body p { font-size: 13px; }
+.card .card-body .detail-row { display:flex; gap:8px; margin:6px 0; font-size:12px; }
+.card .card-body .detail-label { color:var(--text3); min-width:80px; flex-shrink:0; }
+.card .card-body .detail-val { color:var(--text2); }
+.tag { display:inline-block; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
+.tag-daemon { background:rgba(56,189,248,.15); color:var(--accent); }
+.tag-skill { background:rgba(129,140,248,.15); color:var(--accent2); }
+.tag-command { background:rgba(74,222,128,.15); color:var(--green); }
+.tag-persistent { background:rgba(251,146,60,.15); color:var(--orange); }
+.tag-polling { background:rgba(45,212,191,.15); color:var(--teal); }
+.tag-daily { background:rgba(167,139,250,.15); color:var(--accent3); }
+.tag-weekly { background:rgba(244,114,182,.15); color:var(--pink); }
+.health-ok { color: var(--green); } .health-warn { color: var(--orange); } .health-err { color: var(--red); }
+
+/* Pipeline SVG */
+.pipeline-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin: 20px 0; overflow-x: auto; }
+.pipeline-wrap svg text { font-family: inherit; }
+
+/* Timeline */
+.timeline-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+.timeline-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
+.timeline-label { width: 130px; font-size: 12px; color: var(--text2); text-align: right; flex-shrink:0; }
+.timeline-bar-bg { flex:1; height: 24px; background: var(--bg); border-radius: 4px; position: relative; overflow: hidden; }
+.timeline-bar-bg .hour-marks { position:absolute; inset:0; display:flex; }
+.timeline-bar-bg .hour-marks span { flex:1; border-right:1px solid var(--bg2); }
+.timeline-bar-bg .t-block { position:absolute; top:2px; bottom:2px; border-radius:3px; opacity:.8; }
+.timeline-bar-bg .t-block:hover { opacity:1; }
+.timeline-hours { display:flex; margin-top:4px; }
+.timeline-hours span { flex:1; font-size:9px; color:var(--text3); text-align:center; }
+
+/* Hierarchy tree */
+.hierarchy { display:flex; flex-direction:column; align-items:center; gap:12px; margin:24px 0; }
+.h-tier { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
+.h-node { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 18px; text-align:center; min-width:120px; transition:border-color .2s; }
+.h-node:hover { border-color:var(--accent); }
+.h-node .h-title { font-size:13px; font-weight:700; }
+.h-node .h-sub { font-size:11px; color:var(--text3); }
+.h-connector { width:2px; height:24px; background:var(--border); }
+.h-fan { display:flex; gap:0; align-items:flex-start; }
+.h-fan-line { width:60px; height:2px; background:var(--border); margin-top:12px; }
+
+/* Tables */
+.ref-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
+.ref-table th { text-align:left; padding:8px 12px; background:var(--bg3); color:var(--text2); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); }
+.ref-table td { padding:8px 12px; border-bottom:1px solid rgba(30,58,95,.4); color:var(--text2); }
+.ref-table tr:hover td { background:rgba(56,189,248,.03); }
+.ref-table code { background:var(--bg3); padding:1px 6px; border-radius:4px; font-size:12px; color:var(--accent); }
+
+/* Tabs */
+.tabs { display:flex; gap:4px; margin:16px 0 0; border-bottom:1px solid var(--border); }
+.tab-btn { padding:8px 16px; font-size:13px; color:var(--text3); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; }
+.tab-btn:hover { color:var(--text2); }
+.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
+.tab-panel { display:none; padding:16px 0; }
+.tab-panel.active { display:block; }
+
+/* Accordion */
+.accordion-item { border:1px solid var(--border); border-radius:8px; margin:8px 0; overflow:hidden; }
+.accordion-head { padding:12px 16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:var(--card); font-size:14px; font-weight:600; }
+.accordion-head:hover { background:var(--card-hover); }
+.accordion-head .arrow { transition:transform .2s; color:var(--text3); }
+.accordion-item.open .accordion-head .arrow { transform:rotate(90deg); }
+.accordion-body { padding:0 16px 16px; display:none; font-size:13px; color:var(--text2); }
+.accordion-item.open .accordion-body { display:block; }
+
+/* Misc */
+.badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; padding:3px 10px; border-radius:20px; font-weight:600; }
+.badge-blue { background:rgba(56,189,248,.15); color:var(--accent); }
+.badge-green { background:rgba(74,222,128,.15); color:var(--green); }
+.badge-purple { background:rgba(129,140,248,.15); color:var(--accent2); }
+.badge-orange { background:rgba(251,146,60,.15); color:var(--orange); }
+.callout { background:var(--bg3); border-left:3px solid var(--accent); padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0; font-size:13px; }
+.callout p { margin:0; }
+.code-path { font-family:'SF Mono',Menlo,Monaco,monospace; font-size:12px; color:var(--accent); background:var(--bg3); padding:2px 8px; border-radius:4px; }
+ul.clean { list-style:none; padding:0; }
+ul.clean li { padding:4px 0; font-size:13px; color:var(--text2); }
+ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font-weight:bold; }
+.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
+@media (max-width:900px) { .grid-2 { grid-template-columns:1fr; } }
+@media (max-width:768px) {
+  nav.sidebar { display:none; }
+  main { margin-left:0; }
+  section { padding:32px 20px; }
+  .hero { padding:48px 20px 32px; }
+  .hero h1 { font-size:28px; }
+  .cards { grid-template-columns:1fr; }
+}
+.fade-in { opacity:0; transform:translateY(16px); transition:opacity .5s, transform .5s; }
+.fade-in.visible { opacity:1; transform:none; }
+</style>
+</head>
+<body>
+
+<nav class="sidebar">
+  <div class="logo">
+    <h2>MINT Lab</h2>
+    <p>Agentic Infrastructure</p>
+  </div>
+  <div class="search-trigger" onclick="openSearch()">
+    <span>&#128269;</span> Search... <kbd>&#8984;K</kbd>
+  </div>
+  <a class="nav-link" href="#overview"><span class="icon">&#127968;</span> Overview</a>
+  <a class="nav-link" href="#pipeline"><span class="icon">&#9889;</span> Content Pipeline</a>
+  <a class="nav-link" href="#daemons"><span class="icon">&#9881;</span> Daemons</a>
+  <a class="nav-link" href="#timeline"><span class="icon">&#128339;</span> Schedule</a>
+  <a class="nav-link" href="#corpus"><span class="icon">&#128218;</span> Research Corpus</a>
+  <a class="nav-link" href="#agents"><span class="icon">&#129302;</span> Agent Architecture</a>
+  <a class="nav-link" href="#skills"><span class="icon">&#128295;</span> Skills &amp; Commands</a>
+  <a class="nav-link" href="#infra"><span class="icon">&#128274;</span> Infrastructure</a>
+  <a class="nav-link" href="#integrations"><span class="icon">&#128279;</span> Integrations</a>
+  <a class="nav-link" href="#files"><span class="icon">&#128193;</span> Directory Map</a>
+</nav>
+
+<div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closeSearch()">
+  <div class="search-box">
+    <input type="text" id="searchInput" placeholder="Search daemons, skills, commands, concepts..." oninput="doSearch(this.value)">
+    <div class="search-results" id="searchResults"></div>
+  </div>
+</div>
+
+<main>
+
+<!-- ============ HERO ============ -->
+<section class="hero" id="overview">
+  <h1>Agentic Infrastructure for the <span class="gradient">MINT Lab</span></h1>
+  <p class="subtitle">A complete guide to the autonomous systems, research tools, and AI agents powering the Machine Intelligence &amp; Normative Theory research lab at Johns Hopkins University.</p>
+  <div class="stats">
+    <div class="stat-card"><div class="num">13</div><div class="label">Daemons</div></div>
+    <div class="stat-card"><div class="num">1,619</div><div class="label">Papers Indexed</div></div>
+    <div class="stat-card"><div class="num">15</div><div class="label">Skills</div></div>
+    <div class="stat-card"><div class="num">23</div><div class="label">Commands</div></div>
+    <div class="stat-card"><div class="num">6</div><div class="label">Agent Types</div></div>
+    <div class="stat-card"><div class="num">3</div><div class="label">Vector DBs</div></div>
+  </div>
+</section>
+
+<!-- ============ OVERVIEW ============ -->
+<section class="fade-in">
+  <h2><span class="icon">&#127968;</span> What Is This System?</h2>
+  <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 13 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
+
+  <div class="grid-2" style="margin-top:20px">
+    <div>
+      <h3>Core Idea</h3>
+      <p>Information flows through a pipeline: external sources (Twitter, arXiv, RSS, Bluesky, email, LinkedIn) are automatically fetched, classified by relevance using Claude Opus, and posted to Slack. Papers are downloaded, converted to markdown via a 6-tier cascade, embedded in a vector database, analyzed across 41 semantic dimensions, and made searchable via a Slack bot. A daily digest email goes out to 25+ lab members.</p>
+    </div>
+    <div>
+      <h3>Key Design Principles</h3>
+      <ul class="clean">
+        <li><strong>Delegation-first:</strong> The main agent orchestrates; subagents do the work</li>
+        <li><strong>Slack as message bus:</strong> All daemons communicate through Slack channels</li>
+        <li><strong>CLI subscriptions, not API:</strong> All LLM calls go through <code>claude -p</code> or Codex CLI</li>
+        <li><strong>Graceful degradation:</strong> Every stage can fail without stopping the pipeline</li>
+        <li><strong>Single-tier vault:</strong> All credentials in macOS login keychain, direct access for all agents and daemons</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ PIPELINE ============ -->
+<section id="pipeline" class="fade-in">
+  <h2><span class="icon">&#9889;</span> The Content Pipeline</h2>
+  <p>Here's how information flows from external sources to lab members. Slack's <code>#news</code> channel is the central hub &mdash; four daemons write to it, three daemons read from it.</p>
+
+  <div class="pipeline-wrap">
+    <svg viewBox="0 0 960 620" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#38bdf8"/></marker>
+        <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
+        <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb923c"/></marker>
+        <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#a78bfa"/></marker>
+        <linearGradient id="nodeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2540"/><stop offset="100%" stop-color="#131c31"/></linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      </defs>
+
+      <!-- Sources -->
+      <g transform="translate(30,30)">
+        <rect width="160" height="60" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="80" y="25" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600">EXTERNAL SOURCES</text>
+        <text x="80" y="43" text-anchor="middle" fill="#e2e8f0" font-size="11">Twitter, arXiv, RSS,</text>
+        <text x="80" y="55" text-anchor="middle" fill="#e2e8f0" font-size="11">Bluesky, Email, LinkedIn</text>
+      </g>
+
+      <!-- feedme-daily -->
+      <g transform="translate(250,25)">
+        <rect width="140" height="50" rx="10" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+        <text x="70" y="22" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">feedme-daily</text>
+        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Fetch, Classify, Rank</text>
+      </g>
+      <line x1="190" y1="55" x2="250" y2="50" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+      <!-- #feed channel -->
+      <g transform="translate(440,25)">
+        <rect width="110" height="50" rx="10" fill="#0d2847" stroke="#1e3a5f"/>
+        <text x="55" y="22" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">#feed-{day}</text>
+        <text x="55" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Slack channel</text>
+      </g>
+      <line x1="390" y1="50" x2="440" y2="50" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+      <!-- Seth thumbsup -->
+      <g transform="translate(470,95)">
+        <rect width="100" height="36" rx="8" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
+        <text x="50" y="23" text-anchor="middle" fill="#fbbf24" font-size="11">Seth &#x1F44D;</text>
+      </g>
+      <line x1="495" y1="75" x2="510" y2="95" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+
+      <!-- feed-promote -->
+      <g transform="translate(620,25)">
+        <rect width="130" height="50" rx="10" fill="url(#nodeGrad)" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="65" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">feed-promote</text>
+        <text x="65" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Copy to #news</text>
+      </g>
+      <line x1="570" y1="113" x2="620" y2="50" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+      <!-- Seth's devices -->
+      <g transform="translate(30,140)">
+        <rect width="160" height="50" rx="10" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
+        <text x="80" y="22" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="600">SETH'S DEVICES</text>
+        <text x="80" y="38" text-anchor="middle" fill="#e2e8f0" font-size="11">iPhone, Mac, Chrome</text>
+      </g>
+
+      <!-- share-to-minty -->
+      <g transform="translate(250,140)">
+        <rect width="140" height="50" rx="10" fill="url(#nodeGrad)" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="70" y="22" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="700">share-to-minty</text>
+        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Intake, Classify, Post</text>
+      </g>
+      <line x1="190" y1="165" x2="250" y2="165" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+
+      <!-- #news (central hub) -->
+      <g transform="translate(440,160)">
+        <rect width="140" height="70" rx="12" fill="#0d2847" stroke="#38bdf8" stroke-width="2" filter="url(#glow)"/>
+        <text x="70" y="28" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="800">#news</text>
+        <text x="70" y="45" text-anchor="middle" fill="#94a3b8" font-size="9">Central Hub</text>
+        <text x="70" y="58" text-anchor="middle" fill="#64748b" font-size="9">4 writers / 3 readers</text>
+      </g>
+      <line x1="390" y1="165" x2="440" y2="185" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+      <line x1="750" y1="50" x2="580" y2="170" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+      <!-- Three readers branching from #news -->
+      <!-- news-pdf-bot -->
+      <g transform="translate(260,300)">
+        <rect width="140" height="55" rx="10" fill="url(#nodeGrad)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="70" y="22" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">news-pdf-bot</text>
+        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">PDFs + markdown</text>
+        <text x="70" y="49" text-anchor="middle" fill="#64748b" font-size="9">+ date markers</text>
+      </g>
+      <line x1="470" y1="230" x2="360" y2="300" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+      <!-- yesterday-in-ai -->
+      <g transform="translate(440,300)">
+        <rect width="140" height="55" rx="10" fill="url(#nodeGrad)" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="70" y="22" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">yesterday-in-ai</text>
+        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Daily/weekly digest</text>
+        <text x="70" y="49" text-anchor="middle" fill="#64748b" font-size="9">Email + Ghost blog</text>
+      </g>
+      <line x1="510" y1="230" x2="510" y2="300" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+      <!-- corpus-ingest -->
+      <g transform="translate(630,300)">
+        <rect width="140" height="55" rx="10" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
+        <text x="70" y="22" text-anchor="middle" fill="#2dd4bf" font-size="11" font-weight="700">corpus-ingest</text>
+        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">11-stage pipeline</text>
+        <text x="70" y="49" text-anchor="middle" fill="#64748b" font-size="9">Embed, Analyze, RAPTOR</text>
+      </g>
+      <line x1="550" y1="230" x2="670" y2="300" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+      <!-- Outputs -->
+      <!-- #papers -->
+      <g transform="translate(200,410)">
+        <rect width="100" height="40" rx="8" fill="#0d2847" stroke="#1e3a5f"/>
+        <text x="50" y="25" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="600">#papers</text>
+      </g>
+      <line x1="310" y1="355" x2="280" y2="410" stroke="#a78bfa" stroke-width="1" marker-end="url(#arrowPurple)"/>
+
+      <!-- Email -->
+      <g transform="translate(400,410)">
+        <rect width="110" height="40" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="55" y="17" text-anchor="middle" fill="#f472b6" font-size="10" font-weight="600">&#x2709; Email</text>
+        <text x="55" y="32" text-anchor="middle" fill="#64748b" font-size="9">25+ lab members</text>
+      </g>
+      <line x1="510" y1="355" x2="470" y2="410" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPurple)"/>
+
+      <!-- LanceDB -->
+      <g transform="translate(610,410)">
+        <rect width="130" height="50" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf"/>
+        <text x="65" y="20" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">LanceDB Corpus</text>
+        <text x="65" y="34" text-anchor="middle" fill="#94a3b8" font-size="9">1,619 papers</text>
+        <text x="65" y="45" text-anchor="middle" fill="#64748b" font-size="9">122K chunks, 2048d</text>
+      </g>
+      <line x1="700" y1="355" x2="690" y2="410" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+      <!-- corpus-agent -->
+      <g transform="translate(610,510)">
+        <rect width="130" height="50" rx="10" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+        <text x="65" y="22" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">corpus-agent</text>
+        <text x="65" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">@robo-minty in Slack</text>
+      </g>
+      <line x1="675" y1="460" x2="675" y2="510" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+      <!-- Search indexes (side) -->
+      <g transform="translate(790,170)">
+        <rect width="140" height="110" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="70" y="20" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">SEARCH INDEXES</text>
+        <text x="70" y="42" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">slack-index</text>
+        <text x="70" y="54" text-anchor="middle" fill="#64748b" font-size="9">Every 4h &rarr; ChromaDB</text>
+        <text x="70" y="72" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">workspace-index</text>
+        <text x="70" y="84" text-anchor="middle" fill="#64748b" font-size="9">Daily &rarr; ChromaDB</text>
+        <text x="70" y="100" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">rclone-sync</text>
+      </g>
+
+      <!-- Animated dots on key paths -->
+      <circle r="3" fill="#38bdf8" opacity=".8">
+        <animateMotion dur="3s" repeatCount="indefinite" path="M190,55 L250,50 390,50 440,50"/>
+      </circle>
+      <circle r="3" fill="#fb923c" opacity=".8">
+        <animateMotion dur="2.5s" repeatCount="indefinite" path="M190,165 L250,165 390,165 440,185"/>
+      </circle>
+      <circle r="3" fill="#a78bfa" opacity=".8">
+        <animateMotion dur="2s" repeatCount="indefinite" path="M470,230 L360,300 280,410"/>
+      </circle>
+      <circle r="3" fill="#2dd4bf" opacity=".8">
+        <animateMotion dur="2.5s" repeatCount="indefinite" path="M550,230 L670,300 690,410 675,510"/>
+      </circle>
+
+      <!-- Lab Members intake -->
+      <g transform="translate(30,240)">
+        <rect width="160" height="50" rx="10" fill="url(#nodeGrad)" stroke="#4ade80" stroke-dasharray="4,3"/>
+        <text x="80" y="22" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="600">LAB MEMBERS</text>
+        <text x="80" y="38" text-anchor="middle" fill="#e2e8f0" font-size="11">Post to #new-news</text>
+      </g>
+      <line x1="190" y1="265" x2="440" y2="200" stroke="#4ade80" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowGreen)"/>
+    </svg>
+  </div>
+
+  <div class="callout">
+    <p><strong>Key insight:</strong> The system forms a funnel. External sources produce hundreds of items daily. <em>feedme-daily</em> classifies them down to ~20-40%. Seth's thumbs-up on <em>#feed</em> curates further. Everything that reaches <em>#news</em> gets PDFs attached, ingested into the corpus, and summarized in the daily digest.</p>
+  </div>
+</section>
+
+<!-- ============ DAEMONS ============ -->
+<section id="daemons" class="fade-in">
+  <h2><span class="icon">&#9881;</span> The 13 Daemons</h2>
+  <p>All daemons run on the Mac Studio via macOS <code>launchd</code>. They share a common <code>platform_config.py</code> for paths and secrets, and a shared Python 3.12 venv at <code>daemons/pipeline/.venv/</code>.</p>
+
+  <div class="cards" id="daemonCards">
+
+    <div class="card" data-search="feedme-daily feed fetch classify rank twitter arxiv rss bluesky email linkedin">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(56,189,248,.15)">&#128225;</div>
+        <div><div class="card-title">feedme-daily</div><div class="card-sub"><span class="tag tag-daily">Daily 06:15</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Automated daily content curation pipeline. Fetches items from 7 sources (Twitter, Bluesky, RSS, LinkedIn, Email, arXiv, PhilPapers), classifies each for relevance using Claude Opus across 6 dimensions, ranks by composite score, and posts qualifying items to rotating <code>#feed-{dayname}</code> Slack channels.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (16 concurrent workers for classification + summarisation)</span></div>
+        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Daily at 06:15 local time</span></div>
+        <div class="detail-row"><span class="detail-label">Pass threshold</span><span class="detail-val">0.55 general, 0.60 arXiv, 0.45 PhilPapers. Target pass rate: 20-40%</span></div>
+        <div class="detail-row"><span class="detail-label">Scoring</span><span class="detail-val">Relevance (.30), Quality (.25), Authority (.15), Novelty (.15), Actionability (.10), Engagement (.05)</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/feedme-daily/feedme_daily.py</code>, <code>pipeline/scripts/classify_parallel.py</code></span></div>
+        <div class="detail-row"><span class="detail-label">Output</span><span class="detail-val">Formatted posts in <code>#feed-{dayname}</code> channels with scores and metadata</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="feed-promote promote thumbsup reaction curate news">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(74,222,128,.15)">&#128077;</div>
+        <div><div class="card-title">feed-promote</div><div class="card-sub"><span class="tag tag-polling">Every 60s</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Watches <code>#feed-{dayname}</code> channels for Seth's &#128077; reactions. Copies thumbsed-up messages verbatim to <code>#news</code>, uploads any PDF attachments found in thread replies. The human curation bridge between automated feeds and the curated news channel.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (pure relay daemon)</span></div>
+        <div class="detail-row"><span class="detail-label">State</span><span class="detail-val"><code>data/state.json</code> &mdash; per-channel watermarks, promoted timestamps (capped at 500)</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/feed-promote/promote.py</code>, <code>pdf_validator.py</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="share-to-minty share iphone mac chrome url inbox socket">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(251,146,60,.15)">&#128241;</div>
+        <div><div class="card-title">share-to-minty</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Real-time ingestion for URLs shared by Seth from any device (iPhone via iOS Shortcut, Mac via Keyboard Maestro Cmd+Shift+M, Chrome extension). Uses Slack Socket Mode &mdash; no public URL needed. Classifies and posts to <code>#news</code> with guaranteed delivery.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (single classification call per URL)</span></div>
+        <div class="detail-row"><span class="detail-label">Input</span><span class="detail-val"><code>#minty-inbox</code> channel via Socket Mode WebSocket</span></div>
+        <div class="detail-row"><span class="detail-label">Reactions</span><span class="detail-val">&#128064; acknowledged, &#9989; success, &#10060; failure, &#9851; duplicate</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>watcher.py</code>, <code>intake.py</code>, <code>classify_single.py</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="news-pdf-bot pdf paper download arxiv find agent browser selenium">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(167,139,250,.15)">&#128196;</div>
+        <div><div class="card-title">news-pdf-bot</div><div class="card-sub"><span class="tag tag-polling">Every 5m</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Watches <code>#news</code> and <code>#minty-chat</code> for paper/article URLs, downloads PDFs and generates companion markdown files, uploading both as thread replies. Three-tier architecture: (1) Fast programmatic pattern matching (arXiv, bioRxiv, direct PDF links), (2) Twitter thread expansion, (3) Full Claude agent fallback with 12 specialized tools including Semantic Scholar, Unpaywall, and headless browser.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (agent fallback only &mdash; when programmatic matching fails)</span></div>
+        <div class="detail-row"><span class="detail-label">Agent tools</span><span class="detail-val">resolve-url, fetch-page, semantic-scholar, unpaywall, download-pdf, arxiv-metadata, browser-fetch (SeleniumBase UC Mode), html-to-markdown, + more</span></div>
+        <div class="detail-row"><span class="detail-label">Also does</span><span class="detail-val">Posts date markers (<code>&#128197; YYYY-MM-DD</code>) used by yesterday-in-ai for recency classification</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>news_pdf_bot.py</code>, <code>pdf_finder_prompt.md</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="yesterday-in-ai digest email newsletter ghost lab members daily news summary">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(244,114,182,.15)">&#128232;</div>
+        <div><div class="card-title">yesterday-in-ai</div><div class="card-sub"><span class="tag tag-daily">Daily 05:30</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Generates and distributes a daily AI news digest. Fetches yesterday's posts from <code>#news</code>, classifies recency using 4 date-detection methods, generates a narrative digest via Claude Opus, verifies all links via Codex Spark, wraps in HTML email, and sends to ~25 lab members. Also publishes to Ghost blog.</p>
+        <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Claude Opus (digest), Codex gpt-5.3-codex-spark (link verification &amp; fact-checking)</span></div>
+        <div class="detail-row"><span class="detail-label">Recipients</span><span class="detail-val">~25 lab members across ANU, Stanford, JHU, Vanderbilt, Oregon State, Michigan</span></div>
+        <div class="detail-row"><span class="detail-label">Voice</span><span class="detail-val">"Contextual journalism, not punditry" &mdash; reports facts without editorializing</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>yesterday_in_ai.py</code> (2,761 lines)</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="last-week-in-ai weekly digest lab meeting summary">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(244,114,182,.15)">&#128197;</div>
+        <div><div class="card-title">last-week-in-ai</div><div class="card-sub"><span class="tag tag-weekly">Thursday 08:00</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Weekly variant of yesterday-in-ai. Uses multi-agent pipeline for the larger volume: classifies messages into 8 thematic sections (Normative Competence, Philosophy of AI, Agents, Post-AGI, Regulation, Capabilities, Industry, Other), spawns parallel section writers, assembles final digest. Posted to <code>#lab-meetings</code> as a Slack canvas.</p>
+        <div class="detail-row"><span class="detail-label">Sections</span><span class="detail-val">8 thematic categories, multi-agent when >50 messages</span></div>
+        <div class="detail-row"><span class="detail-label">Output</span><span class="detail-val">Markdown canvas in <code>#lab-meetings</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="corpus-agent robo-minty research bot slack mcp search papers query">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(56,189,248,.15)">&#129302;</div>
+        <div><div class="card-title">corpus-agent</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 1,619-paper corpus. Spawns sandboxed Claude CLI subprocesses with 18 MCP tools (12 corpus + 6 GitHub). Supports quick search, overview mode, deep multi-agent research, and conversation mode. Has its own persistent three-tier memory system.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (hardcoded, 900s timeout)</span></div>
+        <div class="detail-row"><span class="detail-label">Corpus tools (12)</span><span class="detail-val">search, search-summary, paper, analysis, raptor, full-text, similar, stats, overview, topics, random, dimensions</span></div>
+        <div class="detail-row"><span class="detail-label">GitHub tools (6)</span><span class="detail-val">list-repos, view, clone, tree, file, search-code (sandboxed to allowlisted repos referenced in papers)</span></div>
+        <div class="detail-row"><span class="detail-label">Deep research</span><span class="detail-val">9-phase pipeline: Search &rarr; Retrieve &rarr; Landscape &rarr; Group &rarr; Read R1 &rarr; Read R2 &rarr; Synthesize &rarr; Peer Review &rarr; Citation Review</span></div>
+        <div class="detail-row"><span class="detail-label">Memory</span><span class="detail-val">MEMORY.md (curated, 200-line cap), FACTS.md (durable), RECENT.md (rolling)</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>orchestrator.py</code>, <code>scripts/corpus_cli.py</code>, <code>mcp_server/server.py</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="corpus-ingest ingest pipeline embed analyze raptor zotero paper pdf download markdown">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#128230;</div>
+        <div><div class="card-title">corpus-ingest</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-warn">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Automated 11-stage ingestion pipeline for new papers into the corpus. Monitors <code>#news</code> and <code>#papers</code> for PDF uploads, then processes each paper end-to-end through a worker pool: download, rename, markdown conversion (6-tier cascade), metadata enrichment, vector embedding, 41-question semantic analysis, RAPTOR summaries, verification, Google Drive upload, Zotero cataloguing, and Slack reporting.</p>
+        <div class="detail-row"><span class="detail-label">Architecture</span><span class="detail-val">24 concurrent per-paper workers. Each paper flows through all stages independently. State machine via filesystem (crash-safe).</span></div>
+        <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Codex gpt-5.2 xhigh (analysis + RAPTOR), Voyage voyage-context-3 2048d (embedding). Claude Opus also supported via config toggle.</span></div>
+        <div class="detail-row"><span class="detail-label">Stages</span><span class="detail-val">Download &rarr; Rename &rarr; Markdown &rarr; Embed &rarr; Enrich &rarr; Analyze &rarr; RAPTOR &rarr; Verify &rarr; Drive Links &rarr; Zotero &rarr; Report</span></div>
+        <div class="detail-row"><span class="detail-label">Markdown cascade</span><span class="detail-val">Companion (pre-extracted) &rarr; arXiv HTML &rarr; ar5iv &rarr; Marker &rarr; PyMuPDF &rarr; Tesseract OCR</span></div>
+        <div class="detail-row"><span class="detail-label">Worker pools</span><span class="detail-val">Pipeline: 24 &bull; Embed: 4 &bull; Enrich: 4 &bull; Analyze: 6 &bull; RAPTOR: 6</span></div>
+        <div class="detail-row"><span class="detail-label">Quality gate</span><span class="detail-val">41-question analysis must exceed 1,800 words; shallow output gets re-queued</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemon.py</code>, <code>pipeline.py</code>, <code>lib/</code>, <code>config.yaml</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="slack-index slack-search search-minty semantic chromadb voyage index messages">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(129,140,248,.15)">&#128270;</div>
+        <div><div class="card-title">slack-index / slack-search</div><div class="card-sub"><span class="tag tag-polling">4h index</span> <span class="tag tag-persistent">Persistent bot</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Two-part system: (a) Periodic indexer embeds all public Slack messages into ChromaDB using Voyage AI voyage-3 embeddings. (b) Persistent Socket Mode bot (<code>@search-minty</code>) responds to @mentions by running agentic search with multi-query Reciprocal Rank Fusion (RRF).</p>
+        <div class="detail-row"><span class="detail-label">Index model</span><span class="detail-val">Voyage AI voyage-3 (no LLM)</span></div>
+        <div class="detail-row"><span class="detail-label">Search agent</span><span class="detail-val">Claude Opus (agentic search pipeline, explicitly praised and must not be replaced)</span></div>
+        <div class="detail-row"><span class="detail-label">Store</span><span class="detail-val">ChromaDB at <code>data/slack_index/</code></span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>index_slack.py</code>, <code>watcher.py</code>, <code>search_dispatch.py</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="workspace-index workspace search semantic files markdown python pdf chromadb">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(129,140,248,.15)">&#128451;</div>
+        <div><div class="card-title">workspace-index</div><div class="card-sub"><span class="tag tag-polling">Every 6h</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Incremental index of all workspace files (markdown, Python, PDF, DOCX, etc.) into ChromaDB using OpenAI embeddings. Enables semantic search across the entire workspace &mdash; "where did we discuss X" or "find code related to Y".</p>
+        <div class="detail-row"><span class="detail-label">Scope</span><span class="detail-val">Minty/, daemons/, Local-Repos/</span></div>
+        <div class="detail-row"><span class="detail-label">Store</span><span class="detail-val">ChromaDB at <code>data/workspace_index/</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="rclone-sync rclone google drive sync backup bisync resources pdfs">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#9729;</div>
+        <div><div class="card-title">rclone-sync</div><div class="card-sub"><span class="tag tag-polling">Every 10m</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Three jobs: (1) Bidirectional <code>rclone bisync</code> of <code>Resources/pdfs/</code> and <code>Resources/markdown/</code> with Google Shared Drive. (2) Daily compressed backup of LanceDB corpus (7 retained). (3) Twice-daily Minty repo snapshots (14 retained). Uses RCLONE_TEST marker files to prevent accidental deletes if Drive is unreachable.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (pure infrastructure)</span></div>
+        <div class="detail-row"><span class="detail-label">Remote</span><span class="detail-val"><code>mint-drive</code> (Google Shared Drive as mintlabjhu@gmail.com)</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>sync.sh</code>, <code>backup_index.sh</code>, <code>backup_repo.sh</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="cli-health-probe health auth monitor probe alert email">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#128161;</div>
+        <div><div class="card-title">cli-health-probe</div><div class="card-sub"><span class="tag tag-polling">Every 10m</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Lightweight sentinel that sends a minimal probe through the daemon Claude CLI configuration every 10 minutes. Detects auth failures, rate limits, and CLI crashes. Emails Seth and Secil on failure, with automatic recovery notifications when the probe starts succeeding again.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Haiku (minimal probe call)</span></div>
+        <div class="detail-row"><span class="detail-label">Alerts</span><span class="detail-val">Email to seth@mintresearch.org + secil.yanikguyot@anu.edu.au on failure/recovery</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/cli-health-probe/</code></span></div>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ============ TIMELINE ============ -->
+<section id="timeline" class="fade-in">
+  <h2><span class="icon">&#128339;</span> 24-Hour Daemon Schedule</h2>
+  <p>When each daemon runs throughout the day (times in local/AEDT). Persistent daemons run continuously; polled daemons run at fixed intervals.</p>
+  <div class="timeline-wrap">
+    <div id="timelineChart"></div>
+    <div class="timeline-hours" style="margin-left:142px">
+      <span>0</span><span>2</span><span>4</span><span>6</span><span>8</span><span>10</span><span>12</span><span>14</span><span>16</span><span>18</span><span>20</span><span>22</span>
+    </div>
+  </div>
+</section>
+
+<!-- ============ CORPUS ============ -->
+<section id="corpus" class="fade-in">
+  <h2><span class="icon">&#128218;</span> The Research Corpus</h2>
+  <p>The MINT Lab's intellectual engine: 1,619 papers on AI safety, ethics, alignment, governance, and capabilities &mdash; all embedded, analyzed, and searchable.</p>
+
+  <div class="grid-2" style="margin-top:16px">
+    <div>
+      <h3>Scale</h3>
+      <table class="ref-table">
+        <tr><td>Papers</td><td><strong>1,619</strong></td></tr>
+        <tr><td>Text chunks</td><td>122,672</td></tr>
+        <tr><td>Semantic analyses</td><td>1,616 (41 questions each)</td></tr>
+        <tr><td>RAPTOR summaries</td><td>1,500+</td></tr>
+        <tr><td>Topic clusters</td><td>29 (with 114 micro-topics)</td></tr>
+        <tr><td>Embedding dims per doc</td><td>48 (each 2048d Voyage)</td></tr>
+        <tr><td>Total columns</td><td>127 in documents table</td></tr>
+        <tr><td>Pre-computed similarities</td><td>11,570 pairs</td></tr>
+        <tr><td>LanceDB size</td><td>79 GB</td></tr>
+      </table>
+    </div>
+    <div>
+      <h3>Search Modes</h3>
+      <ul class="clean">
+        <li><strong>search-summary</strong> &mdash; RAPTOR summary search (fast, broad)</li>
+        <li><strong>search</strong> &mdash; Full-text semantic search (deep)</li>
+        <li><strong>search-semantic</strong> &mdash; Argumentative similarity</li>
+        <li><strong>search-dimension qNN</strong> &mdash; 41 semantic dimensions</li>
+        <li><strong>chunks</strong> &mdash; Passage-level search</li>
+        <li><strong>similar / similar-by-dim</strong> &mdash; Pre-computed similarity</li>
+        <li><strong>Unified search</strong> &mdash; Multi-modal with RRF fusion</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>41-Question Semantic Analysis</h3>
+  <p>Every paper is analyzed across 41 dimensions, each producing text content and a 2048d embedding vector. Click each category to see the full question list:</p>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head"><span style="color:var(--accent)">Research Core (q01&ndash;q05)</span> <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <table class="ref-table">
+        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>q01</td><td><code>research_question</code></td><td>Core research question in one specific sentence</td></tr>
+          <tr><td>q02</td><td><code>thesis</code></td><td>Main thesis or finding in 1&ndash;2 sentences</td></tr>
+          <tr><td>q03</td><td><code>key_claims</code></td><td>3&ndash;5 specific, falsifiable claims</td></tr>
+          <tr><td>q04</td><td><code>evidence</code></td><td>Type and quality of evidence &mdash; experiments, models, sample sizes, rigor</td></tr>
+          <tr><td>q05</td><td><code>limitations</code></td><td>Acknowledged AND unacknowledged limitations</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head"><span style="color:var(--accent)">Methodology (q06&ndash;q10)</span> <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <table class="ref-table">
+        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>q06</td><td><code>paradigm</code></td><td>Research paradigm with detail (not just &lsquo;survey&rsquo;)</td></tr>
+          <tr><td>q07</td><td><code>methods</code></td><td>Specific methods, techniques, frameworks, tools</td></tr>
+          <tr><td>q08</td><td><code>data</code></td><td>Datasets, models, sample sizes, versions</td></tr>
+          <tr><td>q09</td><td><code>reproducibility</code></td><td>Reproducibility assessment &mdash; resources needed, code/data availability</td></tr>
+          <tr><td>q10</td><td><code>framework</code></td><td>Theoretical/conceptual framework &mdash; specific theories, authors, application</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head"><span style="color:var(--accent)">Context (q11&ndash;q14)</span> <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <table class="ref-table">
+        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>q11</td><td><code>traditions</code></td><td>Intellectual traditions &mdash; academic lineages and schools of thought</td></tr>
+          <tr><td>q12</td><td><code>key_citations</code></td><td>2&ndash;3 papers/authors most engaged with (not just cited)</td></tr>
+          <tr><td>q13</td><td><code>assumptions</code></td><td>Key assumptions &mdash; philosophical, empirical, scope</td></tr>
+          <tr><td>q14</td><td><code>counterarguments</code></td><td>Substantive objections from different perspectives</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head"><span style="color:var(--accent)">AI-Specific (q15&ndash;q18)</span> <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <table class="ref-table">
+        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>q15</td><td><code>llm_role</code></td><td>Category (SUBJECT/TOOL/CONCERN/TECHNICAL/NONE) + detailed explanation</td></tr>
+          <tr><td>q16</td><td><code>models</code></td><td>Specific AI/LLM models discussed &mdash; names, versions, comparisons</td></tr>
+          <tr><td>q17</td><td><code>capability_claims</code></td><td>Claims about what LLMs can or cannot do</td></tr>
+          <tr><td>q18</td><td><code>risk_claims</code></td><td>Claims about risks, dangers, harms &mdash; severity, likelihood, evidence</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head"><span style="color:var(--accent)">Meta (q19&ndash;q26)</span> <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <table class="ref-table">
+        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>q19</td><td><code>novelty</code></td><td>What is claimed as new &mdash; method, evidence, framework</td></tr>
+          <tr><td>q20</td><td><code>field</code></td><td>Primary subfield or research area</td></tr>
+          <tr><td>q21</td><td><code>audience</code></td><td>Intended readers</td></tr>
+          <tr><td>q22</td><td><code>implications</code></td><td>Practical implications if claims are correct</td></tr>
+          <tr><td>q23</td><td><code>future_work</code></td><td>Suggested future directions &mdash; explicit and implicit</td></tr>
+          <tr><td>q24</td><td><code>quality</code></td><td>Quality rating 1&ndash;5 with explanation</td></tr>
+          <tr><td>q25</td><td><code>stance</code></td><td>Stance on AI development &mdash; nuanced characterization</td></tr>
+          <tr><td>q26</td><td><code>other</code></td><td>Anything else notable &mdash; surprising findings, innovations</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head"><span style="color:var(--accent)">Advanced (q27&ndash;q41)</span> <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <table class="ref-table">
+        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
+        <tbody>
+          <tr><td>q27</td><td><code>source_type</code></td><td>Publication type &mdash; venue, prestige, implications</td></tr>
+          <tr><td>q28</td><td><code>institutional_context</code></td><td>Institutions, their interests, potential bias</td></tr>
+          <tr><td>q29</td><td><code>historical_timing</code></td><td>Timing relative to AI developments &mdash; how timing affects interpretation</td></tr>
+          <tr><td>q30</td><td><code>paradigm_influence</code></td><td>Foundational, refinement, or application</td></tr>
+          <tr><td>q31</td><td><code>disciplines_bridged</code></td><td>Cross-disciplinary connections</td></tr>
+          <tr><td>q32</td><td><code>cross_domain_insights</code></td><td>Insights imported from other fields</td></tr>
+          <tr><td>q33</td><td><code>deployment_gap</code></td><td>Gap between research and real-world deployment</td></tr>
+          <tr><td>q34</td><td><code>infrastructure_contribution</code></td><td>Benchmarks, datasets, tools contributed</td></tr>
+          <tr><td>q35</td><td><code>cultural_scope</code></td><td>Geographic/cultural assumptions &mdash; would findings generalize globally</td></tr>
+          <tr><td>q36</td><td><code>philosophical_assumptions</code></td><td>Views on consciousness, agency, intelligence</td></tr>
+          <tr><td>q37</td><td><code>power_dynamics</code></td><td>Who benefits, who might be harmed</td></tr>
+          <tr><td>q38</td><td><code>gaps_and_omissions</code></td><td>What is NOT addressed that should be</td></tr>
+          <tr><td>q39</td><td><code>dual_use_concerns</code></td><td>Could this research be misused</td></tr>
+          <tr><td>q40</td><td><code>emergence_claims</code></td><td>Claims about emergent capabilities &mdash; evidence strength</td></tr>
+          <tr><td>q41</td><td><code>remaining_other</code></td><td>Final catch-all for important observations</td></tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <h3>RAPTOR Summaries</h3>
+  <p>Hierarchical summaries per paper: a document-level overview (~300 words) plus section summaries for Introduction, Methods, Results, Discussion, and Conclusion. These serve dual purposes: fast search index (via <code>document_summary_embedding</code>) and context-efficient paper reading (agents read summaries instead of full text).</p>
+
+  <h3>Corpus-Ingest Pipeline Detail</h3>
+  <p>Each paper flows through 11 stages end-to-end within its own worker. 24 papers can be processed concurrently.</p>
+  <div class="pipeline-wrap">
+    <svg viewBox="0 0 960 200" width="100%" xmlns="http://www.w3.org/2000/svg">
+      <defs>
+        <marker id="arrowTeal2" markerWidth="6" markerHeight="5" refX="6" refY="2.5" orient="auto"><path d="M0,0 L6,2.5 L0,5" fill="#2dd4bf"/></marker>
+      </defs>
+      <!-- Stage boxes -->
+      <g transform="translate(10,30)">
+        <rect width="75" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <text x="37" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Download</text>
+        <text x="37" y="28" text-anchor="middle" fill="#64748b" font-size="7">SHA-256 dedup</text>
+      </g>
+      <line x1="88" y1="48" x2="97" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(100,30)">
+        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <text x="32" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Rename</text>
+        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Metadata extract</text>
+      </g>
+      <line x1="168" y1="48" x2="177" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(180,30)">
+        <rect width="80" height="36" rx="6" fill="#0f1b32" stroke="#fb923c" stroke-width="1.2"/>
+        <text x="40" y="16" text-anchor="middle" fill="#fb923c" font-size="9" font-weight="700">Markdown</text>
+        <text x="40" y="28" text-anchor="middle" fill="#64748b" font-size="7">6-tier cascade</text>
+      </g>
+      <line x1="263" y1="48" x2="272" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(275,30)">
+        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#818cf8" stroke-width="1.2"/>
+        <text x="32" y="16" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="700">Embed</text>
+        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Voyage 2048d</text>
+      </g>
+      <line x1="343" y1="48" x2="352" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(355,30)">
+        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <text x="32" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Enrich</text>
+        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">CrossRef/S2</text>
+      </g>
+      <line x1="423" y1="48" x2="432" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(435,30)">
+        <rect width="70" height="36" rx="6" fill="#0f1b32" stroke="#a78bfa" stroke-width="1.2"/>
+        <text x="35" y="16" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">Analyze</text>
+        <text x="35" y="28" text-anchor="middle" fill="#64748b" font-size="7">41Q via LLM</text>
+      </g>
+      <line x1="508" y1="48" x2="517" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(520,30)">
+        <rect width="70" height="36" rx="6" fill="#0f1b32" stroke="#a78bfa" stroke-width="1.2"/>
+        <text x="35" y="16" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">RAPTOR</text>
+        <text x="35" y="28" text-anchor="middle" fill="#64748b" font-size="7">Summaries</text>
+      </g>
+      <line x1="593" y1="48" x2="602" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(605,30)">
+        <rect width="60" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <text x="30" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Verify</text>
+        <text x="30" y="28" text-anchor="middle" fill="#64748b" font-size="7">DB check</text>
+      </g>
+      <line x1="668" y1="48" x2="677" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(680,30)">
+        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#4ade80" stroke-width="1.2"/>
+        <text x="32" y="16" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="700">Drive</text>
+        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Upload PDF+MD</text>
+      </g>
+      <line x1="748" y1="48" x2="757" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(760,30)">
+        <rect width="60" height="36" rx="6" fill="#0f1b32" stroke="#38bdf8" stroke-width="1.2"/>
+        <text x="30" y="16" text-anchor="middle" fill="#38bdf8" font-size="9" font-weight="700">Zotero</text>
+        <text x="30" y="28" text-anchor="middle" fill="#64748b" font-size="7">Catalog</text>
+      </g>
+      <line x1="823" y1="48" x2="832" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
+      <g transform="translate(835,30)">
+        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#f472b6" stroke-width="1.2"/>
+        <text x="32" y="16" text-anchor="middle" fill="#f472b6" font-size="9" font-weight="700">Report</text>
+        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Slack notify</text>
+      </g>
+      <!-- Markdown cascade detail -->
+      <g transform="translate(155,90)">
+        <text x="0" y="10" fill="#fb923c" font-size="9" font-weight="600">Markdown Conversion Cascade:</text>
+        <text x="0" y="26" fill="#94a3b8" font-size="8">Companion (pre-extracted) &rarr; arXiv HTML &rarr; ar5iv &rarr; Marker &rarr; PyMuPDF &rarr; Tesseract OCR</text>
+        <text x="0" y="40" fill="#64748b" font-size="7">Falls through tiers until successful conversion. Each tier is tried only if the previous one fails.</text>
+      </g>
+      <!-- Worker pool callout -->
+      <g transform="translate(600,100)">
+        <rect width="280" height="60" rx="8" fill="rgba(45,212,191,.06)" stroke="#2dd4bf" stroke-width="0.5" stroke-dasharray="3,2"/>
+        <text x="140" y="18" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="600">Worker Pools</text>
+        <text x="140" y="34" text-anchor="middle" fill="#94a3b8" font-size="8">Pipeline: 24 &bull; Embed: 4 &bull; Enrich: 4</text>
+        <text x="140" y="48" text-anchor="middle" fill="#94a3b8" font-size="8">Analyze: 6 &bull; RAPTOR: 6</text>
+      </g>
+      <!-- Animated dot -->
+      <circle r="3" fill="#2dd4bf" opacity=".7">
+        <animateMotion dur="6s" repeatCount="indefinite" path="M48,48 L100,48 180,48 275,48 355,48 435,48 520,48 605,48 680,48 760,48 867,48"/>
+      </circle>
+    </svg>
+  </div>
+</section>
+
+<!-- ============ AGENT ARCHITECTURE ============ -->
+<section id="agents" class="fade-in">
+  <h2><span class="icon">&#129302;</span> Agent Architecture</h2>
+  <p>Minty is the interactive research management agent. It delegates work to specialized subagents, each with fresh context windows.</p>
+
+  <h3>The CO Hierarchy (Deep Research)</h3>
+  <p>For complex research queries, the corpus-agent uses a military-inspired three-tier command structure:</p>
+
+  <div class="hierarchy">
+    <div class="h-tier">
+      <div class="h-node" style="border-color:var(--accent)"><div class="h-title" style="color:var(--accent)">Commanding Officer</div><div class="h-sub">Opus &bull; Strategic decisions<br>Plans operations, reads briefings,<br>decides proceed/retry/skip</div></div>
+    </div>
+    <div class="h-connector"></div>
+    <div class="h-tier">
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Search</div><div class="h-sub">Iterative corpus<br>search</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Retrieve</div><div class="h-sub">Paper content<br>retrieval</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape</div><div class="h-sub">Field mapping<br>analysis</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape<br>Analysis</div><div class="h-sub">Deep landscape<br>assessment</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Grouping</div><div class="h-sub">Thematic paper<br>clustering</div></div>
+    </div>
+    <div class="h-tier" style="margin-top:4px">
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers</div><div class="h-sub">Paper analysis<br>(Latin Square)</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Synthesis</div><div class="h-sub">Thematic<br>synthesis</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Peer Review</div><div class="h-sub">Quality gate<br>+ fact-check</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Citation<br>Review</div><div class="h-sub">Link &amp; citation<br>verification</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Footsoldiers (Opus) &mdash; 9 specialized worker types</div>
+    <div class="h-connector"></div>
+    <div class="h-tier">
+      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Search Lt.</div><div class="h-sub">Coverage<br>assessment</div></div>
+      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Landscape Lt.</div><div class="h-sub">Grouping<br>quality</div></div>
+      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Reading Lt.</div><div class="h-sub">Reader output<br>quality</div></div>
+      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Synthesis Lt.</div><div class="h-sub">Final quality<br>gate</div></div>
+    </div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Lieutenants &mdash; assess quality but don't redo work</div>
+  </div>
+
+  <div class="callout"><p><strong>Latin Square Reading:</strong> Papers are arranged in a grid. Round 1 reads rows (thematic groups). Round 2 reads columns (recombined groups). Every paper appears in two different analytical contexts, maximizing cross-paper connections.</p></div>
+
+  <h3>Worker Agent Types</h3>
+  <table class="ref-table">
+    <thead><tr><th>Agent</th><th>Model</th><th>Tools</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><code>generic-worker</code></td><td>Opus</td><td>Read, Write, Edit, Bash, Glob, Grep, Web</td><td>General-purpose delegated tasks</td></tr>
+      <tr><td><code>research-reader</code></td><td>Opus</td><td>Read, Bash, Glob, Grep</td><td>Deep academic paper reading with evidence-grounded analysis</td></tr>
+      <tr><td><code>corpus-worker</code></td><td>Opus</td><td>Read, Write, Edit, Bash, Glob, Grep</td><td>41-question analysis + RAPTOR summaries (batch processing)</td></tr>
+      <tr><td><code>raptor-worker</code></td><td>Opus</td><td>Read, Write, Edit, Bash, Glob, Grep</td><td>Hierarchical summary generation</td></tr>
+      <tr><td><code>code-reviewer</code></td><td>Opus</td><td>Read, Grep, Glob</td><td>Code review against MINT Lab standards (read-only)</td></tr>
+      <tr><td><code>lit-review-worker</code></td><td>Opus</td><td>Read, Write, Edit, Bash, Glob, Grep, Web</td><td>Systematic literature review by theoretical domain</td></tr>
+    </tbody>
+  </table>
+
+  <h3>Delegation Protocol</h3>
+  <div class="callout"><p><strong>Mandatory rule:</strong> "Every tool call you make is context you burn. Subagents have FRESH context. If a task can be described in a prompt, delegate it." The only valid reason to do work yourself is "this literally cannot be described in a prompt."</p></div>
+  <ul class="clean">
+    <li>Web search, documentation lookup, file processing, batch operations &rarr; always delegate</li>
+    <li>Model policy: <strong>Opus</strong> for substantive work, <strong>Sonnet</strong> for retrieval-only, <strong>Haiku</strong> only for startup data gathering</li>
+    <li>Hooks enforce this: <code>delegation-nudge.py</code> warns after 15 consecutive Read/Grep/Glob calls without a Task delegation</li>
+  </ul>
+
+  <h3>Session Identity</h3>
+  <table class="ref-table">
+    <thead><tr><th>Environment</th><th>Naming Pattern</th><th>Example</th></tr></thead>
+    <tbody>
+      <tr><td>Claude Code CLI</td><td><code>TerMinty-{hex}</code></td><td>TerMinty-4c4365b9</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px">The <code>{hex}</code> is the last 8 characters of the Claude Code session UUID. Sessions are tracked in SQLite (<code>sessions.db</code>) with 544+ historical records.</p>
+</section>
+
+<!-- ============ SKILLS & COMMANDS ============ -->
+<section id="skills" class="fade-in">
+  <h2><span class="icon">&#128295;</span> Skills &amp; Commands</h2>
+
+  <div class="tabs">
+    <button class="tab-btn active" onclick="switchTab(event,'tab-skills')">Skills (15)</button>
+    <button class="tab-btn" onclick="switchTab(event,'tab-commands')">Commands (23)</button>
+    <button class="tab-btn" onclick="switchTab(event,'tab-hooks')">Hooks (8)</button>
+  </div>
+
+  <div class="tab-panel active" id="tab-skills">
+    <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Skills are reusable knowledge patterns in <code>.claude/skills/</code>. Each has a <code>SKILL.md</code> with triggers, scope, and detailed instructions.</p>
+
+    <h3 style="color:var(--accent2)">Research &amp; Corpus</h3>
+    <table class="ref-table">
+      <thead><tr><th>Skill</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>paper-fetch</code></td><td>Download papers from 15+ publishers (3-tier cascade: requests &rarr; SeleniumBase &rarr; OpenClaw)</td></tr>
+        <tr><td><code>codex-search</code></td><td>Web-aware research via OpenAI Codex CLI</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="color:var(--accent2)">Communication</h3>
+    <table class="ref-table">
+      <thead><tr><th>Skill</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>slack-posting</code></td><td>Post messages (bot token) and read DMs/files (user token)</td></tr>
+        <tr><td><code>slack-search</code></td><td>Semantic search over indexed Slack messages via ChromaDB + RRF</td></tr>
+        <tr><td><code>agent-email</code></td><td>Gmail API for agent inbox (mintlabjhu@gmail.com)</td></tr>
+        <tr><td><code>twitter-fetch</code></td><td>Fetch tweet content via Twitter API v2 (OAuth1)</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="color:var(--accent2)">Infrastructure</h3>
+    <table class="ref-table">
+      <thead><tr><th>Skill</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>vault</code></td><td>Single-tier keychain credential management (login keychain)</td></tr>
+        <tr><td><code>create-daemon</code></td><td>Create macOS launchd daemons from scratch (plists, wrappers, tokens)</td></tr>
+        <tr><td><code>github</code></td><td>GitHub repo management for <code>mint-philosophy</code> org</td></tr>
+        <tr><td><code>workspace-search</code></td><td>Semantic search across entire workspace via ChromaDB</td></tr>
+        <tr><td><code>codex-cli</code></td><td>OpenAI Codex CLI in headless exec mode</td></tr>
+        <tr><td><code>systematic-debugging</code></td><td>4-phase root cause methodology (investigate before fixing)</td></tr>
+        <tr><td><code>daemon-test</code></td><td>End-to-end integration tests for all Slack-connected daemons</td></tr>
+        <tr><td><code>peer-review</code></td><td>Multi-model code review (Codex + Gemini in parallel)</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tab-panel" id="tab-commands">
+    <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Commands are user-invocable slash commands in <code>.claude/commands/</code>. Invoke with <code>/name</code>.</p>
+
+    <h3 style="color:var(--green)">Session Lifecycle</h3>
+    <table class="ref-table">
+      <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>/start</code></td><td>Initialize session: git sync, UUID extraction, parallel subagent dispatch, briefing</td></tr>
+        <tr><td><code>/end</code></td><td>Close session: reflection, delegate closure to subagent, git push</td></tr>
+        <tr><td><code>/suspend</code></td><td>Pause session for later resumption</td></tr>
+        <tr><td><code>/retro</code></td><td>Structured retrospective: friction scan, skill recognition, fact hygiene</td></tr>
+        <tr><td><code>/fork-init</code></td><td>Fork a child session from current parent</td></tr>
+        <tr><td><code>/name</code></td><td>Set display name for session tab</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="color:var(--green)">Research Operations</h3>
+    <table class="ref-table">
+      <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>/corpus</code></td><td>Deep 41-question semantic paper analysis</td></tr>
+        <tr><td><code>/orchestrate</code></td><td>Spawn 20 parallel corpus-workers for batch analysis</td></tr>
+        <tr><td><code>/raptor</code></td><td>Spawn 20 parallel raptor-workers for summaries</td></tr>
+        <tr><td><code>/research</code></td><td>Deep multi-agent research over paper corpus</td></tr>
+        <tr><td><code>/lit-review</code></td><td>Systematic literature survey (12 parallel workers)</td></tr>
+        <tr><td><code>/metadata-extract</code></td><td>Batch metadata extraction from papers</td></tr>
+        <tr><td><code>/verify</code></td><td>Verify corpus analysis completeness against Notion</td></tr>
+      </tbody>
+    </table>
+
+    <h3 style="color:var(--green)">Content &amp; Admin</h3>
+    <table class="ref-table">
+      <thead><tr><th>Command</th><th>Purpose</th></tr></thead>
+      <tbody>
+        <tr><td><code>/staffer</code></td><td>Full staffer mode with tasks, calendar, email</td></tr>
+        <tr><td><code>/maintain</code></td><td>Infrastructure health check and repair (12 categories)</td></tr>
+        <tr><td><code>/new-project</code></td><td>Create MINT research project (folder + Slack + Notion + GitHub)</td></tr>
+        <tr><td><code>/publish</code></td><td>Sync to public-cursor-docs GitHub repo</td></tr>
+        <tr><td><code>/promote</code></td><td>Run feed promotion manually</td></tr>
+        <tr><td><code>/peerreview</code></td><td>Multi-model code review (Codex + Gemini)</td></tr>
+        <tr><td><code>/screen</code></td><td>Capture and view current screen</td></tr>
+        <tr><td><code>/rec-letter</code></td><td>Write recommendation letters with source materials from Slack</td></tr>
+        <tr><td><code>/drone-import</code></td><td>Import drone footage with GPS extraction</td></tr>
+      </tbody>
+    </table>
+  </div>
+
+  <div class="tab-panel" id="tab-hooks">
+    <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Hooks are Python scripts that run before/after tool calls to enforce guardrails. 5 are wired in <code>settings.json</code>; 3 exist but are currently disabled.</p>
+    <table class="ref-table">
+      <thead><tr><th>Hook</th><th>Trigger</th><th>Effect</th><th>Status</th></tr></thead>
+      <tbody>
+        <tr><td><code>block-rm.py</code></td><td>PreToolUse (Bash)</td><td><span class="badge badge-orange">Hard block</span> Prevents <code>rm</code>, <code>shred</code>, <code>unlink</code>. Forces <code>trash</code> CLI.</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>block-web-direct.py</code></td><td>PreToolUse (Web*)</td><td><span class="badge badge-blue">Soft nudge</span> Reminds agent to delegate web searches to subagents</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>delegation-nudge.py</code></td><td>PreToolUse (Read/Grep/Glob)</td><td><span class="badge badge-blue">Soft nudge</span> Warns after 15 consecutive file reads without delegation</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>python-check.py</code></td><td>PostToolUse (Edit/Write)</td><td><span class="badge badge-purple">Quality</span> Runs py_compile + Python 3.9 compat check on .py files</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>statusline.py</code></td><td>StatusLine</td><td><span class="badge badge-green">Display</span> Context-aware status bar with color-coded usage</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>bedtime.py</code></td><td>UserPromptSubmit</td><td><span class="badge badge-orange">Hard block</span> Blocks prompts between 23:55&ndash;06:00. "Go to bed, Seth."</td><td style="color:var(--text3)">Unwired</td></tr>
+        <tr><td><code>block-plan-mode.py</code></td><td>PreToolUse (EnterPlanMode)</td><td><span class="badge badge-orange">Hard block</span> Prevents plan mode (wipes context on exit)</td><td style="color:var(--text3)">Unwired</td></tr>
+        <tr><td><code>context-threshold.py</code></td><td>UserPromptSubmit</td><td><span class="badge badge-blue">Soft nudge</span> Warns when context usage exceeds threshold (currently disabled internally)</td><td style="color:var(--text3)">Unwired</td></tr>
+      </tbody>
+    </table>
+  </div>
+</section>
+
+<!-- ============ INFRASTRUCTURE ============ -->
+<section id="infra" class="fade-in">
+  <h2><span class="icon">&#128274;</span> Infrastructure</h2>
+
+  <h3>Vault (Single-Tier Credential Management)</h3>
+  <p style="font-size:13px">All credentials stored in macOS login keychain as <code>minty-vault-{KEY}</code>. Direct access via <code>security find-generic-password</code> or <code>platform_config.get_secret()</code>. No biometric tier, no session auth.</p>
+  <div class="grid-2">
+    <div>
+      <h3 style="color:var(--green)">API Keys</h3>
+      <ul class="clean">
+        <li>GITHUB_PAT</li>
+        <li>MINTLAB_GOOGLE_CLIENT_SECRET + client IDs</li>
+        <li>SPECSTORY_API_KEY</li>
+        <li>VOYAGE_API_KEY</li>
+        <li>ZOTERO_API_KEY</li>
+      </ul>
+    </div>
+    <div>
+      <h3 style="color:var(--green)">Service Tokens</h3>
+      <ul class="clean">
+        <li>SLACK_BOT_TOKEN, SLACK_APP_TOKEN, SLACK_USER_TOKEN</li>
+        <li>TWITTER_* (4 OAuth keys)</li>
+        <li>MINTLAB_GOOGLE_CLIENT_SECRET</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3>Three Vector Databases</h3>
+  <table class="ref-table">
+    <thead><tr><th>Database</th><th>Technology</th><th>Embedding Model</th><th>Contents</th><th>Location</th></tr></thead>
+    <tbody>
+      <tr><td>Paper Corpus</td><td>LanceDB (79 GB)</td><td>Voyage context-3 (2048d)</td><td>1,619 papers, 122K+ chunks, 41 semantic dimensions, 29 clusters</td><td><code>corpus-data/lancedb/</code></td></tr>
+      <tr><td>Slack Messages</td><td>ChromaDB</td><td>Voyage voyage-3</td><td>All public Slack messages, refreshed every 4h</td><td><code>data/slack_index/</code></td></tr>
+      <tr><td>Workspace Files</td><td>ChromaDB</td><td>OpenAI</td><td>Markdown, Python, PDF, DOCX across all workspace dirs</td><td><code>data/workspace_index/</code></td></tr>
+    </tbody>
+  </table>
+
+  <h3>Memory Architecture</h3>
+  <p>Agents maintain cross-session continuity through two memory tiers:</p>
+  <div class="grid-2">
+    <div>
+      <div class="accordion-item" onclick="toggleAcc(this)">
+        <div class="accordion-head">FACTS.md (Durable) <span class="arrow">&#9654;</span></div>
+        <div class="accordion-body">Slow-changing knowledge: Seth's preferences, API patterns, proven antipatterns, design decisions. Reviewed and pruned during <code>/retro</code>. 78KB.</div>
+      </div>
+      <div class="accordion-item" onclick="toggleAcc(this)">
+        <div class="accordion-head">RECENT.md (Dynamic) <span class="arrow">&#9654;</span></div>
+        <div class="accordion-body">Fast-changing context: active project threads, last 10 sessions, TODOs, blockers, someday list. Updated at every session close. 25KB.</div>
+      </div>
+    </div>
+    <div>
+      <div class="accordion-item" onclick="toggleAcc(this)">
+        <div class="accordion-head">sessions.db (SQLite) <span class="arrow">&#9654;</span></div>
+        <div class="accordion-body">Full session history with FTS5 search. 544+ session records. 22 columns per session including log content. Portable via JSON exports in <code>sessions/records/</code>.</div>
+      </div>
+      <div class="accordion-item" onclick="toggleAcc(this)">
+        <div class="accordion-head">Learning Loop (/retro) <span class="arrow">&#9654;</span></div>
+        <div class="accordion-body">Structured 8-phase retrospective: friction scan, pattern classification, skill recognition, success criteria, semantic updates, lesson distribution, fact hygiene. Lessons flow into FACTS.md, skills, or CLAUDE.md.</div>
+      </div>
+    </div>
+  </div>
+
+  <h3>The Iron Laws</h3>
+  <p>Foundational rules that override all other behavior:</p>
+  <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))">
+    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--red)">Law 0: No Shortcuts</div><div class="card-sub">When asked for "all" &mdash; do ALL. Cherry-picking = failure.</div></div></div></div>
+    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--orange)">Law 1: Evidence Over Claims</div><div class="card-sub">"It should work" = failure. Verify now, not later.</div></div></div></div>
+    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--yellow)">Law 2: Document Everything</div><div class="card-sub">If not written down, didn't happen.</div></div></div></div>
+    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--green)">Law 3: Persistence</div><div class="card-sub">Try 3+ approaches before asking. Solve, don't report.</div></div></div></div>
+    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--teal)">Law 5: Complete the Checklist</div><div class="card-sub">"Partially done" = not done.</div></div></div></div>
+    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--accent)">Law 6: Think Before Acting</div><div class="card-sub">Never <code>rm</code> &mdash; use <code>trash</code>. Map dependencies first.</div></div></div></div>
+  </div>
+
+  <h3>Model Policy</h3>
+  <p style="font-size:13px">All LLM usage goes through CLI subscriptions (<code>claude -p</code>, Codex CLI) — not metered API calls. Generous subscriptions mean no rate limit concerns.</p>
+  <table class="ref-table">
+    <thead><tr><th>Tier</th><th>Model</th><th>Use Case</th></tr></thead>
+    <tbody>
+      <tr><td><span class="badge badge-purple">Default</span></td><td>Claude Opus</td><td>All substantive work: analysis, classification, code generation, writing, debugging</td></tr>
+      <tr><td><span class="badge badge-blue">Retrieval</span></td><td>Claude Sonnet 4.6</td><td>Retrieval-only tasks: fetching data, reading files, checking status, simple lookups</td></tr>
+      <tr><td><span class="badge badge-green">Review</span></td><td>Codex gpt-5.2</td><td>Peer review: parallel code review alongside Gemini CLI</td></tr>
+      <tr><td><span class="badge badge-orange">Startup</span></td><td>Claude Haiku</td><td>Lightweight data-gathering subagents during /start Phase 2 only</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ INTEGRATIONS ============ -->
+<section id="integrations" class="fade-in">
+  <h2><span class="icon">&#128279;</span> External Integrations</h2>
+  <table class="ref-table">
+    <thead><tr><th>Service</th><th>Used By</th><th>Purpose</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Slack</strong> (2 bots)</td><td>All daemons</td><td>Central message bus. robo-minty (main) + search-minty (search). 6+ channels.</td></tr>
+      <tr><td><strong>Google Drive</strong></td><td>rclone-sync</td><td>Bidirectional PDF/markdown sync + backups via Shared Drive</td></tr>
+      <tr><td><strong>Gmail</strong></td><td>yesterday-in-ai, agent-email</td><td>Send daily digest emails, manage agent inbox (mintlabjhu@gmail.com)</td></tr>
+      <tr><td><strong>Twitter/X API v2</strong></td><td>feedme-daily, share-to-minty, news-pdf-bot</td><td>Fetch tweets, thread expansion, engagement metrics</td></tr>
+      <tr><td><strong>Voyage AI</strong></td><td>corpus-ingest, slack-index, workspace-index</td><td>Embedding generation (voyage-context-3 2048d, voyage-3)</td></tr>
+      <tr><td><strong>Zotero</strong></td><td>corpus-ingest</td><td>Academic reference management (group library 5937227)</td></tr>
+      <tr><td><strong>GitHub</strong></td><td>corpus-agent, publishing</td><td>Repo management (mint-philosophy org), code exploration for referenced repos</td></tr>
+      <tr><td><strong>Ghost</strong></td><td>yesterday-in-ai</td><td>Newsletter publishing at newsletter.mintresearch.org</td></tr>
+      <tr><td><strong>Semantic Scholar</strong></td><td>news-pdf-bot, corpus-ingest</td><td>Paper metadata, citation data, open access links</td></tr>
+      <tr><td><strong>CrossRef / Unpaywall</strong></td><td>news-pdf-bot, corpus-ingest</td><td>DOI resolution, metadata enrichment, OA PDF discovery</td></tr>
+      <tr><td><strong>arXiv API</strong></td><td>feedme-daily, news-pdf-bot, corpus-ingest</td><td>Paper metadata, abstract extraction, PDF download</td></tr>
+      <tr><td><strong>Bluesky</strong></td><td>feedme-daily</td><td>Social feed source</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ============ DIRECTORY MAP ============ -->
+<section id="files" class="fade-in">
+  <h2><span class="icon">&#128193;</span> Directory Map</h2>
+  <p>The workspace lives at <code>/Users/seth/Active-Research/</code> with several sibling directories:</p>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head">Minty/ (this repo &mdash; central workspace) <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <ul class="clean">
+        <li><code>.claude/</code> &mdash; Commands, skills, hooks, agents, settings, tasks</li>
+        <li><code>SCRIPTS/</code> &mdash; 59 automation scripts (vault.py, startup.py, session_db.py, index_workspace.py, maintain.py, etc.)</li>
+        <li><code>daemons/</code> &mdash; All 13 daemon services, shared pipeline venv, platform_config.py</li>
+        <li><code>data/</code> &mdash; ChromaDB indexes (slack_index, workspace_index), sync logs</li>
+        <li><code>sessions/</code> &mdash; 544+ session records, templates, schema</li>
+        <li><code>lib/</code> &mdash; Shared Python library (slack_search.py, workspace.py, platform_utils.py)</li>
+        <li><code>Scratchpads/</code> &mdash; Ephemeral agent working files</li>
+        <li><code>CLAUDE.md</code> &mdash; Master agent instructions (15KB)</li>
+        <li><code>FACTS.md</code> &mdash; Durable facts (78KB)</li>
+        <li><code>RECENT.md</code> &mdash; Recent context (25KB)</li>
+        <li><code>sessions.db</code> &mdash; SQLite session tracker with FTS5</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head">Resources/ (sibling &mdash; not in git) <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <ul class="clean">
+        <li><code>pdfs/</code> &mdash; ~2,610 research PDFs (bisync with Google Drive)</li>
+        <li><code>markdown/</code> &mdash; ~1,885 converted paper texts (bisync with Google Drive)</li>
+      </ul>
+    </div>
+  </div>
+
+  <div class="accordion-item" onclick="toggleAcc(this)">
+    <div class="accordion-head">corpus-data/ (sibling &mdash; not in git) <span class="arrow">&#9654;</span></div>
+    <div class="accordion-body">
+      <ul class="clean">
+        <li><code>lancedb/</code> &mdash; LanceDB vector database (documents, chunks_md, clusters, similarity, micro_topics tables)</li>
+        <li><code>lib/corpus.py</code> &mdash; Core CorpusSearch library</li>
+        <li><code>config.yaml</code> &mdash; Corpus configuration</li>
+      </ul>
+    </div>
+  </div>
+
+  <h3 style="margin-top:24px">Key Files Quick Reference</h3>
+  <table class="ref-table">
+    <thead><tr><th>File</th><th>What It Is</th></tr></thead>
+    <tbody>
+      <tr><td><code>CLAUDE.md</code></td><td>Master agent instructions &mdash; identity, Iron Laws, metacognitive strategies, writing style</td></tr>
+      <tr><td><code>SCRIPTS/vault.py</code></td><td>Single-tier credential vault with Gmail OAuth and grant management</td></tr>
+      <tr><td><code>SCRIPTS/startup.py</code></td><td>Session initialization &mdash; UUID extraction, registration, health checks</td></tr>
+      <tr><td><code>SCRIPTS/session_db.py</code></td><td>SQLite session database with FTS5 full-text search</td></tr>
+      <tr><td><code>SCRIPTS/maintain.py</code></td><td>Infrastructure health check across 12 categories</td></tr>
+      <tr><td><code>SCRIPTS/index_workspace.py</code></td><td>ChromaDB workspace indexer (markdown, Python, PDF, DOCX)</td></tr>
+      <tr><td><code>daemons/platform_config.py</code></td><td>Cross-platform config &mdash; all paths, secrets, env helpers</td></tr>
+      <tr><td><code>.claude/skills/SKILLS_INDEX.md</code></td><td>Master registry of all skills, commands, agents, and known gaps</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<section style="text-align:center;padding:48px;color:var(--text3);font-size:13px">
+  <p>MINT Lab &mdash; Machine Intelligence &amp; Normative Theory &mdash; Johns Hopkins University</p>
+  <p>Updated 24 February 2026</p>
+</section>
+
+</main>
+
+<script>
+// ===== Card toggle =====
+function toggleCard(el) {
+  const card = el.closest('.card');
+  card.classList.toggle('open');
+}
+
+// ===== Accordion toggle =====
+function toggleAcc(el) {
+  el.classList.toggle('open');
+}
+
+// ===== Tabs =====
+function switchTab(e, id) {
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.tab-panel').forEach(p => p.classList.remove('active'));
+  e.target.classList.add('active');
+  document.getElementById(id).classList.add('active');
+}
+
+// ===== Search =====
+const searchData = [
+  {t:'feedme-daily',d:'Daily content curation: fetch, classify, rank from 7 sources',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
+  {t:'feed-promote',d:'Copy thumbsed-up items from #feed to #news',tag:'Daemon',c:'#4ade80',s:'#daemons'},
+  {t:'share-to-minty',d:'Real-time URL ingestion from any device via Slack',tag:'Daemon',c:'#fb923c',s:'#daemons'},
+  {t:'news-pdf-bot',d:'Find PDFs and generate markdown for paper URLs in #news',tag:'Daemon',c:'#a78bfa',s:'#daemons'},
+  {t:'yesterday-in-ai',d:'Daily AI news digest email to 25+ lab members',tag:'Daemon',c:'#f472b6',s:'#daemons'},
+  {t:'last-week-in-ai',d:'Weekly AI digest with multi-agent sectioned pipeline',tag:'Daemon',c:'#f472b6',s:'#daemons'},
+  {t:'corpus-agent',d:'@robo-minty Slack bot for research queries over 1,619 papers, 18 MCP tools',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
+  {t:'corpus-ingest',d:'11-stage paper ingestion: 24 concurrent workers, 6-tier markdown cascade, embed, analyze, RAPTOR, Zotero',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
+  {t:'cli-health-probe',d:'Sentinel daemon: probes CLI auth every 10m, emails alerts on failure/recovery',tag:'Daemon',c:'#94a3b8',s:'#daemons'},
+  {t:'slack-index / slack-search',d:'Semantic Slack search via ChromaDB + agentic RRF',tag:'Daemon',c:'#818cf8',s:'#daemons'},
+  {t:'workspace-index',d:'Semantic workspace file search via ChromaDB',tag:'Daemon',c:'#818cf8',s:'#daemons'},
+  {t:'rclone-sync',d:'Google Drive bisync + daily corpus backups',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
+  {t:'vault.py',d:'Single-tier credential management (login keychain)',tag:'Infra',c:'#f87171',s:'#infra'},
+  {t:'CLAUDE.md',d:'Master agent instructions, Iron Laws, strategies',tag:'Config',c:'#fbbf24',s:'#overview'},
+  {t:'session_db.py',d:'SQLite session tracking with FTS5 search',tag:'Script',c:'#fb923c',s:'#infra'},
+  {t:'platform_config.py',d:'Cross-platform paths, secrets, env helpers for daemons',tag:'Script',c:'#fb923c',s:'#files'},
+  {t:'LanceDB',d:'Vector DB: 1,619 papers, 122K chunks, 29 topic clusters, 79 GB',tag:'Database',c:'#2dd4bf',s:'#corpus'},
+  {t:'ChromaDB (Slack)',d:'Indexed Slack messages, refreshed every 4 hours',tag:'Database',c:'#818cf8',s:'#infra'},
+  {t:'ChromaDB (Workspace)',d:'Indexed workspace files, refreshed daily',tag:'Database',c:'#818cf8',s:'#infra'},
+  {t:'/start',d:'Initialize session with git sync, UUID, parallel briefing',tag:'Command',c:'#4ade80',s:'#skills'},
+  {t:'/end',d:'Close session: reflection, delegate closure, git push',tag:'Command',c:'#4ade80',s:'#skills'},
+  {t:'/corpus',d:'Deep 41-question semantic paper analysis',tag:'Command',c:'#4ade80',s:'#skills'},
+  {t:'/orchestrate',d:'Spawn 20 parallel corpus-workers for batch analysis',tag:'Command',c:'#4ade80',s:'#skills'},
+  {t:'/research',d:'Deep multi-agent research over paper corpus',tag:'Command',c:'#4ade80',s:'#skills'},
+  {t:'/maintain',d:'Infrastructure health check across 12 categories',tag:'Command',c:'#4ade80',s:'#skills'},
+  {t:'paper-fetch',d:'Download papers from 15+ publishers via 3-tier cascade',tag:'Skill',c:'#818cf8',s:'#skills'},
+  {t:'CO Hierarchy',d:'3-tier command: CO (strategic) → 9 footsoldier types (workers) → 4 Lieutenants (assessors)',tag:'Architecture',c:'#fbbf24',s:'#agents'},
+  {t:'MCP Tools',d:'18 tools: 12 corpus search (search, paper, analysis, raptor, etc.) + 6 GitHub repo exploration',tag:'Architecture',c:'#38bdf8',s:'#agents'},
+  {t:'Latin Square Reading',d:'Papers in grid: Row groups (R1) then Column groups (R2) for cross-analysis',tag:'Architecture',c:'#fbbf24',s:'#agents'},
+  {t:'Ingest Pipeline',d:'11-stage per-paper pipeline: download → rename → markdown (6-tier) → embed → enrich → analyze → RAPTOR → verify → drive → Zotero → report',tag:'Architecture',c:'#2dd4bf',s:'#corpus'},
+  {t:'41-Question Analysis',d:'Semantic analysis across research core, methodology, AI-specific, meta, advanced',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
+  {t:'RAPTOR Summaries',d:'Hierarchical summaries: document + section level per paper',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
+  {t:'Iron Laws',d:'Foundational rules: No Shortcuts, Evidence Over Claims, Persistence, etc.',tag:'Policy',c:'#f87171',s:'#infra'},
+  {t:'block-rm.py',d:'Hook: hard-blocks rm/shred/unlink, forces trash CLI',tag:'Hook',c:'#fb923c',s:'#skills'},
+  {t:'bedtime.py',d:'Hook: blocks prompts 23:55-06:00. "Go to bed, Seth."',tag:'Hook',c:'#fb923c',s:'#skills'},
+  {t:'Slack #news',d:'Central hub channel: 4 daemons write, 3 daemons read',tag:'Channel',c:'#fbbf24',s:'#pipeline'},
+  {t:'generic-worker',d:'General-purpose subagent for delegated tasks (Opus)',tag:'Agent',c:'#fb923c',s:'#agents'},
+  {t:'corpus-worker',d:'41-question analysis + RAPTOR summaries per paper (Opus)',tag:'Agent',c:'#fb923c',s:'#agents'},
+  {t:'research-reader',d:'Deep paper reading with evidence-grounded analysis (Opus)',tag:'Agent',c:'#fb923c',s:'#agents'},
+];
+
+function openSearch() {
+  document.getElementById('searchOverlay').classList.add('open');
+  document.getElementById('searchInput').value = '';
+  document.getElementById('searchInput').focus();
+  doSearch('');
+}
+function closeSearch() {
+  document.getElementById('searchOverlay').classList.remove('open');
+}
+
+function doSearch(q) {
+  const res = document.getElementById('searchResults');
+  const query = q.toLowerCase().trim();
+  const items = query ? searchData.filter(s => s.t.toLowerCase().includes(query) || s.d.toLowerCase().includes(query)) : searchData.slice(0, 12);
+  res.innerHTML = items.map(s => `
+    <div class="sr-item" onclick="location.href='${s.s}';closeSearch();">
+      <span class="sr-tag" style="background:${s.c}22;color:${s.c}">${s.tag}</span>
+      <span class="sr-title">${s.t}</span>
+      <div class="sr-desc">${s.d}</div>
+    </div>
+  `).join('') || '<div style="padding:20px;text-align:center;color:var(--text3)">No results</div>';
+}
+
+// Ctrl/Cmd+K
+document.addEventListener('keydown', e => {
+  if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
+  if (e.key === 'Escape') closeSearch();
+});
+
+// ===== Scroll spy =====
+const navLinks = document.querySelectorAll('.nav-link');
+const sections = document.querySelectorAll('section[id]');
+window.addEventListener('scroll', () => {
+  let current = '';
+  sections.forEach(s => { if (window.scrollY >= s.offsetTop - 100) current = s.id; });
+  navLinks.forEach(l => {
+    l.classList.remove('active');
+    if (l.getAttribute('href') === '#' + current) l.classList.add('active');
+  });
+});
+
+// ===== Fade in on scroll =====
+const observer = new IntersectionObserver(entries => {
+  entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+}, { threshold: 0.1 });
+document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
+
+// ===== Timeline =====
+(function buildTimeline() {
+  const daemons = [
+    {name:'share-to-minty', type:'persistent', color:'#fb923c'},
+    {name:'corpus-agent', type:'persistent', color:'#38bdf8'},
+    {name:'corpus-ingest', type:'persistent', color:'#2dd4bf'},
+    {name:'slack-search', type:'persistent', color:'#818cf8'},
+    {name:'news-pdf-bot', blocks:[[0,24]], color:'#a78bfa', note:'Every 5m'},
+    {name:'feed-promote', blocks:[[0,24]], color:'#4ade80', note:'Every 60s'},
+    {name:'cli-health-probe', blocks:[[0,24]], color:'#94a3b8', note:'Every 10m'},
+    {name:'rclone-sync', blocks:[[0,24]], color:'#2dd4bf', note:'Every 10m'},
+    {name:'slack-index', blocks:[[0,1],[4,5],[8,9],[12,13],[16,17],[20,21]], color:'#818cf8', note:'Every 4h'},
+    {name:'workspace-index', blocks:[[0,1],[6,7],[12,13],[18,19]], color:'#818cf8', note:'Every 6h'},
+    {name:'feedme-daily', blocks:[[6,7]], color:'#38bdf8', note:'06:15'},
+    {name:'yesterday-in-ai', blocks:[[5,6]], color:'#f472b6', note:'05:30'},
+    {name:'last-week-in-ai', blocks:[[8,9]], color:'#f472b6', note:'Thu 08:00'},
+  ];
+  const c = document.getElementById('timelineChart');
+  daemons.forEach(d => {
+    const row = document.createElement('div');
+    row.className = 'timeline-row';
+    row.innerHTML = `<div class="timeline-label">${d.name}</div><div class="timeline-bar-bg">
+      <div class="hour-marks">${'<span></span>'.repeat(12)}</div>
+      ${d.type === 'persistent'
+        ? `<div class="t-block" style="left:0;right:0;background:${d.color}" title="Always running"></div>`
+        : (d.blocks||[]).map(b => `<div class="t-block" style="left:${b[0]/24*100}%;width:${(b[1]-b[0])/24*100}%;background:${d.color}" title="${d.note||''}"></div>`).join('')
+      }
+    </div>`;
+    c.appendChild(row);
+  });
+})();
+</script>
+</body>
+</html>
