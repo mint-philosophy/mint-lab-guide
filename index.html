@@ -296,7 +296,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <p>Here's how information flows from external sources to lab members. Slack's <code>#new-news</code> channel is the central hub &mdash; four daemons write to it, three daemons read from it.</p>
 
   <div class="pipeline-wrap">
-    <svg viewBox="0 0 960 620" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 960 720" width="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#38bdf8"/></marker>
         <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
@@ -370,78 +370,102 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <line x1="390" y1="165" x2="440" y2="185" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
       <line x1="750" y1="50" x2="580" y2="170" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
 
-      <!-- Three readers branching from #new-news -->
-      <!-- news-pdf-bot -->
-      <g transform="translate(260,300)">
-        <rect width="140" height="55" rx="10" fill="url(#nodeGrad)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="70" y="22" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">news-pdf-bot</text>
-        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">PDFs + markdown</text>
-        <text x="70" y="49" text-anchor="middle" fill="#64748b" font-size="9">+ date markers</text>
-      </g>
-      <line x1="470" y1="230" x2="360" y2="300" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <!-- Branches from #new-news -->
 
-      <!-- yesterday-in-ai -->
-      <g transform="translate(440,300)">
-        <rect width="140" height="55" rx="10" fill="url(#nodeGrad)" stroke="#f472b6" stroke-width="1.5"/>
-        <text x="70" y="22" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">yesterday-in-ai</text>
-        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Daily/weekly digest</text>
-        <text x="70" y="49" text-anchor="middle" fill="#64748b" font-size="9">Email + Ghost blog</text>
+      <!-- LEFT BRANCH: yesterday-in-ai → Email -->
+      <g transform="translate(200,290)">
+        <rect width="150" height="55" rx="10" fill="url(#nodeGrad)" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="75" y="22" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">yesterday-in-ai</text>
+        <text x="75" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Daily/weekly digest</text>
+        <text x="75" y="49" text-anchor="middle" fill="#64748b" font-size="9">Email + Ghost blog</text>
       </g>
-      <line x1="510" y1="230" x2="510" y2="300" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <line x1="460" y1="230" x2="320" y2="290" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
 
-      <!-- corpus-ingest (3-daemon system) -->
-      <g transform="translate(630,300)">
+      <g transform="translate(200,395)">
+        <rect width="150" height="40" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="75" y="17" text-anchor="middle" fill="#f472b6" font-size="10" font-weight="600">&#x2709; Email</text>
+        <text x="75" y="32" text-anchor="middle" fill="#64748b" font-size="9">28 lab members</text>
+      </g>
+      <line x1="275" y1="345" x2="275" y2="395" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPurple)"/>
+
+      <!-- CENTER-RIGHT: news-pdf-bot (in main flow path) -->
+      <g transform="translate(440,290)">
+        <rect width="150" height="55" rx="10" fill="url(#nodeGrad)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="75" y="22" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">news-pdf-bot</text>
+        <text x="75" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Download PDFs + markdown</text>
+        <text x="75" y="49" text-anchor="middle" fill="#64748b" font-size="9">+ date markers</text>
+      </g>
+      <line x1="510" y1="230" x2="515" y2="290" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+      <!-- #papers channel (output of news-pdf-bot) -->
+      <g transform="translate(440,390)">
+        <rect width="150" height="40" rx="8" fill="#0d2847" stroke="#fbbf24" stroke-width="1"/>
+        <text x="75" y="16" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">#papers</text>
+        <text x="75" y="32" text-anchor="middle" fill="#94a3b8" font-size="9">PDFs + notifications</text>
+      </g>
+      <line x1="515" y1="345" x2="515" y2="390" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+      <!-- corpus-ingest (3-daemon system) — fed by #papers and #new-news -->
+      <g transform="translate(440,470)">
+        <rect width="150" height="55" rx="10" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
+        <text x="75" y="22" text-anchor="middle" fill="#2dd4bf" font-size="11" font-weight="700">corpus-ingest</text>
+        <text x="75" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">3-daemon system</text>
+        <text x="75" y="49" text-anchor="middle" fill="#64748b" font-size="9">local + slack + writer</text>
+      </g>
+      <line x1="515" y1="430" x2="515" y2="470" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <!-- Direct path: #new-news → corpus-ingest (Slack-shared papers bypass news-pdf-bot) -->
+      <line x1="580" y1="215" x2="590" y2="478" stroke="#2dd4bf" stroke-width="1" stroke-dasharray="5,4" marker-end="url(#arrowPurple)"/>
+      <text x="600" y="350" fill="#64748b" font-size="8" transform="rotate(88,600,350)">Slack papers direct</text>
+
+      <!-- LanceDB Corpus -->
+      <g transform="translate(370,565)">
         <rect width="140" height="55" rx="10" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
-        <text x="70" y="22" text-anchor="middle" fill="#2dd4bf" font-size="11" font-weight="700">corpus-ingest</text>
-        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">3-daemon system</text>
-        <text x="70" y="49" text-anchor="middle" fill="#64748b" font-size="9">local + slack + writer</text>
+        <text x="70" y="20" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">LanceDB Corpus</text>
+        <text x="70" y="35" text-anchor="middle" fill="#94a3b8" font-size="9">1,903 papers, 154K chunks</text>
+        <text x="70" y="47" text-anchor="middle" fill="#64748b" font-size="9">41 semantic dimensions</text>
       </g>
-      <line x1="550" y1="230" x2="670" y2="300" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <line x1="500" y1="525" x2="460" y2="565" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
 
-      <!-- Outputs -->
-      <!-- #papers -->
-      <g transform="translate(200,410)">
-        <rect width="100" height="40" rx="8" fill="#0d2847" stroke="#1e3a5f"/>
-        <text x="50" y="25" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="600">#papers</text>
+      <!-- ChromaDB -->
+      <g transform="translate(550,565)">
+        <rect width="130" height="55" rx="10" fill="url(#nodeGrad)" stroke="#818cf8" stroke-width="1.5"/>
+        <text x="65" y="20" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="700">ChromaDB</text>
+        <text x="65" y="35" text-anchor="middle" fill="#94a3b8" font-size="9">Slack messages</text>
+        <text x="65" y="47" text-anchor="middle" fill="#64748b" font-size="9">+ workspace files</text>
       </g>
-      <line x1="310" y1="355" x2="280" y2="410" stroke="#a78bfa" stroke-width="1" marker-end="url(#arrowPurple)"/>
-      <!-- #papers → corpus-ingest (papers channel also feeds ingestion) -->
-      <line x1="300" y1="425" x2="630" y2="340" stroke="#2dd4bf" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowPurple)"/>
 
-      <!-- Email -->
-      <g transform="translate(400,410)">
-        <rect width="110" height="40" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="55" y="17" text-anchor="middle" fill="#f472b6" font-size="10" font-weight="600">&#x2709; Email</text>
-        <text x="55" y="32" text-anchor="middle" fill="#64748b" font-size="9">28 lab members</text>
+      <!-- corpus-agent with capabilities -->
+      <g transform="translate(280,660)">
+        <rect width="180" height="55" rx="10" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+        <text x="90" y="18" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">corpus-agent</text>
+        <text x="90" y="32" text-anchor="middle" fill="#94a3b8" font-size="9">@robo-minty &bull; Quick search &bull; Deep research</text>
+        <text x="90" y="44" text-anchor="middle" fill="#64748b" font-size="9">Conversation &bull; Overview &bull; 18 MCP tools</text>
       </g>
-      <line x1="510" y1="355" x2="470" y2="410" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPurple)"/>
+      <line x1="430" y1="620" x2="400" y2="660" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
-      <!-- LanceDB -->
-      <g transform="translate(610,410)">
-        <rect width="130" height="50" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf"/>
-        <text x="65" y="20" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">LanceDB Corpus</text>
-        <text x="65" y="34" text-anchor="middle" fill="#94a3b8" font-size="9">1,903 papers</text>
-        <text x="65" y="45" text-anchor="middle" fill="#64748b" font-size="9">154K chunks, 2048d</text>
+      <!-- search-minty -->
+      <g transform="translate(520,660)">
+        <rect width="170" height="55" rx="10" fill="url(#nodeGrad)" stroke="#818cf8" stroke-width="1.5"/>
+        <text x="85" y="18" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="700">search-minty</text>
+        <text x="85" y="32" text-anchor="middle" fill="#94a3b8" font-size="9">@search-minty &bull; Multi-query RRF</text>
+        <text x="85" y="44" text-anchor="middle" fill="#64748b" font-size="9">Slack semantic search &bull; Agentic</text>
       </g>
-      <line x1="700" y1="355" x2="690" y2="410" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <line x1="615" y1="620" x2="610" y2="660" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
-      <!-- corpus-agent -->
-      <g transform="translate(610,510)">
-        <rect width="130" height="50" rx="10" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-        <text x="65" y="22" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">corpus-agent</text>
-        <text x="65" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">@robo-minty in Slack</text>
-      </g>
-      <line x1="675" y1="460" x2="675" y2="510" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
-
-      <!-- Search indexes (side) -->
+      <!-- Search indexes (side panel) -->
       <g transform="translate(790,170)">
-        <rect width="140" height="110" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="70" y="20" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">SEARCH INDEXES</text>
-        <text x="70" y="42" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">slack-index</text>
-        <text x="70" y="54" text-anchor="middle" fill="#64748b" font-size="9">Every 4h &rarr; ChromaDB</text>
-        <text x="70" y="72" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">workspace-index</text>
-        <text x="70" y="84" text-anchor="middle" fill="#64748b" font-size="9">Daily &rarr; ChromaDB</text>
-        <text x="70" y="100" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">rclone-sync</text>
+        <rect width="140" height="90" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="70" y="20" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">INDEXERS</text>
+        <text x="70" y="40" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">slack-index</text>
+        <text x="70" y="52" text-anchor="middle" fill="#64748b" font-size="9">Every 4h &rarr; ChromaDB</text>
+        <text x="70" y="70" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">workspace-index</text>
+        <text x="70" y="82" text-anchor="middle" fill="#64748b" font-size="9">Every 6h &rarr; ChromaDB</text>
+      </g>
+      <!-- rclone + backups (side) -->
+      <g transform="translate(790,280)">
+        <rect width="140" height="50" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="70" y="20" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">SYNC &amp; BACKUP</text>
+        <text x="70" y="38" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">rclone-sync</text>
       </g>
 
       <!-- Animated dots on key paths -->
@@ -451,11 +475,12 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <circle r="3" fill="#fb923c" opacity=".8">
         <animateMotion dur="2.5s" repeatCount="indefinite" path="M190,165 L250,165 390,165 440,185"/>
       </circle>
+      <!-- Main ingestion path: #new-news → news-pdf-bot → #papers → corpus-ingest → LanceDB → corpus-agent -->
       <circle r="3" fill="#a78bfa" opacity=".8">
-        <animateMotion dur="2s" repeatCount="indefinite" path="M470,230 L360,300 280,410"/>
+        <animateMotion dur="4s" repeatCount="indefinite" path="M515,230 L515,290 515,390 515,470 460,565 400,660"/>
       </circle>
-      <circle r="3" fill="#2dd4bf" opacity=".8">
-        <animateMotion dur="2.5s" repeatCount="indefinite" path="M550,230 L670,300 690,410 675,510"/>
+      <circle r="3" fill="#f472b6" opacity=".8">
+        <animateMotion dur="2s" repeatCount="indefinite" path="M460,230 L320,290 275,395"/>
       </circle>
 
       <!-- Lab Members intake -->
