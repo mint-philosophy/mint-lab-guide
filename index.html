@@ -90,7 +90,9 @@ p.lead { font-size: 17px; line-height: 1.7; color: var(--text2); }
   overflow: hidden; transition: border-color .2s, transform .2s; cursor: pointer;
 }
 .card:hover { border-color: var(--accent); transform: translateY(-1px); }
-.card .card-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; }
+.card .card-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; position:relative; }
+.card .card-head::after { content:'›'; position:absolute; right:16px; top:50%; transform:translateY(-50%) rotate(90deg); color:var(--text3); font-size:18px; transition:transform .2s; }
+.card.open .card-head::after { transform:translateY(-50%) rotate(270deg); }
 .card .card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink:0; }
 .card .card-title { font-size: 15px; font-weight: 700; }
 .card .card-sub { font-size: 12px; color: var(--text3); }
@@ -492,7 +494,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 <!-- ============ DAEMONS ============ -->
 <section id="daemons" class="fade-in">
   <h2><span class="icon">&#9881;</span> The 15 Daemons</h2>
-  <p>All daemons run on the Mac Studio via macOS <code>launchd</code>. They share a common <code>platform_config.py</code> for paths and secrets, and a shared Python 3.12 venv at <code>daemons/pipeline/.venv/</code> (except corpus-agent, which has its own venv).</p>
+  <p>All daemons run on the Mac Studio via macOS <code>launchd</code>. They share a common <code>platform_config.py</code> for paths and secrets, and a shared Python 3.12 venv at <code>daemons/pipeline/.venv/</code>. <span style="color:var(--text3);font-size:12px">Tap any card to expand.</span></p>
 
   <div class="cards" id="daemonCards">
 
@@ -585,7 +587,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div><div class="card-title">corpus-agent</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 1,903-paper corpus. Spawns sandboxed Claude CLI subprocesses with corpus search tools and GitHub access. Supports quick search, overview mode, deep multi-agent research, and conversation mode. Has its own persistent three-tier memory system and dedicated venv (not the shared pipeline venv).</p>
+        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 1,903-paper corpus. Spawns sandboxed Claude CLI subprocesses with corpus search tools and GitHub access. Supports quick search, overview mode, deep multi-agent research, and conversation mode. Has its own persistent three-tier memory system and its own three-tier memory system.</p>
         <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (hardcoded, 900s timeout)</span></div>
         <div class="detail-row"><span class="detail-label">Corpus tools (12)</span><span class="detail-val">search, search-summary, paper, analysis, raptor, full-text, similar, stats, overview, topics, random, dimensions</span></div>
         <div class="detail-row"><span class="detail-label">GitHub tools (6)</span><span class="detail-val">list-repos, view, clone, tree, file, search-code (sandboxed to allowlisted repos referenced in papers)</span></div>
