@@ -451,8 +451,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <g transform="translate(415,558)">
         <rect width="190" height="52" rx="8" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
         <text x="95" y="17" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700">corpus-agent</text>
-        <text x="95" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@robo-minty &bull; Quick search &bull; Deep research</text>
-        <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Conversation &bull; Overview &bull; Multi-agent</text>
+        <text x="95" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@robo-minty &bull; Fast Search &bull; Fast Review</text>
+        <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Deep Review &bull; Conversation</text>
       </g>
 
       <!-- ===== SIDE PANEL: Background services + search-minty ===== -->
@@ -587,13 +587,13 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div><div class="card-title">corpus-agent</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 1,903-paper corpus. Spawns sandboxed Claude CLI subprocesses with corpus search tools and GitHub access. Supports quick search, overview mode, deep multi-agent research, and conversation mode. Has its own persistent three-tier memory system and its own three-tier memory system.</p>
-        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (hardcoded, 900s timeout)</span></div>
-        <div class="detail-row"><span class="detail-label">Corpus tools (12)</span><span class="detail-val">search, search-summary, paper, analysis, raptor, full-text, similar, stats, overview, topics, random, dimensions</span></div>
-        <div class="detail-row"><span class="detail-label">GitHub tools (6)</span><span class="detail-val">list-repos, view, clone, tree, file, search-code (sandboxed to allowlisted repos referenced in papers)</span></div>
-        <div class="detail-row"><span class="detail-label">Deep research</span><span class="detail-val">9-phase pipeline: Search &rarr; Retrieve &rarr; Landscape &rarr; Group &rarr; Read R1 &rarr; Read R2 &rarr; Synthesize &rarr; Peer Review &rarr; Citation Review</span></div>
-        <div class="detail-row"><span class="detail-label">Memory</span><span class="detail-val">MEMORY.md (curated, 200-line cap), FACTS.md (durable), RECENT.md (rolling)</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>orchestrator.py</code>, <code>scripts/corpus_cli.py</code>, <code>mcp_server/server.py</code></span></div>
+        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 1,903-paper corpus. Offers 5 modes via interactive Slack menu: Fast Search (semantic query expansion + unified search), Fast Review (~15 min literature review), Deep Search (multi-round gap analysis), Deep Review (60+ min full pipeline with parallel readers and synthesis), and Conversation (direct Q&amp;A with tool access). Creates Slack canvases for long-form output.</p>
+        <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Claude Opus (search, synthesis, QA, conversation), Codex GPT-5.2 (deep review readers &mdash; xhigh for top-tier, medium for summary-tier)</span></div>
+        <div class="detail-row"><span class="detail-label">Deep review</span><span class="detail-val">4-phase pipeline: Multi-round search &rarr; Parallel Codex readers (top-tier + summary-tier) &rarr; Opus synthesis &rarr; QA verification + fix pass</span></div>
+        <div class="detail-row"><span class="detail-label">Search</span><span class="detail-val">Warm search server (pre-loaded 4GB LanceDB table), unified multi-modal search with Reciprocal Rank Fusion across 49 embedding dimensions</span></div>
+        <div class="detail-row"><span class="detail-label">Memory</span><span class="detail-val">Three-tier: MEMORY.md (curated, 200-line cap), FACTS.md (durable), RECENT.md (rolling). Auto-updated via <code>&lt;memory_update&gt;</code> tags.</span></div>
+        <div class="detail-row"><span class="detail-label">Features</span><span class="detail-val">Interactive mode menu, canvas posting, paper selection for deep review, catch-up on missed queries, session closure with memory curation</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>orchestrator.py</code> (3,767 lines), <code>pipeline.py</code> (1,427 lines), <code>scripts/corpus_cli.py</code></span></div>
       </div>
     </div>
 
@@ -957,58 +957,36 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <h2><span class="icon">&#129302;</span> Agent Architecture</h2>
   <p>Minty is the interactive research management agent. It delegates work to specialized subagents, each with fresh context windows.</p>
 
-  <h3>The CO Hierarchy (Deep Research)</h3>
-  <p>For complex research queries, the corpus-agent uses a military-inspired three-tier command structure. An autonomous <strong>Commanding Officer</strong> (Opus with Bash/Read/Grep tools) runs the operation, dispatching footsoldiers and lieutenants, reading their reports, and making strategic decisions at each phase gate: proceed, supplement, retry, skip, or redirect.</p>
+  <h3>Deep Review Pipeline (corpus-agent)</h3>
+  <p>For complex research queries, the corpus-agent runs a 4-phase deep review pipeline. A persistent Python <strong>orchestrator</strong> dispatches work to Claude Opus (search, synthesis, QA) and Codex GPT-5.2 (parallel readers), coordinating the phases and posting results as Slack canvases.</p>
 
   <div class="hierarchy">
     <div class="h-tier">
-      <div class="h-node" style="border-color:var(--accent)"><div class="h-title" style="color:var(--accent)">Commanding Officer</div><div class="h-sub">Opus &bull; Autonomous strategist<br>Dispatches workers, reads briefings,<br>decides proceed/retry/skip/redirect</div></div>
+      <div class="h-node" style="border-color:var(--accent)"><div class="h-title" style="color:var(--accent)">Orchestrator</div><div class="h-sub">Python (persistent)<br>Dispatches pipeline modes,<br>manages Slack interaction</div></div>
     </div>
     <div class="h-connector"></div>
     <div class="h-tier">
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Search</div><div class="h-sub">Iterative corpus<br>search (min 3 rounds)</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Retrieve</div><div class="h-sub">Full text<br>retrieval</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape</div><div class="h-sub">Raw data<br>assembly</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Landscape<br>Analysis</div><div class="h-sub">LLM-driven<br>field mapping</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Grouping</div><div class="h-sub">Strategic paper<br>clustering</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Phase 1:<br>Search</div><div class="h-sub">Opus &bull; Fast search +<br>up to 2 gap-analysis rounds</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Phase 2:<br>Readers</div><div class="h-sub">Codex GPT-5.2 &bull; Parallel<br>Top-tier (xhigh) + Summary-tier (medium)</div></div>
+      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Phase 3:<br>Synthesis</div><div class="h-sub">Opus &bull; 3,000&ndash;5,000 word<br>Literature Review + Critical Assessment</div></div>
+      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Phase 4:<br>QA</div><div class="h-sub">Opus &bull; Cross-reference<br>verification + citation fix pass</div></div>
     </div>
-    <div class="h-tier" style="margin-top:4px">
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R1</div><div class="h-sub">Row groups<br>(Latin Square)</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Readers R2</div><div class="h-sub">Column groups<br>(Latin Square)</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Synthesis</div><div class="h-sub">Thematic<br>synthesis</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Peer Review</div><div class="h-sub">Quality gate<br>+ fact-check</div></div>
-      <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Citation<br>Review</div><div class="h-sub">Link &amp; citation<br>verification</div></div>
-    </div>
-    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Footsoldiers (Opus) &mdash; agentic workers with tool access, up to 5 concurrent per phase</div>
-    <div class="h-connector"></div>
-    <div class="h-tier">
-      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Search Lt.</div><div class="h-sub">Coverage<br>assessment</div></div>
-      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Landscape Lt.</div><div class="h-sub">Grouping<br>quality</div></div>
-      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Reading Lt.</div><div class="h-sub">Reader output<br>quality</div></div>
-      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Synthesis Lt.</div><div class="h-sub">Final quality<br>gate</div></div>
-    </div>
-    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Lieutenants (one-shot) &mdash; assess quality, recommend proceed/supplement/retry</div>
+    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Pipeline workers &mdash; Claude Opus (search, synthesis, QA) + Codex GPT-5.2 (parallel readers, up to 6 concurrent)</div>
   </div>
 
-  <h3>Deep Research Pipeline</h3>
-  <p>The CO follows a recommended playbook but can deviate — skipping phases for narrow queries or adding search rounds for broad ones. The standard pipeline:</p>
+  <h3>Deep Review Pipeline Phases</h3>
+  <p>The deep review pipeline runs 4 phases sequentially. The orchestrator coordinates all phases and posts the final output as a Slack canvas.</p>
   <table class="ref-table">
-    <thead><tr><th>Phase</th><th>Workers</th><th>What happens</th></tr></thead>
+    <thead><tr><th>Phase</th><th>Model</th><th>What happens</th></tr></thead>
     <tbody>
-      <tr><td><strong>1. Search</strong></td><td>Search footsoldier</td><td>Iterative corpus search (min 3 rounds, self-assessment). CO launches retrieve + search lieutenant in parallel.</td></tr>
-      <tr><td><strong>2. Retrieve</strong></td><td>Retrieve footsoldier</td><td>Fetches full texts for all found papers. Runs parallel with search lieutenant assessment.</td></tr>
-      <tr><td><strong>3. Landscape</strong></td><td>Landscape + Landscape Analysis</td><td>Assembles 41Q landscape data from corpus (no LLM), then LLM-driven field mapping and thematic analysis.</td></tr>
-      <tr><td><strong>4. Grouping</strong></td><td>Grouping footsoldier</td><td>Latin Square grouping: papers arranged in a grid. Round 1 reads rows (thematic groups), Round 2 reads columns (recombined). Every paper appears in two analytical contexts.</td></tr>
-      <tr><td><strong>5. Reading R1</strong></td><td>Up to 5 parallel readers</td><td>Row groups: each reader analyzes papers in its thematic cluster. Reports include cross-paper tensions, shared arguments, and gaps.</td></tr>
-      <tr><td><strong>6. Reading R2</strong></td><td>Up to 5 parallel readers</td><td>Column groups: papers recombined across themes. R2 readers receive R1 reports to challenge and extend.</td></tr>
-      <tr><td><strong>7. Assessment</strong></td><td>Reading lieutenant</td><td>Assesses per-reader quality, flags thin reports, identifies key themes for synthesis.</td></tr>
-      <tr><td><strong>8. Synthesis</strong></td><td>Synthesis footsoldier + lieutenant</td><td>Unified thematic synthesis of all R1 and R2 reports. Lieutenant does final quality check.</td></tr>
-      <tr><td><strong>9. Peer Review</strong></td><td>Peer review footsoldier (optional)</td><td>Dual review: intellectual critique + fact-checking. Can be skipped for speed.</td></tr>
-      <tr><td><strong>10. Citation Review</strong></td><td>Citation review footsoldier</td><td>Verifies all paper citations are Drive links, checks for hallucinated references.</td></tr>
+      <tr><td><strong>1. Search</strong></td><td>Claude Opus</td><td>Multi-round search: fast search with semantic query expansion, then up to 2 gap-analysis rounds with targeted queries to fill coverage holes. Uses warm search server with pre-loaded 4GB LanceDB table and Reciprocal Rank Fusion across 49 embedding dimensions.</td></tr>
+      <tr><td><strong>2. Parallel Reading</strong></td><td>Codex GPT-5.2</td><td>Papers split into two tiers. <strong>Top-tier</strong> (~3 papers each, 6 parallel readers, xhigh compute) produces deep analytical reports. <strong>Summary-tier</strong> (batches of 20, medium compute) produces condensed summaries. All readers run in parallel.</td></tr>
+      <tr><td><strong>3. Synthesis</strong></td><td>Claude Opus</td><td>3,000&ndash;5,000 word report with Literature Review + Critical Assessment sections. Integrates all reader reports into a unified thematic analysis.</td></tr>
+      <tr><td><strong>4. QA Verification</strong></td><td>Claude Opus</td><td>Cross-references synthesis against reader reports. Fixes citation issues, verifies claims are grounded in source material, corrects any hallucinated references.</td></tr>
     </tbody>
   </table>
 
-  <div class="callout"><p><strong>Resilience:</strong> If the CO exhausts its context window, a relief officer is spawned with the CO's progress. If that also fails, a legacy fallback runs the pipeline as a monolithic script. The system never returns empty-handed if papers were found.</p></div>
+  <div class="callout"><p><strong>Resilience:</strong> The old CO hierarchy architecture (autonomous commanding officer dispatching footsoldiers and lieutenants) is archived as a fallback. If the current pipeline fails, the system can fall back to the legacy approach. The system never returns empty-handed if papers were found.</p></div>
 
   <h3>Worker Agent Types</h3>
   <table class="ref-table">
@@ -1115,7 +1093,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <tr><td><code>/corpus</code></td><td>Deep 41-question semantic paper analysis</td></tr>
         <tr><td><code>/orchestrate</code></td><td>Spawn 20 parallel corpus-workers for batch analysis</td></tr>
         <tr><td><code>/raptor</code></td><td>Spawn 20 parallel raptor-workers for summaries</td></tr>
-        <tr><td><code>/research</code></td><td>Deep multi-agent research over paper corpus</td></tr>
+        <tr><td><code>/research</code></td><td>Deep review pipeline over paper corpus (4-phase: search, readers, synthesis, QA)</td></tr>
         <tr><td><code>/lit-review</code></td><td>Systematic literature survey (12 parallel workers)</td></tr>
         <tr><td><code>/metadata-extract</code></td><td>Batch metadata extraction from papers</td></tr>
         <tr><td><code>/verify</code></td><td>Verify corpus analysis completeness against Notion</td></tr>
@@ -1365,7 +1343,7 @@ const searchData = [
   {t:'news-pdf-bot',d:'Find PDFs and generate markdown for paper URLs in #new-news',tag:'Daemon',c:'#a78bfa',s:'#daemons'},
   {t:'yesterday-in-ai',d:'Daily AI news digest email to 28 lab members, gpt-5.3-codex-spark fact-checking',tag:'Daemon',c:'#f472b6',s:'#daemons'},
   {t:'last-week-in-ai',d:'Weekly AI digest with multi-agent sectioned pipeline',tag:'Daemon',c:'#f472b6',s:'#daemons'},
-  {t:'corpus-agent',d:'@robo-minty Slack bot for research queries over 1,903 papers, multi-agent deep research',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
+  {t:'corpus-agent',d:'@robo-minty Slack bot: 5 modes (Fast Search, Fast Review, Deep Search, Deep Review, Conversation), 1,903-paper corpus, Opus + Codex pipeline',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
   {t:'corpus-ingest-local',d:'Overnight batch processor: 8 workers, 11-stage pipeline, active 20:15-07:45 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-slack',d:'Daytime real-time Slack ingestion: 2 workers, active 08:00-20:00 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-writer',d:'Serialized LanceDB writer: eliminates concurrent write conflicts, always on',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
@@ -1384,12 +1362,12 @@ const searchData = [
   {t:'/end',d:'Close session: reflection, delegate closure, git push',tag:'Command',c:'#4ade80',s:'#skills'},
   {t:'/corpus',d:'Deep 41-question semantic paper analysis',tag:'Command',c:'#4ade80',s:'#skills'},
   {t:'/orchestrate',d:'Spawn 20 parallel corpus-workers for batch analysis',tag:'Command',c:'#4ade80',s:'#skills'},
-  {t:'/research',d:'Deep multi-agent research over paper corpus',tag:'Command',c:'#4ade80',s:'#skills'},
+  {t:'/research',d:'Deep review pipeline over paper corpus (4-phase: search, readers, synthesis, QA)',tag:'Command',c:'#4ade80',s:'#skills'},
   {t:'/maintain',d:'Infrastructure health check across 12 categories',tag:'Command',c:'#4ade80',s:'#skills'},
   {t:'paper-fetch',d:'Download papers from 15+ publishers via 3-tier cascade',tag:'Skill',c:'#818cf8',s:'#skills'},
-  {t:'CO Hierarchy',d:'3-tier command: CO (strategic) → 9 footsoldier types (workers) → 4 Lieutenants (assessors)',tag:'Architecture',c:'#fbbf24',s:'#agents'},
+  {t:'Deep Review Pipeline',d:'4-phase: Multi-round search (Opus) → Parallel readers (Codex GPT-5.2 xhigh + medium) → Synthesis (Opus) → QA verification (Opus)',tag:'Architecture',c:'#fbbf24',s:'#agents'},
   {t:'Corpus Tools',d:'Search, paper retrieval, analysis, RAPTOR summaries, similarity, topics, dimensions + GitHub repo exploration',tag:'Architecture',c:'#38bdf8',s:'#agents'},
-  {t:'Latin Square Reading',d:'Papers in grid: Row groups (R1) then Column groups (R2) — every paper in two analytical contexts',tag:'Architecture',c:'#fbbf24',s:'#agents'},
+  {t:'Parallel Reading',d:'Papers split into top-tier (Codex xhigh, ~3 papers, 6 readers) and summary-tier (Codex medium, batches of 20) — all readers run in parallel',tag:'Architecture',c:'#fbbf24',s:'#agents'},
   {t:'Ingest Pipeline',d:'3-daemon system: ingest-local (8 workers overnight) + ingest-slack (2 workers daytime) + writer (serialized DB). 11-stage per-paper pipeline.',tag:'Architecture',c:'#2dd4bf',s:'#corpus'},
   {t:'41-Question Analysis',d:'Semantic analysis across research core, methodology, AI-specific, meta, advanced',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
   {t:'RAPTOR Summaries',d:'Hierarchical summaries: document + section level per paper',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
