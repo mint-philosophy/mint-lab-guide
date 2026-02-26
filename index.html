@@ -1140,27 +1140,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <h2><span class="icon">&#128274;</span> Infrastructure</h2>
 
   <h3>Vault (Single-Tier Credential Management)</h3>
-  <p style="font-size:13px">All credentials stored in macOS login keychain as <code>minty-vault-{KEY}</code>. Direct access via <code>security find-generic-password</code> or <code>platform_config.get_secret()</code>. No biometric tier, no session auth.</p>
-  <div class="grid-2">
-    <div>
-      <h3 style="color:var(--green)">API Keys</h3>
-      <ul class="clean">
-        <li>GITHUB_PAT</li>
-        <li>MINTLAB_GOOGLE_CLIENT_SECRET + client IDs</li>
-        <li>SPECSTORY_API_KEY</li>
-        <li>VOYAGE_API_KEY</li>
-        <li>ZOTERO_API_KEY</li>
-      </ul>
-    </div>
-    <div>
-      <h3 style="color:var(--green)">Service Tokens</h3>
-      <ul class="clean">
-        <li>SLACK_BOT_TOKEN, SLACK_APP_TOKEN, SLACK_USER_TOKEN</li>
-        <li>TWITTER_* (4 OAuth keys)</li>
-        <li>MINTLAB_GOOGLE_CLIENT_SECRET</li>
-      </ul>
-    </div>
-  </div>
+  <p style="font-size:13px">All credentials stored in macOS login keychain via a custom vault CLI. Direct, silent access from all daemons and agents &mdash; no GUI prompts, no session auth. Managed by <code>SCRIPTS/vault.py</code>.</p>
 
   <h3>Three Vector Databases</h3>
   <table class="ref-table">
@@ -1224,27 +1204,49 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 <!-- ============ INTEGRATIONS ============ -->
 <section id="integrations" class="fade-in">
   <h2><span class="icon">&#128279;</span> External Integrations</h2>
-  <table class="ref-table">
-    <thead><tr><th>Service</th><th>Used By</th><th>Purpose</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Slack</strong> (3 bots)</td><td>All daemons</td><td>Central message bus. robo-minty (main) + search-minty (search) + user token. 6+ channels.</td></tr>
-      <tr><td><strong>Google Drive</strong></td><td>rclone-sync</td><td>Bidirectional PDF/markdown sync + backups via Shared Drive</td></tr>
-      <tr><td><strong>Gmail</strong></td><td>yesterday-in-ai, agent-email</td><td>Send daily digest emails, manage agent inbox (mintlabjhu@gmail.com)</td></tr>
-      <tr><td><strong>Twitter/X API v2</strong></td><td>feedme-daily, share-to-minty, news-pdf-bot</td><td>Fetch tweets, thread expansion, engagement metrics</td></tr>
-      <tr><td><strong>Voyage AI</strong></td><td>corpus-ingest, slack-index, workspace-index</td><td>Embedding generation (voyage-context-3 2048d, voyage-3)</td></tr>
-      <tr><td><strong>Zotero</strong></td><td>corpus-ingest</td><td>Academic reference management (group library 5937227)</td></tr>
-      <tr><td><strong>GitHub</strong></td><td>corpus-agent, publishing</td><td>Repo management (mint-philosophy org), code exploration for referenced repos</td></tr>
-      <tr><td><strong>Ghost</strong></td><td>yesterday-in-ai</td><td>Newsletter publishing at newsletter.mintresearch.org</td></tr>
-      <tr><td><strong>Semantic Scholar</strong></td><td>news-pdf-bot, corpus-ingest</td><td>Paper metadata, citation data, open access links</td></tr>
-      <tr><td><strong>CrossRef / Unpaywall</strong></td><td>news-pdf-bot, corpus-ingest</td><td>DOI resolution, metadata enrichment, OA PDF discovery</td></tr>
-      <tr><td><strong>arXiv API</strong></td><td>feedme-daily, news-pdf-bot, corpus-ingest</td><td>Paper metadata, abstract extraction, PDF download</td></tr>
-      <tr><td><strong>Bluesky</strong></td><td>feedme-daily</td><td>Social feed source</td></tr>
-      <tr><td><strong>PhilPapers</strong></td><td>feedme-daily</td><td>Academic philosophy paper feed source</td></tr>
-      <tr><td><strong>Brave Search</strong></td><td>SCRIPTS/brave_search.py</td><td>Web search fallback via Brave Search API</td></tr>
-      <tr><td><strong>Telegram</strong></td><td>SCRIPTS/telegram_notify.py</td><td>Alert notifications to admin</td></tr>
-      <tr><td><strong>OpenAI Codex CLI</strong></td><td>corpus-ingest, yesterday-in-ai, slack-search</td><td>LLM backend for analysis, verification, and agentic search</td></tr>
-    </tbody>
-  </table>
+  <p>The system connects to 16 external services across four categories.</p>
+
+  <h3 style="margin-top:20px">&#129302; LLM &amp; Embedding</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
+    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Claude Opus</span>
+    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Claude Sonnet</span>
+    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Codex GPT-5.2</span>
+    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Codex Spark</span>
+    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">Voyage context-3</span>
+    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">Voyage voyage-3</span>
+  </div>
+  <p style="font-size:12px;color:var(--text3)">All LLM calls via CLI subscriptions (<code>claude -p</code>, <code>codex exec</code>), not metered API. Voyage for embeddings (corpus 2048d, Slack 1024d).</p>
+
+  <h3>&#128172; Communication</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
+    <span class="badge badge-green" style="font-size:12px;padding:5px 12px">Slack &mdash; 3 bots, 6+ channels</span>
+    <span class="badge badge-green" style="font-size:12px;padding:5px 12px">Gmail &mdash; digest &amp; agent inbox</span>
+    <span class="badge badge-green" style="font-size:12px;padding:5px 12px">Ghost &mdash; newsletter.mintresearch.org</span>
+    <span class="badge badge-green" style="font-size:12px;padding:5px 12px">Telegram &mdash; admin alerts</span>
+  </div>
+
+  <h3>&#128218; Academic Sources</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
+    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">arXiv</span>
+    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">Semantic Scholar</span>
+    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">CrossRef / Unpaywall</span>
+    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">Zotero</span>
+    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">PhilPapers</span>
+  </div>
+
+  <h3>&#127760; Content &amp; Social Feeds</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
+    <span class="badge" style="font-size:12px;padding:5px 12px;background:rgba(248,113,113,.15);color:var(--red)">Twitter/X API v2</span>
+    <span class="badge" style="font-size:12px;padding:5px 12px;background:rgba(248,113,113,.15);color:var(--red)">Bluesky</span>
+    <span class="badge" style="font-size:12px;padding:5px 12px;background:rgba(248,113,113,.15);color:var(--red)">RSS / Substack</span>
+    <span class="badge" style="font-size:12px;padding:5px 12px;background:rgba(248,113,113,.15);color:var(--red)">Brave Search</span>
+  </div>
+
+  <h3>&#9729;&#65039; Infrastructure</h3>
+  <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
+    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">Google Drive &mdash; bidirectional sync</span>
+    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">GitHub &mdash; mint-philosophy org</span>
+  </div>
 </section>
 
 <!-- ============ DIRECTORY MAP ============ -->
