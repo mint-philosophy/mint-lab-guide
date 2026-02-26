@@ -436,7 +436,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <rect width="180" height="55" rx="10" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
         <text x="90" y="18" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">corpus-agent</text>
         <text x="90" y="32" text-anchor="middle" fill="#94a3b8" font-size="9">@robo-minty &bull; Quick search &bull; Deep research</text>
-        <text x="90" y="44" text-anchor="middle" fill="#64748b" font-size="9">Conversation &bull; Overview &bull; 18 MCP tools</text>
+        <text x="90" y="44" text-anchor="middle" fill="#64748b" font-size="9">Conversation &bull; Overview &bull; Multi-agent</text>
       </g>
       <line x1="430" y1="620" x2="400" y2="660" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
@@ -591,7 +591,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div><div class="card-title">corpus-agent</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 1,903-paper corpus. Spawns sandboxed Claude CLI subprocesses with 18 MCP tools (12 corpus + 6 GitHub). Supports quick search, overview mode, deep multi-agent research, and conversation mode. Has its own persistent three-tier memory system and dedicated venv (not the shared pipeline venv).</p>
+        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 1,903-paper corpus. Spawns sandboxed Claude CLI subprocesses with corpus search tools and GitHub access. Supports quick search, overview mode, deep multi-agent research, and conversation mode. Has its own persistent three-tier memory system and dedicated venv (not the shared pipeline venv).</p>
         <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (hardcoded, 900s timeout)</span></div>
         <div class="detail-row"><span class="detail-label">Corpus tools (12)</span><span class="detail-val">search, search-summary, paper, analysis, raptor, full-text, similar, stats, overview, topics, random, dimensions</span></div>
         <div class="detail-row"><span class="detail-label">GitHub tools (6)</span><span class="detail-val">list-repos, view, clone, tree, file, search-code (sandboxed to allowlisted repos referenced in papers)</span></div>
@@ -1370,7 +1370,7 @@ const searchData = [
   {t:'news-pdf-bot',d:'Find PDFs and generate markdown for paper URLs in #new-news',tag:'Daemon',c:'#a78bfa',s:'#daemons'},
   {t:'yesterday-in-ai',d:'Daily AI news digest email to 28 lab members, gpt-5.3-codex-spark fact-checking',tag:'Daemon',c:'#f472b6',s:'#daemons'},
   {t:'last-week-in-ai',d:'Weekly AI digest with multi-agent sectioned pipeline',tag:'Daemon',c:'#f472b6',s:'#daemons'},
-  {t:'corpus-agent',d:'@robo-minty Slack bot for research queries over 1,903 papers, 18 MCP tools, own venv',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
+  {t:'corpus-agent',d:'@robo-minty Slack bot for research queries over 1,903 papers, multi-agent deep research',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
   {t:'corpus-ingest-local',d:'Overnight batch processor: 8 workers, 11-stage pipeline, active 20:15-07:45 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-slack',d:'Daytime real-time Slack ingestion: 2 workers, active 08:00-20:00 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-writer',d:'Serialized LanceDB writer: eliminates concurrent write conflicts, always on',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
@@ -1393,7 +1393,7 @@ const searchData = [
   {t:'/maintain',d:'Infrastructure health check across 12 categories',tag:'Command',c:'#4ade80',s:'#skills'},
   {t:'paper-fetch',d:'Download papers from 15+ publishers via 3-tier cascade',tag:'Skill',c:'#818cf8',s:'#skills'},
   {t:'CO Hierarchy',d:'3-tier command: CO (strategic) → 9 footsoldier types (workers) → 4 Lieutenants (assessors)',tag:'Architecture',c:'#fbbf24',s:'#agents'},
-  {t:'MCP Tools',d:'18 tools: 12 corpus search (search, paper, analysis, raptor, etc.) + 6 GitHub repo exploration',tag:'Architecture',c:'#38bdf8',s:'#agents'},
+  {t:'Corpus Tools',d:'Search, paper retrieval, analysis, RAPTOR summaries, similarity, topics, dimensions + GitHub repo exploration',tag:'Architecture',c:'#38bdf8',s:'#agents'},
   {t:'Latin Square Reading',d:'Papers in grid: Row groups (R1) then Column groups (R2) — every paper in two analytical contexts',tag:'Architecture',c:'#fbbf24',s:'#agents'},
   {t:'Ingest Pipeline',d:'3-daemon system: ingest-local (8 workers overnight) + ingest-slack (2 workers daytime) + writer (serialized DB). 11-stage per-paper pipeline.',tag:'Architecture',c:'#2dd4bf',s:'#corpus'},
   {t:'41-Question Analysis',d:'Semantic analysis across research core, methodology, AI-specific, meta, advanced',tag:'Corpus',c:'#2dd4bf',s:'#corpus'},
