@@ -296,197 +296,213 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <p>Here's how information flows from external sources to lab members. Slack's <code>#new-news</code> channel is the central hub &mdash; four daemons write to it, three daemons read from it.</p>
 
   <div class="pipeline-wrap">
-    <svg viewBox="0 0 960 720" width="100%" xmlns="http://www.w3.org/2000/svg">
+    <svg viewBox="0 0 960 710" width="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
         <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#38bdf8"/></marker>
         <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
         <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb923c"/></marker>
         <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#a78bfa"/></marker>
+        <marker id="arrowTeal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#2dd4bf"/></marker>
+        <marker id="arrowPink" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f472b6"/></marker>
         <linearGradient id="nodeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2540"/><stop offset="100%" stop-color="#131c31"/></linearGradient>
         <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
 
-      <!-- Sources -->
-      <g transform="translate(30,30)">
-        <rect width="160" height="60" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="80" y="25" text-anchor="middle" fill="#94a3b8" font-size="10" font-weight="600">EXTERNAL SOURCES</text>
-        <text x="80" y="43" text-anchor="middle" fill="#e2e8f0" font-size="11">Twitter, arXiv, RSS,</text>
-        <text x="80" y="55" text-anchor="middle" fill="#e2e8f0" font-size="11">Bluesky, Email, PhilPapers</text>
+      <!-- ===== ROW 0: Horizontal input chain (Sources → feedme → #feed → Seth → feed-promote) ===== -->
+      <g transform="translate(20,15)">
+        <rect width="135" height="48" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="68" y="18" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">EXTERNAL SOURCES</text>
+        <text x="68" y="32" text-anchor="middle" fill="#e2e8f0" font-size="9">Twitter, arXiv, RSS</text>
+        <text x="68" y="43" text-anchor="middle" fill="#e2e8f0" font-size="9">Bluesky, Email, PhilPapers</text>
+      </g>
+      <line x1="155" y1="39" x2="175" y2="39" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+      <g transform="translate(183,18)">
+        <rect width="120" height="42" rx="8" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+        <text x="60" y="18" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700">feedme-daily</text>
+        <text x="60" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Fetch, Classify, Rank</text>
+      </g>
+      <line x1="303" y1="39" x2="323" y2="39" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+      <g transform="translate(331,18)">
+        <rect width="95" height="42" rx="8" fill="#0d2847" stroke="#1e3a5f"/>
+        <text x="48" y="18" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">#feed-{day}</text>
+        <text x="48" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Slack channel</text>
+      </g>
+      <line x1="426" y1="39" x2="446" y2="39" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3"/>
+
+      <g transform="translate(449,22)">
+        <rect width="80" height="34" rx="6" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
+        <text x="40" y="22" text-anchor="middle" fill="#fbbf24" font-size="10">Seth &#x1F44D;</text>
+      </g>
+      <line x1="529" y1="39" x2="549" y2="39" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+
+      <g transform="translate(557,18)">
+        <rect width="120" height="42" rx="8" fill="url(#nodeGrad)" stroke="#4ade80" stroke-width="1.5"/>
+        <text x="60" y="18" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="700">feed-promote</text>
+        <text x="60" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Copy to #new-news</text>
       </g>
 
-      <!-- feedme-daily -->
-      <g transform="translate(250,25)">
-        <rect width="140" height="50" rx="10" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-        <text x="70" y="22" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">feedme-daily</text>
-        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Fetch, Classify, Rank</text>
-      </g>
-      <line x1="190" y1="55" x2="250" y2="50" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+      <!-- feed-promote arrow DOWN to hub -->
+      <line x1="617" y1="60" x2="617" y2="85" stroke="#4ade80" stroke-width="1.5"/>
+      <line x1="617" y1="85" x2="510" y2="85" stroke="#4ade80" stroke-width="1.5"/>
+      <line x1="510" y1="85" x2="510" y2="105" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
 
-      <!-- #feed channel -->
-      <g transform="translate(440,25)">
-        <rect width="110" height="50" rx="10" fill="#0d2847" stroke="#1e3a5f"/>
-        <text x="55" y="22" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">#feed-{day}</text>
-        <text x="55" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Slack channel</text>
-      </g>
-      <line x1="390" y1="50" x2="440" y2="50" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+      <!-- ===== ROW 1: Three inputs → #NEW-NEWS hub ===== -->
 
-      <!-- Seth thumbsup -->
-      <g transform="translate(470,95)">
-        <rect width="100" height="36" rx="8" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
-        <text x="50" y="23" text-anchor="middle" fill="#fbbf24" font-size="11">Seth &#x1F44D;</text>
+      <!-- Seth's devices → share-to-minty (left) -->
+      <g transform="translate(30,108)">
+        <rect width="140" height="42" rx="8" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
+        <text x="70" y="17" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="600">SETH'S DEVICES</text>
+        <text x="70" y="32" text-anchor="middle" fill="#e2e8f0" font-size="9">iPhone, Mac, Chrome</text>
       </g>
-      <line x1="495" y1="75" x2="510" y2="95" stroke="#fbbf24" stroke-width="1" stroke-dasharray="4,3"/>
+      <line x1="170" y1="129" x2="195" y2="129" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
 
-      <!-- feed-promote -->
-      <g transform="translate(620,25)">
-        <rect width="130" height="50" rx="10" fill="url(#nodeGrad)" stroke="#4ade80" stroke-width="1.5"/>
-        <text x="65" y="22" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">feed-promote</text>
-        <text x="65" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Copy to #new-news</text>
+      <g transform="translate(203,108)">
+        <rect width="130" height="42" rx="8" fill="url(#nodeGrad)" stroke="#fb923c" stroke-width="1.5"/>
+        <text x="65" y="17" text-anchor="middle" fill="#fb923c" font-size="10" font-weight="700">share-to-minty</text>
+        <text x="65" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Intake, Classify, Post</text>
       </g>
-      <line x1="570" y1="113" x2="620" y2="50" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+      <line x1="333" y1="129" x2="440" y2="129" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
 
-      <!-- Seth's devices -->
-      <g transform="translate(30,140)">
-        <rect width="160" height="50" rx="10" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
-        <text x="80" y="22" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="600">SETH'S DEVICES</text>
-        <text x="80" y="38" text-anchor="middle" fill="#e2e8f0" font-size="11">iPhone, Mac, Chrome</text>
+      <!-- #NEW-NEWS central hub -->
+      <g transform="translate(440,105)">
+        <rect width="140" height="65" rx="12" fill="#0d2847" stroke="#38bdf8" stroke-width="2" filter="url(#glow)"/>
+        <text x="70" y="25" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="800">#new-news</text>
+        <text x="70" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Central Hub</text>
+        <text x="70" y="55" text-anchor="middle" fill="#64748b" font-size="9">4 writers / 3 readers</text>
       </g>
 
-      <!-- share-to-minty -->
-      <g transform="translate(250,140)">
-        <rect width="140" height="50" rx="10" fill="url(#nodeGrad)" stroke="#fb923c" stroke-width="1.5"/>
-        <text x="70" y="22" text-anchor="middle" fill="#fb923c" font-size="11" font-weight="700">share-to-minty</text>
-        <text x="70" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Intake, Classify, Post</text>
+      <!-- Lab members → hub (right) -->
+      <g transform="translate(710,108)">
+        <rect width="140" height="42" rx="8" fill="url(#nodeGrad)" stroke="#4ade80" stroke-dasharray="4,3"/>
+        <text x="70" y="17" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="600">LAB MEMBERS</text>
+        <text x="70" y="32" text-anchor="middle" fill="#e2e8f0" font-size="9">Post to #new-news</text>
       </g>
-      <line x1="190" y1="165" x2="250" y2="165" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+      <line x1="710" y1="129" x2="580" y2="129" stroke="#4ade80" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowGreen)"/>
 
-      <!-- #new-news (central hub) -->
-      <g transform="translate(440,160)">
-        <rect width="140" height="70" rx="12" fill="#0d2847" stroke="#38bdf8" stroke-width="2" filter="url(#glow)"/>
-        <text x="70" y="28" text-anchor="middle" fill="#38bdf8" font-size="14" font-weight="800">#new-news</text>
-        <text x="70" y="45" text-anchor="middle" fill="#94a3b8" font-size="9">Central Hub</text>
-        <text x="70" y="58" text-anchor="middle" fill="#64748b" font-size="9">4 writers / 3 readers</text>
+      <!-- ===== ROW 2: Y-split — digest left, paper pipeline center ===== -->
+
+      <!-- Vertical line down from hub -->
+      <line x1="510" y1="170" x2="510" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
+      <!-- Fork left to yesterday-in-ai -->
+      <line x1="510" y1="205" x2="275" y2="205" stroke="#f472b6" stroke-width="1.5"/>
+      <line x1="275" y1="205" x2="275" y2="225" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPink)"/>
+      <!-- Fork down to news-pdf-bot -->
+      <line x1="510" y1="205" x2="510" y2="225" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+
+      <!-- LEFT: yesterday-in-ai -->
+      <g transform="translate(200,228)">
+        <rect width="150" height="50" rx="8" fill="url(#nodeGrad)" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="75" y="19" text-anchor="middle" fill="#f472b6" font-size="10" font-weight="700">yesterday-in-ai</text>
+        <text x="75" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Daily/weekly digest</text>
+        <text x="75" y="44" text-anchor="middle" fill="#64748b" font-size="8">Email + Ghost blog</text>
       </g>
-      <line x1="390" y1="165" x2="440" y2="185" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
-      <line x1="750" y1="50" x2="580" y2="170" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+      <line x1="275" y1="278" x2="275" y2="303" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPink)"/>
 
-      <!-- Branches from #new-news -->
-
-      <!-- LEFT BRANCH: yesterday-in-ai → Email -->
-      <g transform="translate(200,290)">
-        <rect width="150" height="55" rx="10" fill="url(#nodeGrad)" stroke="#f472b6" stroke-width="1.5"/>
-        <text x="75" y="22" text-anchor="middle" fill="#f472b6" font-size="11" font-weight="700">yesterday-in-ai</text>
-        <text x="75" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Daily/weekly digest</text>
-        <text x="75" y="49" text-anchor="middle" fill="#64748b" font-size="9">Email + Ghost blog</text>
+      <g transform="translate(210,306)">
+        <rect width="130" height="38" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="65" y="16" text-anchor="middle" fill="#f472b6" font-size="9" font-weight="600">&#x2709; Email</text>
+        <text x="65" y="30" text-anchor="middle" fill="#64748b" font-size="8">28 lab members</text>
       </g>
-      <line x1="460" y1="230" x2="320" y2="290" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
 
-      <g transform="translate(200,395)">
-        <rect width="150" height="40" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="75" y="17" text-anchor="middle" fill="#f472b6" font-size="10" font-weight="600">&#x2709; Email</text>
-        <text x="75" y="32" text-anchor="middle" fill="#64748b" font-size="9">28 lab members</text>
-      </g>
-      <line x1="275" y1="345" x2="275" y2="395" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPurple)"/>
+      <!-- ===== CENTER: Main paper pipeline (vertical spine) ===== -->
 
-      <!-- CENTER-RIGHT: news-pdf-bot (in main flow path) -->
-      <g transform="translate(440,290)">
-        <rect width="150" height="55" rx="10" fill="url(#nodeGrad)" stroke="#a78bfa" stroke-width="1.5"/>
-        <text x="75" y="22" text-anchor="middle" fill="#a78bfa" font-size="11" font-weight="700">news-pdf-bot</text>
-        <text x="75" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">Download PDFs + markdown</text>
-        <text x="75" y="49" text-anchor="middle" fill="#64748b" font-size="9">+ date markers</text>
+      <!-- news-pdf-bot -->
+      <g transform="translate(440,228)">
+        <rect width="140" height="50" rx="8" fill="url(#nodeGrad)" stroke="#a78bfa" stroke-width="1.5"/>
+        <text x="70" y="19" text-anchor="middle" fill="#a78bfa" font-size="10" font-weight="700">news-pdf-bot</text>
+        <text x="70" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Download PDFs + markdown</text>
+        <text x="70" y="44" text-anchor="middle" fill="#64748b" font-size="8">+ date markers</text>
       </g>
-      <line x1="510" y1="230" x2="515" y2="290" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <line x1="510" y1="278" x2="510" y2="303" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
 
-      <!-- #papers channel (output of news-pdf-bot) -->
-      <g transform="translate(440,390)">
-        <rect width="150" height="40" rx="8" fill="#0d2847" stroke="#fbbf24" stroke-width="1"/>
-        <text x="75" y="16" text-anchor="middle" fill="#fbbf24" font-size="11" font-weight="700">#papers</text>
-        <text x="75" y="32" text-anchor="middle" fill="#94a3b8" font-size="9">PDFs + notifications</text>
+      <!-- #papers -->
+      <g transform="translate(450,306)">
+        <rect width="120" height="38" rx="8" fill="#0d2847" stroke="#fbbf24" stroke-width="1"/>
+        <text x="60" y="15" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">#papers</text>
+        <text x="60" y="30" text-anchor="middle" fill="#94a3b8" font-size="8">PDFs + notifications</text>
       </g>
-      <line x1="515" y1="345" x2="515" y2="390" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <line x1="510" y1="344" x2="510" y2="370" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowTeal)"/>
 
-      <!-- corpus-ingest (3-daemon system) — fed by #papers and #new-news -->
-      <g transform="translate(440,470)">
-        <rect width="150" height="55" rx="10" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
-        <text x="75" y="22" text-anchor="middle" fill="#2dd4bf" font-size="11" font-weight="700">corpus-ingest</text>
-        <text x="75" y="38" text-anchor="middle" fill="#94a3b8" font-size="9">3-daemon system</text>
-        <text x="75" y="49" text-anchor="middle" fill="#64748b" font-size="9">local + slack + writer</text>
+      <!-- corpus-ingest -->
+      <g transform="translate(440,373)">
+        <rect width="140" height="50" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
+        <text x="70" y="19" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">corpus-ingest</text>
+        <text x="70" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">3-daemon system</text>
+        <text x="70" y="44" text-anchor="middle" fill="#64748b" font-size="8">local + slack + writer</text>
       </g>
-      <line x1="515" y1="430" x2="515" y2="470" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <line x1="510" y1="423" x2="510" y2="455" stroke="#2dd4bf" stroke-width="1.5"/>
 
-      <!-- LanceDB Corpus -->
-      <g transform="translate(370,565)">
-        <rect width="140" height="55" rx="10" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
-        <text x="70" y="20" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">LanceDB Corpus</text>
-        <text x="70" y="35" text-anchor="middle" fill="#94a3b8" font-size="9">1,903 papers, 154K chunks</text>
-        <text x="70" y="47" text-anchor="middle" fill="#64748b" font-size="9">41 semantic dimensions</text>
+      <!-- ===== ROW 3: Vector databases ===== -->
+
+      <!-- Fork to LanceDB (left-center) and ChromaDB (right-center) -->
+      <line x1="510" y1="455" x2="420" y2="455" stroke="#2dd4bf" stroke-width="1.5"/>
+      <line x1="420" y1="455" x2="420" y2="470" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowTeal)"/>
+      <line x1="510" y1="455" x2="620" y2="455" stroke="#818cf8" stroke-width="1.5"/>
+      <line x1="620" y1="455" x2="620" y2="470" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+      <!-- LanceDB -->
+      <g transform="translate(345,473)">
+        <rect width="150" height="52" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
+        <text x="75" y="17" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">LanceDB Corpus</text>
+        <text x="75" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">1,903 papers, 154K chunks</text>
+        <text x="75" y="43" text-anchor="middle" fill="#64748b" font-size="8">41 semantic dimensions</text>
       </g>
-      <line x1="500" y1="525" x2="460" y2="565" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
 
       <!-- ChromaDB -->
-      <g transform="translate(550,565)">
-        <rect width="130" height="55" rx="10" fill="url(#nodeGrad)" stroke="#818cf8" stroke-width="1.5"/>
-        <text x="65" y="20" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="700">ChromaDB</text>
-        <text x="65" y="35" text-anchor="middle" fill="#94a3b8" font-size="9">Slack messages</text>
-        <text x="65" y="47" text-anchor="middle" fill="#64748b" font-size="9">+ workspace files</text>
+      <g transform="translate(545,473)">
+        <rect width="150" height="52" rx="8" fill="url(#nodeGrad)" stroke="#818cf8" stroke-width="1.5"/>
+        <text x="75" y="17" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="700">ChromaDB</text>
+        <text x="75" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">Slack messages</text>
+        <text x="75" y="43" text-anchor="middle" fill="#64748b" font-size="8">+ workspace files</text>
       </g>
 
-      <!-- corpus-agent with capabilities -->
-      <g transform="translate(280,660)">
-        <rect width="180" height="55" rx="10" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-        <text x="90" y="18" text-anchor="middle" fill="#38bdf8" font-size="11" font-weight="700">corpus-agent</text>
-        <text x="90" y="32" text-anchor="middle" fill="#94a3b8" font-size="9">@robo-minty &bull; Quick search &bull; Deep research</text>
-        <text x="90" y="44" text-anchor="middle" fill="#64748b" font-size="9">Conversation &bull; Overview &bull; Multi-agent</text>
+      <!-- ===== ROW 4: Slack bots ===== -->
+      <line x1="420" y1="525" x2="420" y2="555" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+      <line x1="620" y1="525" x2="620" y2="555" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+
+      <!-- corpus-agent -->
+      <g transform="translate(325,558)">
+        <rect width="190" height="52" rx="8" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
+        <text x="95" y="17" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700">corpus-agent</text>
+        <text x="95" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@robo-minty &bull; Quick search &bull; Deep research</text>
+        <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Conversation &bull; Overview &bull; Multi-agent</text>
       </g>
-      <line x1="430" y1="620" x2="400" y2="660" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
       <!-- search-minty -->
-      <g transform="translate(520,660)">
-        <rect width="170" height="55" rx="10" fill="url(#nodeGrad)" stroke="#818cf8" stroke-width="1.5"/>
-        <text x="85" y="18" text-anchor="middle" fill="#818cf8" font-size="11" font-weight="700">search-minty</text>
-        <text x="85" y="32" text-anchor="middle" fill="#94a3b8" font-size="9">@search-minty &bull; Multi-query RRF</text>
-        <text x="85" y="44" text-anchor="middle" fill="#64748b" font-size="9">Slack semantic search &bull; Agentic</text>
-      </g>
-      <line x1="615" y1="620" x2="610" y2="660" stroke="#818cf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
-
-      <!-- Search indexes (side panel) -->
-      <g transform="translate(790,170)">
-        <rect width="140" height="90" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="70" y="20" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">INDEXERS</text>
-        <text x="70" y="40" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">slack-index</text>
-        <text x="70" y="52" text-anchor="middle" fill="#64748b" font-size="9">Every 4h &rarr; ChromaDB</text>
-        <text x="70" y="70" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">workspace-index</text>
-        <text x="70" y="82" text-anchor="middle" fill="#64748b" font-size="9">Every 6h &rarr; ChromaDB</text>
-      </g>
-      <!-- rclone + backups (side) -->
-      <g transform="translate(790,280)">
-        <rect width="140" height="50" rx="10" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="70" y="20" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">SYNC &amp; BACKUP</text>
-        <text x="70" y="38" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="600">rclone-sync</text>
+      <g transform="translate(540,558)">
+        <rect width="170" height="52" rx="8" fill="url(#nodeGrad)" stroke="#818cf8" stroke-width="1.5"/>
+        <text x="85" y="17" text-anchor="middle" fill="#818cf8" font-size="10" font-weight="700">search-minty</text>
+        <text x="85" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@search-minty &bull; Multi-query RRF</text>
+        <text x="85" y="43" text-anchor="middle" fill="#64748b" font-size="8">Slack semantic search &bull; Agentic</text>
       </g>
 
-      <!-- Animated dots on key paths -->
+      <!-- ===== SIDE PANEL: Indexers + Sync ===== -->
+      <g transform="translate(750,228)">
+        <rect width="140" height="115" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="70" y="18" text-anchor="middle" fill="#94a3b8" font-size="8" font-weight="600">BACKGROUND SERVICES</text>
+        <text x="70" y="38" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">slack-index</text>
+        <text x="70" y="50" text-anchor="middle" fill="#64748b" font-size="8">Every 4h &rarr; ChromaDB</text>
+        <text x="70" y="66" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">workspace-index</text>
+        <text x="70" y="78" text-anchor="middle" fill="#64748b" font-size="8">Every 6h &rarr; ChromaDB</text>
+        <text x="70" y="94" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">rclone-sync</text>
+        <text x="70" y="106" text-anchor="middle" fill="#64748b" font-size="8">Drive sync + backups</text>
+      </g>
+
+      <!-- ===== Animated dots ===== -->
+      <!-- Top chain: sources → feedme → #feed → promote -->
       <circle r="3" fill="#38bdf8" opacity=".8">
-        <animateMotion dur="3s" repeatCount="indefinite" path="M190,55 L250,50 390,50 440,50"/>
+        <animateMotion dur="3s" repeatCount="indefinite" path="M88,39 L243,39 379,39 489,39 617,39"/>
       </circle>
-      <circle r="3" fill="#fb923c" opacity=".8">
-        <animateMotion dur="2.5s" repeatCount="indefinite" path="M190,165 L250,165 390,165 440,185"/>
-      </circle>
-      <!-- Main ingestion path: #new-news → news-pdf-bot → #papers → corpus-ingest → LanceDB → corpus-agent -->
+      <!-- Main pipeline spine: hub → pdf-bot → #papers → ingest → LanceDB → corpus-agent -->
       <circle r="3" fill="#a78bfa" opacity=".8">
-        <animateMotion dur="4s" repeatCount="indefinite" path="M515,230 L515,290 515,390 515,470 460,565 400,660"/>
+        <animateMotion dur="4s" repeatCount="indefinite" path="M510,170 L510,228 510,306 510,373 510,455 420,473 420,558"/>
       </circle>
+      <!-- Digest branch: hub → yesterday-in-ai → email -->
       <circle r="3" fill="#f472b6" opacity=".8">
-        <animateMotion dur="2s" repeatCount="indefinite" path="M460,230 L320,290 275,395"/>
+        <animateMotion dur="2.5s" repeatCount="indefinite" path="M510,205 L275,205 275,228 275,306"/>
       </circle>
-
-      <!-- Lab Members intake -->
-      <g transform="translate(30,240)">
-        <rect width="160" height="50" rx="10" fill="url(#nodeGrad)" stroke="#4ade80" stroke-dasharray="4,3"/>
-        <text x="80" y="22" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="600">LAB MEMBERS</text>
-        <text x="80" y="38" text-anchor="middle" fill="#e2e8f0" font-size="11">Post to #new-news</text>
-      </g>
-      <line x1="190" y1="265" x2="440" y2="200" stroke="#4ade80" stroke-width="1" stroke-dasharray="4,3" marker-end="url(#arrowGreen)"/>
     </svg>
   </div>
 
