@@ -300,7 +300,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <p class="lead">A practical guide to using the MINT Lab's automated systems from Slack. Everything here runs in the background &mdash; you interact with it through Slack channels and bot mentions.</p>
 
   <div class="callout" style="border-left-color:var(--yellow)">
-    <p><strong>Two access tiers:</strong> Everyone in <code>#new-news</code> can use <code>@robo-minty</code> for corpus search, receive the daily digest email, and upload papers to <code>#papers</code>. <code>@search-minty</code> (Slack message search) is available to full lab members only. The <code>#feed-*</code> channels are Seth's curation workspace and not visible to other members.</p>
+    <p><strong>Two access tiers:</strong> Everyone in <code>#new-news</code> can use <code>@robo-minty</code> for corpus search, receive the daily digest email, and upload papers to <code>#papers</code>. <code>@minty-search</code> (Slack message search) is available to full lab members only.</p>
   </div>
 
   <h3>Slack Channels</h3>
@@ -344,12 +344,12 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </table>
   <p style="font-size:13px;margin-top:8px"><strong>Shortcuts:</strong> Skip the menu by prefixing your message &mdash; <code>search:</code>, <code>review:</code>, <code>deep:</code>, <code>research:</code>, <code>overview:</code>. Use <code>list</code> to see your past queries, <code>--end</code> to close a session.</p>
 
-  <h3>Using @search-minty (Slack Search)</h3>
-  <p>Full lab members only &mdash; not available in <code>#new-news</code>. Mention <code>@search-minty</code> with a natural-language query to search across all indexed Slack messages.</p>
+  <h3>Using @minty-search (Slack Search)</h3>
+  <p>Full lab members only &mdash; not available in <code>#new-news</code>. Mention <code>@minty-search</code> with a natural-language query to search across all indexed Slack messages.</p>
   <ul class="clean">
-    <li>Filter by channel: <code>@search-minty what did we discuss about alignment in:#papers</code></li>
-    <li>Filter by person: <code>@search-minty from:seth posts about governance</code></li>
-    <li>Filter by time: <code>@search-minty days:7 recent discussions on tool use</code></li>
+    <li>Filter by channel: <code>@minty-search what did we discuss about alignment in:#papers</code></li>
+    <li>Filter by person: <code>@minty-search from:seth posts about governance</code></li>
+    <li>Filter by time: <code>@minty-search days:7 recent discussions on tool use</code></li>
     <li>Follow up in the same thread for refined searches</li>
   </ul>
 
@@ -532,12 +532,12 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Deep Review &bull; Conversation</text>
       </g>
 
-      <!-- ===== SIDE PANEL: Background services + search-minty ===== -->
+      <!-- ===== SIDE PANEL: Background services + minty-search ===== -->
       <g transform="translate(730,228)">
         <rect width="180" height="190" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
         <text x="90" y="18" text-anchor="middle" fill="#94a3b8" font-size="8" font-weight="600">BACKGROUND SERVICES</text>
-        <text x="90" y="40" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">search-minty</text>
-        <text x="90" y="52" text-anchor="middle" fill="#64748b" font-size="8">@search-minty &bull; Slack search</text>
+        <text x="90" y="40" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">minty-search</text>
+        <text x="90" y="52" text-anchor="middle" fill="#64748b" font-size="8">@minty-search &bull; Slack search</text>
         <text x="90" y="64" text-anchor="middle" fill="#64748b" font-size="8">Multi-query RRF &bull; Agentic</text>
         <text x="90" y="84" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">slack-index</text>
         <text x="90" y="96" text-anchor="middle" fill="#64748b" font-size="8">Every 4h &rarr; ChromaDB</text>
@@ -719,14 +719,14 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </div>
     </div>
 
-    <div class="card" data-search="slack-index slack-search search-minty semantic chromadb voyage index messages agentic rrf">
+    <div class="card" data-search="slack-index slack-search minty-search semantic chromadb voyage index messages agentic rrf">
       <div class="card-head" onclick="toggleCard(this)">
         <div class="card-icon" style="background:rgba(129,140,248,.15)">&#128270;</div>
-        <div><div class="card-title">slack-index / search-minty</div><div class="card-sub"><span class="tag tag-polling">4h index</span> <span class="tag tag-persistent">Persistent bot</span> <span class="health-ok">&#9679;</span></div></div>
+        <div><div class="card-title">slack-index / minty-search</div><div class="card-sub"><span class="tag tag-polling">4h index</span> <span class="tag tag-persistent">Persistent bot</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Two-part system. The <strong>indexer</strong> runs every 4 hours, incrementally embedding all public Slack messages into ChromaDB via Voyage AI voyage-3, with per-channel watermarks and thread replies concatenated into parent documents.</p>
-        <p>The <strong>search bot</strong> (<code>@search-minty</code>) is a persistent Socket Mode daemon. When @mentioned, it spawns a full Claude Opus agent with Bash-only tool access (optional Codex gpt-5.3-codex backend configurable via <code>LLM_BACKEND</code> env var). The agent classifies intent, generates 3&ndash;5 semantically diverse query variants, executes them via <code>search_dispatch.py</code>, and synthesizes results into flowing prose with inline Slack permalink citations.</p>
+        <p>The <strong>search bot</strong> (<code>@minty-search</code>) is a persistent Socket Mode daemon. When @mentioned, it spawns a full Claude Opus agent with Bash-only tool access (optional Codex gpt-5.3-codex backend configurable via <code>LLM_BACKEND</code> env var). The agent classifies intent, generates 3&ndash;5 semantically diverse query variants, executes them via <code>search_dispatch.py</code>, and synthesizes results into flowing prose with inline Slack permalink citations.</p>
         <div class="detail-row"><span class="detail-label">Search strategy</span><span class="detail-val">Multi-query Reciprocal Rank Fusion (RRF, k=60). Agent generates diverse-angle queries, not synonyms. Scores fused across retrieval passes.</span></div>
         <div class="detail-row"><span class="detail-label">Resilience</span><span class="detail-val">3-tier: Primary agent &rarr; Relief officer (fresh context) &rarr; Direct search + formatter. Never returns a hard error.</span></div>
         <div class="detail-row"><span class="detail-label">UX</span><span class="detail-val">Haiku-generated contextual placeholder while Opus works. Whimsical progress messages after 2 min. Catch-up sweep on restart recovers missed queries.</span></div>
@@ -1493,7 +1493,7 @@ const searchData = [
   {t:'corpus-ingest-slack',d:'Daytime real-time Slack ingestion: 2 workers, active 08:00-20:00 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-writer',d:'Serialized LanceDB writer: eliminates concurrent write conflicts, always on',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'cli-health-probe',d:'Sentinel daemon: probes CLI auth every 10m, emails alerts on failure/recovery',tag:'Daemon',c:'#94a3b8',s:'#daemons'},
-  {t:'search-minty',d:'Agentic Slack search: Opus agent with multi-query RRF fusion, 3-tier resilience, contextual UX',tag:'Daemon',c:'#818cf8',s:'#daemons'},
+  {t:'minty-search',d:'Agentic Slack search: Opus agent with multi-query RRF fusion, 3-tier resilience, contextual UX',tag:'Daemon',c:'#818cf8',s:'#daemons'},
   {t:'workspace-index',d:'Semantic workspace file search via ChromaDB',tag:'Daemon',c:'#818cf8',s:'#daemons'},
   {t:'rclone-sync',d:'Google Drive bisync + daily corpus backups',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'vault.py',d:'Single-tier credential management (login keychain)',tag:'Infra',c:'#f87171',s:'#infra'},
