@@ -236,6 +236,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </div>
   <a class="nav-link" href="#overview"><span class="icon">&#127968;</span> Overview</a>
   <a class="nav-link" href="#guide"><span class="icon">&#128214;</span> For Lab Members</a>
+  <a class="nav-link" href="#bots" style="padding-left:36px;font-size:12px"><span class="icon">&#129302;</span> Bots</a>
   <a class="nav-link" href="#slack-channels" style="padding-left:36px;font-size:12px"><span class="icon">&#128172;</span> Slack Channels</a>
   <a class="nav-link" href="#pipeline"><span class="icon">&#9889;</span> Content Pipeline</a>
   <a class="nav-link" href="#daemons"><span class="icon">&#9881;</span> Daemons</a>
@@ -304,23 +305,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
     <p><strong>Two access tiers:</strong> Everyone in <code>#new-news</code> can use <code>@robo-minty</code> for corpus search, receive the daily digest email, and upload papers to <code>#papers</code>. <code>@minty-search</code> (Slack message search) is available to full lab members only.</p>
   </div>
 
-  <h3 id="slack-channels">Slack Channels</h3>
-  <p>The workspace has ~57 channels. Most day-to-day activity happens in a handful of them.</p>
-  <table class="ref-table">
-    <thead><tr><th>Channel</th><th>What It's For</th></tr></thead>
-    <tbody>
-      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Everyday</td></tr>
-      <tr><td><code>#general</code></td><td>Announcements and all-hands discussion</td></tr>
-      <tr><td><code>#random</code></td><td>Off-topic, jokes, misc</td></tr>
-      <tr><td><code>#new-news</code></td><td>AI news, papers, and links &mdash; curated items land here automatically, and anyone can post directly</td></tr>
-      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Research Projects</td></tr>
-      <tr><td><code>#proj-*</code></td><td>One channel per active project (e.g. <code>#proj-unhobbling-agents</code>, <code>#proj-claims-secil</code>). Each links to its Google Drive folder. Post project-specific discussion, drafts, and updates here.</td></tr>
-      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Reference &amp; Coordination</td></tr>
-      <tr><td><code>#papers</code></td><td>Upload PDFs to add them to the research corpus (auto-ingested)</td></tr>
-      <tr><td><code>#lab-meetings</code></td><td>Weekly digest canvas and meeting coordination</td></tr>
-      <tr><td><code>#review-wip</code></td><td>Share works-in-progress for lab feedback</td></tr>
-    </tbody>
-  </table>
+  <h3 id="bots">Bots</h3>
 
   <h3>What Happens Automatically</h3>
   <ul class="clean">
@@ -367,6 +352,24 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
   <h3>How News Gets Curated</h3>
   <p style="font-size:13px">The daily flow: <strong>feedme-daily</strong> fetches hundreds of items from external sources (Twitter, arXiv, RSS, Bluesky, email, PhilPapers) each morning and classifies them by relevance. The top 20&ndash;40% land in a private <code>#feed</code> channel where Seth reviews and thumbs-up the best items. Those are automatically promoted to <code>#new-news</code> with PDFs attached and summaries generated. Lab members can also post directly to <code>#new-news</code>.</p>
+
+  <h3 id="slack-channels">Slack Channels</h3>
+  <p>The workspace has ~57 channels. Most day-to-day activity happens in a handful of them.</p>
+  <table class="ref-table">
+    <thead><tr><th>Channel</th><th>What It's For</th></tr></thead>
+    <tbody>
+      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Everyday</td></tr>
+      <tr><td><code>#general</code></td><td>Announcements and all-hands discussion</td></tr>
+      <tr><td><code>#random</code></td><td>Off-topic, jokes, misc</td></tr>
+      <tr><td><code>#new-news</code></td><td>AI news, papers, and links &mdash; curated items land here automatically, and anyone can post directly</td></tr>
+      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Research Projects</td></tr>
+      <tr><td><code>#proj-*</code></td><td>One channel per active project (e.g. <code>#proj-unhobbling-agents</code>, <code>#proj-claims-secil</code>). Each links to its Google Drive folder. Post project-specific discussion, drafts, and updates here.</td></tr>
+      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Reference &amp; Coordination</td></tr>
+      <tr><td><code>#papers</code></td><td>Upload PDFs to add them to the research corpus (auto-ingested)</td></tr>
+      <tr><td><code>#lab-meetings</code></td><td>Weekly digest canvas and meeting coordination</td></tr>
+      <tr><td><code>#review-wip</code></td><td>Share works-in-progress for lab feedback</td></tr>
+    </tbody>
+  </table>
 </section>
 
 <!-- ============ PIPELINE ============ -->
