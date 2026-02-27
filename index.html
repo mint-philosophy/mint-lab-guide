@@ -235,6 +235,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
     <span>&#128269;</span> Search... <kbd>&#8984;K</kbd>
   </div>
   <a class="nav-link" href="#overview"><span class="icon">&#127968;</span> Overview</a>
+  <a class="nav-link" href="#guide"><span class="icon">&#128214;</span> For Lab Members</a>
   <a class="nav-link" href="#pipeline"><span class="icon">&#9889;</span> Content Pipeline</a>
   <a class="nav-link" href="#daemons"><span class="icon">&#9881;</span> Daemons</a>
   <a class="nav-link" href="#timeline"><span class="icon">&#128339;</span> Schedule</a>
@@ -260,7 +261,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <h1>Agentic Infrastructure for the <span class="gradient">MINT Lab</span></h1>
   <p class="subtitle">A complete guide to the autonomous systems, research tools, and AI agents powering the Machine Intelligence &amp; Normative Theory research lab at Johns Hopkins University.</p>
   <div class="stats">
-    <div class="stat-card"><div class="num">15</div><div class="label">Daemons</div></div>
+    <div class="stat-card"><div class="num">19</div><div class="label">Daemons</div></div>
     <div class="stat-card"><div class="num">1,903</div><div class="label">Papers Indexed</div></div>
     <div class="stat-card"><div class="num">16</div><div class="label">Skills</div></div>
     <div class="stat-card"><div class="num">24</div><div class="label">Commands</div></div>
@@ -272,7 +273,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 <!-- ============ OVERVIEW ============ -->
 <section class="fade-in">
   <h2><span class="icon">&#127968;</span> What Is This System?</h2>
-  <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 15 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
+  <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 19 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
 
   <div class="grid-2" style="margin-top:20px">
     <div>
@@ -290,6 +291,62 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </ul>
     </div>
   </div>
+</section>
+
+<!-- ============ FOR LAB MEMBERS ============ -->
+<section id="guide" class="fade-in">
+  <h2><span class="icon">&#128214;</span> For Lab Members</h2>
+  <p class="lead">A practical guide to using the MINT Lab's automated systems from Slack. Everything here runs in the background &mdash; you interact with it through Slack channels and bot mentions.</p>
+
+  <div class="callout" style="border-left-color:var(--yellow)">
+    <p><strong>Two access tiers:</strong> Everyone in <code>#new-news</code> can use <code>@robo-minty</code> for corpus search, receive the daily digest email, and upload papers to <code>#papers</code>. <code>@search-minty</code> (Slack message search) is available to full lab members only. The <code>#feed-*</code> channels are Seth's curation workspace and not visible to other members.</p>
+  </div>
+
+  <h3>What Happens Automatically</h3>
+  <ul class="clean">
+    <li><strong>Daily digest email</strong> &mdash; Each morning, a curated summary of yesterday's AI news arrives in your inbox (Yesterday in AI)</li>
+    <li><strong>Weekly roundup</strong> &mdash; Each Wednesday, a comprehensive weekly digest is posted as a canvas in <code>#lab-meetings</code> (Last Week in AI)</li>
+    <li><strong>PDF attachment</strong> &mdash; When papers or articles are shared in <code>#new-news</code>, PDFs are automatically found, downloaded, and posted as thread replies</li>
+    <li><strong>Corpus ingestion</strong> &mdash; Papers uploaded to <code>#papers</code> are automatically processed into the searchable research corpus (embedding, 41-dimension analysis, Zotero cataloguing)</li>
+  </ul>
+
+  <h3>Using @robo-minty (Corpus Search)</h3>
+  <p>Available to everyone in <code>#new-news</code>. Mention <code>@robo-minty</code> in any channel where it's a member with a research question. You'll get an interactive menu offering 5 modes:</p>
+  <table class="ref-table">
+    <thead><tr><th>Mode</th><th>Speed</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Conversation</strong></td><td>Instant</td><td>Direct Q&amp;A with tool access to the corpus &mdash; good for quick factual questions</td></tr>
+      <tr><td><strong>Fast Search</strong></td><td>~2 min</td><td>Semantic query expansion across 49 embedding dimensions with Reciprocal Rank Fusion</td></tr>
+      <tr><td><strong>Fast Review</strong></td><td>~15 min</td><td>Short literature review &mdash; search + synthesis in one pass</td></tr>
+      <tr><td><strong>Deep Search</strong></td><td>~5 min</td><td>Multi-round search with gap analysis &mdash; finds papers that a single-pass search misses</td></tr>
+      <tr><td><strong>Deep Review</strong></td><td>~60 min</td><td>Full 4-phase pipeline: multi-round search, parallel paper reading, synthesis, QA verification. Produces a 3,000&ndash;5,000 word literature review posted as a Slack canvas.</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px;margin-top:8px"><strong>Shortcuts:</strong> Skip the menu by prefixing your message &mdash; <code>search:</code>, <code>review:</code>, <code>deep:</code>, <code>research:</code>, <code>overview:</code>. Use <code>list</code> to see your past queries, <code>--end</code> to close a session.</p>
+
+  <h3>Using @search-minty (Slack Search)</h3>
+  <p>Full lab members only &mdash; not available in <code>#new-news</code>. Mention <code>@search-minty</code> with a natural-language query to search across all indexed Slack messages.</p>
+  <ul class="clean">
+    <li>Filter by channel: <code>@search-minty what did we discuss about alignment in:#papers</code></li>
+    <li>Filter by person: <code>@search-minty from:seth posts about governance</code></li>
+    <li>Filter by time: <code>@search-minty days:7 recent discussions on tool use</code></li>
+    <li>Follow up in the same thread for refined searches</li>
+  </ul>
+
+  <h3>Adding Papers to the Corpus</h3>
+  <div class="grid-2">
+    <div>
+      <h3 style="color:var(--green);margin-top:8px">One at a time</h3>
+      <p>Upload a PDF directly to <code>#papers</code> in Slack. The ingestion pipeline processes it automatically &mdash; you'll see a &#9989; reaction and a thread reply when it's done. The paper gets embedded, analyzed across 41 dimensions, summarised, and catalogued in Zotero.</p>
+    </div>
+    <div>
+      <h3 style="color:var(--orange);margin-top:8px">Bulk uploads</h3>
+      <p>Upload PDFs to the <strong>local-pdfs</strong> folder in Google Drive. They sync down to the Mac Studio and are processed overnight by the batch ingestion daemon (8 concurrent workers). This is the right path for adding dozens of papers at once &mdash; don't dump bulk uploads in <code>#papers</code>.</p>
+    </div>
+  </div>
+
+  <h3>How News Gets Curated</h3>
+  <p style="font-size:13px">The daily flow: <strong>feedme-daily</strong> fetches hundreds of items from external sources (Twitter, arXiv, RSS, Bluesky, email, PhilPapers) each morning and classifies them by relevance. The top 20&ndash;40% land in a private <code>#feed</code> channel where Seth reviews and thumbs-up the best items. Those are automatically promoted to <code>#new-news</code> with PDFs attached and summaries generated. Lab members can also post directly to <code>#new-news</code>.</p>
 </section>
 
 <!-- ============ PIPELINE ============ -->
@@ -493,7 +550,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ DAEMONS ============ -->
 <section id="daemons" class="fade-in">
-  <h2><span class="icon">&#9881;</span> The 15 Daemons</h2>
+  <h2><span class="icon">&#9881;</span> The 19 Daemons</h2>
   <p>All daemons run on the Mac Studio via macOS <code>launchd</code>. They share a common <code>platform_config.py</code> for paths and secrets, and a shared Python 3.12 venv at <code>daemons/pipeline/.venv/</code>. <span style="color:var(--text3);font-size:12px">Tap any card to expand.</span></p>
 
   <div class="cards" id="daemonCards">
@@ -521,7 +578,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </div>
       <div class="card-body">
         <p>Watches <code>#feed-{dayname}</code> channels for Seth's &#128077; reactions. Copies thumbsed-up messages verbatim to <code>#new-news</code>, uploads any PDF attachments found in thread replies. The human curation bridge between automated feeds and the curated news channel.</p>
-        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (pure relay daemon)</span></div>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Opus (generates summaries for long-form content as thread replies in <code>#new-news</code>)</span></div>
         <div class="detail-row"><span class="detail-label">State</span><span class="detail-val"><code>data/state.json</code> &mdash; per-channel watermarks, promoted timestamps (capped at 500)</span></div>
         <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/feed-promote/promote.py</code>, <code>pdf_validator.py</code></span></div>
       </div>
@@ -544,7 +601,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
     <div class="card" data-search="news-pdf-bot pdf paper download arxiv find agent browser selenium">
       <div class="card-head" onclick="toggleCard(this)">
         <div class="card-icon" style="background:rgba(167,139,250,.15)">&#128196;</div>
-        <div><div class="card-title">news-pdf-bot</div><div class="card-sub"><span class="tag tag-polling">Every 5m</span> <span class="health-ok">&#9679;</span></div></div>
+        <div><div class="card-title">news-pdf-bot</div><div class="card-sub"><span class="tag tag-polling">Every 60s</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Watches <code>#new-news</code> and <code>#minty-chat</code> for paper/article URLs, downloads PDFs and generates companion markdown files, uploading both as thread replies. Three-tier architecture: (1) Fast programmatic pattern matching (arXiv, bioRxiv, direct PDF links), (2) Twitter thread expansion, (3) Full Claude agent fallback with 12 specialized tools including Semantic Scholar, Unpaywall, and headless browser.</p>
@@ -572,7 +629,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
     <div class="card" data-search="last-week-in-ai weekly digest lab meeting summary">
       <div class="card-head" onclick="toggleCard(this)">
         <div class="card-icon" style="background:rgba(244,114,182,.15)">&#128197;</div>
-        <div><div class="card-title">last-week-in-ai</div><div class="card-sub"><span class="tag tag-weekly">Thursday 08:00</span> <span class="health-ok">&#9679;</span></div></div>
+        <div><div class="card-title">last-week-in-ai</div><div class="card-sub"><span class="tag tag-weekly">Wednesday 08:00</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Weekly variant of yesterday-in-ai. Uses multi-agent pipeline for the larger volume: classifies messages into 8 thematic sections (Normative Competence, Philosophy of AI, Agents, Post-AGI, Regulation, Capabilities, Industry, Other), spawns parallel section writers, assembles final digest. Posted to <code>#lab-meetings</code> as a Slack canvas.</p>
@@ -609,7 +666,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div class="detail-row"><span class="detail-label">Stages</span><span class="detail-val">Download &rarr; Rename &rarr; Markdown &rarr; Embed &rarr; Enrich &rarr; Analyze &rarr; RAPTOR &rarr; Verify &rarr; Drive Links &rarr; Zotero &rarr; Report</span></div>
         <div class="detail-row"><span class="detail-label">Worker pools</span><span class="detail-val">Pipeline: 8 &bull; Embed: 4 &bull; Enrich: 4 &bull; Analyze: 6 &bull; RAPTOR: 6</span></div>
         <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Persistent (KeepAlive), active hours 20:15&ndash;07:45 AEDT</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/daemon.py</code>, <code>pipeline.py</code>, <code>lib/</code>, <code>config.yaml</code></span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/ingest.py</code>, <code>pipeline.py</code>, <code>lib/</code>, <code>config.yaml</code></span></div>
       </div>
     </div>
 
@@ -619,12 +676,12 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div><div class="card-title">corpus-ingest-slack</div><div class="card-sub"><span class="tag tag-persistent">Persistent (08:00&ndash;20:00)</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Daytime real-time ingestion daemon for papers shared in Slack. Monitors <code>#papers</code> and <code>#new-news</code> for PDF uploads during business hours (08:00&ndash;20:00 AEDT) with 2 concurrent workers. Designed for low-latency processing of newly shared papers.</p>
+        <p>Daytime real-time ingestion daemon for papers shared in Slack. Monitors <code>#papers</code> for PDF uploads during business hours (08:00&ndash;20:00 AEDT) with 2 concurrent workers. Designed for low-latency processing of newly shared papers.</p>
         <div class="detail-row"><span class="detail-label">Architecture</span><span class="detail-val">Part of the 3-daemon corpus-ingest system. Lightweight daytime complement to corpus-ingest-local's overnight batch processing.</span></div>
         <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Codex gpt-5.2 xhigh (analysis), gpt-5.3-codex-spark high (enrichment), Voyage voyage-context-3 2048d (embedding)</span></div>
         <div class="detail-row"><span class="detail-label">Workers</span><span class="detail-val">Pipeline: 2</span></div>
         <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Persistent (KeepAlive), active hours 08:00&ndash;20:00 AEDT</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/daemon.py</code>, <code>config.yaml</code></span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/ingest.py</code>, <code>config.yaml</code></span></div>
       </div>
     </div>
 
@@ -684,6 +741,32 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </div>
     </div>
 
+    <div class="card" data-search="archive-feed-channels feed rotation cleanup stale channels">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(251,191,36,.15)">&#128451;</div>
+        <div><div class="card-title">archive-feed-channels</div><div class="card-sub"><span class="tag tag-weekly">Wednesday 12:00</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Housekeeping daemon that archives stale <code>#feed-{dayname}</code> channels after Last Week in AI has consumed them. Runs Wednesday at noon (4 hours after LWAI's 08:00 run). Updates the active channel cache used by feedme-daily and feed-promote.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (pure infrastructure)</span></div>
+        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Wednesday 12:00 (after LWAI finishes)</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/pipeline/scripts/archive_feed_channels.py</code>, <code>channel_rotation.py</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="corpus-ingest-handoff handoff slack local overnight transfer">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#128259;</div>
+        <div><div class="card-title">corpus-ingest-handoff</div><div class="card-sub"><span class="tag tag-daily">Daily 20:15</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Moves unprocessed PDFs from the Slack download queue to the local processing directory at the start of the overnight window. Bridges the daytime Slack ingestion and overnight batch processing daemons.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (file mover)</span></div>
+        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Daily at 20:15 AEDT</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/handoff_slack_to_local.py</code></span></div>
+      </div>
+    </div>
+
     <div class="card" data-search="cli-health-probe health auth monitor probe alert email">
       <div class="card-head" onclick="toggleCard(this)">
         <div class="card-icon" style="background:rgba(148,163,184,.15)">&#128161;</div>
@@ -694,6 +777,29 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">Claude Haiku (minimal probe call)</span></div>
         <div class="detail-row"><span class="detail-label">Alerts</span><span class="detail-val">Email to seth@mintresearch.org + secil.yanikguyot@anu.edu.au on failure/recovery</span></div>
         <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/cli-health-probe/</code></span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="ghost cms website newsletter mintresearch blog">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#127760;</div>
+        <div><div class="card-title">ghost</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Ghost CMS instance powering mintresearch.org. Hosts the lab website and newsletter platform. Runs locally on port 2368, exposed via Cloudflare Tunnel.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (web server)</span></div>
+        <div class="detail-row"><span class="detail-label">URL</span><span class="detail-val">mintresearch.org / newsletter.mintresearch.org</span></div>
+      </div>
+    </div>
+
+    <div class="card" data-search="cloudflared cloudflare tunnel dns routing">
+      <div class="card-head" onclick="toggleCard(this)">
+        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#9729;</div>
+        <div><div class="card-title">cloudflared</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+      </div>
+      <div class="card-body">
+        <p>Cloudflare Tunnel daemon that routes <code>mintresearch.org</code> traffic to the local Ghost instance at <code>localhost:2368</code>. Provides HTTPS termination and DDoS protection without exposing the Mac Studio's IP.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (network tunnel)</span></div>
       </div>
     </div>
 
@@ -1260,7 +1366,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <ul class="clean">
         <li><code>.claude/</code> &mdash; Commands, skills, hooks, agents, settings, tasks</li>
         <li><code>SCRIPTS/</code> &mdash; 56 automation scripts (vault.py, startup.py, session_db.py, index_workspace.py, maintain.py, etc.)</li>
-        <li><code>daemons/</code> &mdash; All 15 daemon services, shared pipeline venv, platform_config.py</li>
+        <li><code>daemons/</code> &mdash; All 19 daemon services, shared pipeline venv, platform_config.py</li>
         <li><code>data/</code> &mdash; ChromaDB indexes (slack_index, workspace_index), sync logs</li>
         <li><code>sessions/</code> &mdash; Session records, templates, schema</li>
         <li><code>lib/</code> &mdash; Shared Python library (slack_search.py, workspace.py, platform_utils.py)</li>
@@ -1312,7 +1418,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <section style="text-align:center;padding:48px;color:var(--text3);font-size:13px">
   <p>MINT Lab &mdash; Machine Intelligence &amp; Normative Theory &mdash; Johns Hopkins University</p>
-  <p>Updated 27 February 2026</p>
+  <p>Updated 28 February 2026</p>
 </section>
 
 </main>
@@ -1386,6 +1492,10 @@ const searchData = [
   {t:'Brave Search',d:'Web search fallback via Brave Search API',tag:'Integration',c:'#fbbf24',s:'#integrations'},
   {t:'Telegram',d:'Alert notifications to admin',tag:'Integration',c:'#fbbf24',s:'#integrations'},
   {t:'OpenAI Codex CLI',d:'LLM backend for analysis, verification, and agentic search in corpus-ingest, yesterday-in-ai, slack-search',tag:'Integration',c:'#fbbf24',s:'#integrations'},
+  {t:'archive-feed-channels',d:'Archives stale #feed-{day} channels after LWAI consumes them (Wed 12:00)',tag:'Daemon',c:'#fbbf24',s:'#daemons'},
+  {t:'corpus-ingest-handoff',d:'Moves unprocessed Slack PDFs to local queue for overnight batch processing (daily 20:15)',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
+  {t:'ghost',d:'Ghost CMS for mintresearch.org — website + newsletter platform',tag:'Daemon',c:'#94a3b8',s:'#daemons'},
+  {t:'cloudflared',d:'Cloudflare Tunnel routing mintresearch.org → localhost:2368',tag:'Daemon',c:'#94a3b8',s:'#daemons'},
 ];
 
 function openSearch() {
@@ -1444,7 +1554,7 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     {name:'corpus-ingest-slack', blocks:[[8,20]], color:'#2dd4bf', note:'08:00-20:00'},
     {name:'corpus-ingest-writer', type:'persistent', color:'#2dd4bf'},
     {name:'slack-search', type:'persistent', color:'#818cf8'},
-    {name:'news-pdf-bot', blocks:[[0,24]], color:'#a78bfa', note:'Every 5m'},
+    {name:'news-pdf-bot', blocks:[[0,24]], color:'#a78bfa', note:'Every 60s'},
     {name:'feed-promote', blocks:[[0,24]], color:'#4ade80', note:'Every 60s'},
     {name:'cli-health-probe', blocks:[[0,24]], color:'#94a3b8', note:'Every 10m'},
     {name:'rclone-sync', blocks:[[0,24]], color:'#2dd4bf', note:'Every 10m'},
@@ -1452,7 +1562,11 @@ document.querySelectorAll('.fade-in').forEach(el => observer.observe(el));
     {name:'workspace-index', blocks:[[0,1],[6,7],[12,13],[18,19]], color:'#818cf8', note:'Every 6h'},
     {name:'feedme-daily', blocks:[[6,7]], color:'#38bdf8', note:'06:15'},
     {name:'yesterday-in-ai', blocks:[[5,6]], color:'#f472b6', note:'05:30'},
-    {name:'last-week-in-ai', blocks:[[8,9]], color:'#f472b6', note:'Thu 08:00'},
+    {name:'last-week-in-ai', blocks:[[8,9]], color:'#f472b6', note:'Wed 08:00'},
+    {name:'archive-feed-channels', blocks:[[12,13]], color:'#fbbf24', note:'Wed 12:00'},
+    {name:'corpus-ingest-handoff', blocks:[[20,21]], color:'#2dd4bf', note:'Daily 20:15'},
+    {name:'ghost', type:'persistent', color:'#94a3b8'},
+    {name:'cloudflared', type:'persistent', color:'#94a3b8'},
   ];
   const c = document.getElementById('timelineChart');
   daemons.forEach(d => {
