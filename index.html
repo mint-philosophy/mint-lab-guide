@@ -539,7 +539,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <rect width="140" height="50" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
         <text x="70" y="19" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">corpus-ingest</text>
         <text x="70" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Unified pipeline</text>
-        <text x="70" y="44" text-anchor="middle" fill="#64748b" font-size="8">12-stage ingestion</text>
+        <text x="70" y="44" text-anchor="middle" fill="#64748b" font-size="8">11-stage ingestion</text>
       </g>
       <!-- ===== ROW 3: LanceDB (centered on spine) ===== -->
       <line x1="510" y1="423" x2="510" y2="470" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowTeal)"/>
@@ -727,9 +727,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div><div class="card-title">corpus-ingest</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Unified paper ingestion pipeline. Monitors Slack <code>#firehose</code> and <code>#papers</code> for PDF uploads, running a 12-stage pipeline per paper: dedup (SHA-256), pre-check (arXiv/CrossRef metadata), markdown conversion (6-tier cascade), chunk+embed (Voyage voyage-context-3 2048d into LanceDB), 41-question semantic analysis, RAPTOR hierarchical summaries, rename, citation enrichment, Google Drive upload, JSON write, archive, and Zotero cataloguing.</p>
+        <p>Unified paper ingestion pipeline. Monitors Slack <code>#firehose</code> and <code>#papers</code> for PDF uploads, running an 11-stage pipeline per paper: pre-check (arXiv/CrossRef metadata), markdown conversion (6-tier cascade), chunk+embed (Voyage voyage-context-3 2048d into LanceDB), 41-question semantic analysis, RAPTOR hierarchical summaries, rename, citation enrichment, Google Drive upload, JSON write, archive, and Zotero cataloguing.</p>
         <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Codex gpt-5.2 xhigh (analysis + RAPTOR), Voyage voyage-context-3 2048d (embedding)</span></div>
-        <div class="detail-row"><span class="detail-label">Stages</span><span class="detail-val">Dedup &rarr; Pre-check &rarr; Markdown &rarr; Chunk+Embed &rarr; Analyze &rarr; RAPTOR &rarr; Name &rarr; Cite &rarr; Drive &rarr; Write JSON &rarr; Archive &rarr; Zotero</span></div>
+        <div class="detail-row"><span class="detail-label">Stages</span><span class="detail-val">Pre-check &rarr; Markdown &rarr; Chunk+Embed &rarr; Analyze &rarr; RAPTOR &rarr; Name &rarr; Cite &rarr; Drive &rarr; Write JSON &rarr; Archive &rarr; Zotero</span></div>
         <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Persistent (KeepAlive, RunAtLoad), polls every 600s</span></div>
         <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/ingest.py</code>, <code>pipeline.py</code>, <code>lib/</code></span></div>
       </div>
