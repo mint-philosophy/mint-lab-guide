@@ -578,18 +578,47 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <text x="90" y="180" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">cli-health-probe</text>
       </g>
 
-      <!-- ===== Animated dots (CSS keyframes for iOS compatibility) ===== -->
-      <style>
-        @keyframes dot-top { 0%{cx:88;cy:39;opacity:.9} 25%{cx:243;cy:39} 50%{cx:379;cy:39} 75%{cx:529;cy:39} 100%{cx:617;cy:39;opacity:.9} }
-        @keyframes dot-spine { 0%{cx:510;cy:170;opacity:.9} 16%{cx:510;cy:228} 33%{cx:510;cy:306} 50%{cx:510;cy:373} 66%{cx:510;cy:473} 83%{cx:510;cy:525} 100%{cx:510;cy:558;opacity:.9} }
-        @keyframes dot-digest { 0%{cx:580;cy:130;opacity:.9} 20%{cx:723;cy:130} 40%{cx:723;cy:208} 60%{cx:633;cy:245} 80%{cx:605;cy:152} 100%{cx:580;cy:152;opacity:.9} }
-      </style>
-      <!-- Top chain -->
-      <circle r="3.5" fill="#38bdf8" opacity=".8" style="animation:dot-top 3s ease-in-out infinite"/>
-      <!-- Main pipeline spine -->
-      <circle r="3.5" fill="#a78bfa" opacity=".8" style="animation:dot-spine 5s ease-in-out infinite"/>
-      <!-- Digest branch -->
-      <circle r="3.5" fill="#f472b6" opacity=".8" style="animation:dot-digest 3s ease-in-out infinite"/>
+      <!-- ===== Single dot traversing full pipeline (SMIL animations) ===== -->
+
+      <!-- Main dot -->
+      <circle cx="88" cy="39" r="3" fill="#e2e8f0" filter="url(#glow)" opacity="0">
+        <!-- cx: Sources→feedme→#feed→Seth→feed-promote→L-down→L-left→hub→R-exit→y-in-ai→y-bot→mc→mc-L→corner→up→hub-R→hub-L→hub-bot→npb→#papers→ci→lance→agent→pause→fade→reset -->
+        <animate attributeName="cx" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.01;0.05;0.09;0.12;0.16;0.19;0.22;0.25;0.28;0.32;0.34;0.38;0.41;0.43;0.47;0.49;0.50;0.51;0.57;0.62;0.68;0.76;0.84;0.93;0.97;1"
+          values="88;88;243;379;489;617;617;510;510;580;723;723;723;633;605;605;580;510;510;510;510;510;510;510;510;510;88"/>
+        <animate attributeName="cy" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.01;0.05;0.09;0.12;0.16;0.19;0.22;0.25;0.28;0.32;0.34;0.38;0.41;0.43;0.47;0.49;0.50;0.51;0.57;0.62;0.68;0.76;0.84;0.93;0.97;1"
+          values="39;39;39;39;39;39;85;85;137;130;133;158;237;245;245;152;152;152;170;253;325;398;499;584;584;584;39"/>
+        <animate attributeName="r" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.01;0.16;0.24;0.25;0.28;0.37;0.38;0.41;0.51;0.62;0.76;0.84;1"
+          values="3;3;3;3;5;4.5;4.5;5;4.5;4;3.5;3;3;3"/>
+        <animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.01;0.02;0.93;0.97;1"
+          values="0;0;0.9;0.9;0;0"/>
+      </circle>
+
+      <!-- Merge dot: Seth's devices → share-to-minty → #firehose -->
+      <circle cx="100" cy="129" r="3.5" fill="#fb923c" opacity="0">
+        <animate attributeName="cx" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.09;0.10;0.14;0.18;0.22;0.25;1"
+          values="100;100;100;268;333;440;510;510"/>
+        <animate attributeName="cy" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.09;0.10;0.14;0.18;0.22;0.25;1"
+          values="129;129;129;129;129;129;137;137"/>
+        <animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.09;0.10;0.14;0.20;0.24;0.25;1"
+          values="0;0;0.9;0.9;0.9;0.4;0;0"/>
+      </circle>
+
+      <!-- Merge dot: Lab members → #mint-community -->
+      <circle cx="896" cy="237" r="3" fill="#fbbf24" opacity="0">
+        <animate attributeName="cx" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.28;0.29;0.32;0.35;0.37;0.38;1"
+          values="896;896;896;846;813;750;723;723"/>
+        <animate attributeName="opacity" dur="12s" repeatCount="indefinite" calcMode="linear"
+          keyTimes="0;0.28;0.29;0.32;0.35;0.37;0.38;1"
+          values="0;0;0.9;0.9;0.9;0.4;0;0"/>
+      </circle>
     </svg>
   </div>
 
