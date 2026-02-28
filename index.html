@@ -494,6 +494,14 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <text x="90" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Human discussion channel</text>
         <text x="90" y="46" text-anchor="middle" fill="#64748b" font-size="8">Daily digest + Seth &amp; lab Q&amp;A</text>
       </g>
+      <!-- Lab members → #mint-community -->
+      <g transform="translate(846,218)">
+        <rect width="100" height="38" rx="6" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
+        <text x="50" y="16" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="600">Lab Members</text>
+        <text x="50" y="30" text-anchor="middle" fill="#64748b" font-size="8">Discussion &amp; Q&amp;A</text>
+      </g>
+      <line x1="846" y1="237" x2="813" y2="237" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowOrange)"/>
+
       <!-- Annotation: share-to-minty also watches #mint-community -->
       <text x="723" y="276" text-anchor="middle" fill="#fb923c" font-size="7" opacity=".75" font-style="italic">share-to-minty also watches</text>
 
@@ -539,7 +547,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <g transform="translate(435,473)">
         <rect width="150" height="52" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
         <text x="75" y="17" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">LanceDB Corpus</text>
-        <text x="75" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">1,903 papers, 154K chunks</text>
+        <text x="75" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">2,054 papers, 166K chunks</text>
         <text x="75" y="43" text-anchor="middle" fill="#64748b" font-size="8">41 semantic dimensions</text>
       </g>
 
@@ -554,8 +562,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Deep Review &bull; Catch Me Up &bull; more</text>
       </g>
 
-      <!-- ===== SIDE PANEL: Background services + minty-search ===== -->
-      <g transform="translate(730,228)">
+      <!-- ===== BOTTOM-LEFT: Background services ===== -->
+      <g transform="translate(20,460)">
         <rect width="180" height="190" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
         <text x="90" y="18" text-anchor="middle" fill="#94a3b8" font-size="8" font-weight="600">BACKGROUND SERVICES</text>
         <text x="90" y="40" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">minty-search</text>
@@ -573,8 +581,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <!-- ===== Animated dots (CSS keyframes for iOS compatibility) ===== -->
       <style>
         @keyframes dot-top { 0%{cx:88;cy:39;opacity:.9} 25%{cx:243;cy:39} 50%{cx:379;cy:39} 75%{cx:529;cy:39} 100%{cx:617;cy:39;opacity:.9} }
-        @keyframes dot-spine { 0%{cx:510;cy:170;opacity:.9} 14%{cx:510;cy:228} 28%{cx:510;cy:306} 42%{cx:510;cy:373} 60%{cx:510;cy:473} 80%{cx:510;cy:525} 100%{cx:510;cy:558;opacity:.9} }
-        @keyframes dot-digest { 0%{cx:510;cy:205;opacity:.9} 30%{cx:380;cy:205} 60%{cx:275;cy:205} 80%{cx:275;cy:253} 100%{cx:275;cy:325;opacity:.9} }
+        @keyframes dot-spine { 0%{cx:510;cy:170;opacity:.9} 16%{cx:510;cy:228} 33%{cx:510;cy:306} 50%{cx:510;cy:373} 66%{cx:510;cy:473} 83%{cx:510;cy:525} 100%{cx:510;cy:558;opacity:.9} }
+        @keyframes dot-digest { 0%{cx:580;cy:130;opacity:.9} 20%{cx:723;cy:130} 40%{cx:723;cy:208} 60%{cx:633;cy:245} 80%{cx:605;cy:152} 100%{cx:580;cy:152;opacity:.9} }
       </style>
       <!-- Top chain -->
       <circle r="3.5" fill="#38bdf8" opacity=".8" style="animation:dot-top 3s ease-in-out infinite"/>
@@ -1445,7 +1453,7 @@ const searchData = [
   {t:'CLAUDE.md',d:'Master agent instructions, Iron Laws, strategies',tag:'Config',c:'#fbbf24',s:'#overview'},
   {t:'session_db.py',d:'SQLite session tracking with FTS5 search',tag:'Script',c:'#fb923c',s:'#infra'},
   {t:'platform_config.py',d:'Cross-platform paths, secrets, env helpers for daemons',tag:'Script',c:'#fb923c',s:'#files'},
-  {t:'LanceDB',d:'Vector DB: 1,903 papers, 154K chunks (chunks_md), 29 topic clusters, 4.3 GB',tag:'Database',c:'#2dd4bf',s:'#corpus'},
+  {t:'LanceDB',d:'Vector DB: 2,054 papers, 166K chunks (chunks_md), 29 topic clusters, 4.3 GB',tag:'Database',c:'#2dd4bf',s:'#corpus'},
   {t:'ChromaDB (Slack)',d:'Indexed Slack messages, refreshed every 4 hours',tag:'Database',c:'#818cf8',s:'#infra'},
   {t:'ChromaDB (Workspace)',d:'Indexed workspace files, refreshed daily',tag:'Database',c:'#818cf8',s:'#infra'},
   {t:'/start',d:'Initialize session with git sync, UUID, parallel briefing',tag:'Command',c:'#4ade80',s:'#skills'},
