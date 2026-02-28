@@ -265,7 +265,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <p class="subtitle">A complete guide to the autonomous systems, research tools, and AI agents powering the Machine Intelligence &amp; Normative Theory research lab at Johns Hopkins University.</p>
   <div class="stats">
     <div class="stat-card"><div class="num">12</div><div class="label">Daemons</div></div>
-    <div class="stat-card"><div class="num">2,054</div><div class="label">Papers Indexed</div></div>
+    <div class="stat-card"><div class="num">2,151</div><div class="label">Papers Indexed</div></div>
     <div class="stat-card"><div class="num">15</div><div class="label">Skills</div></div>
     <div class="stat-card"><div class="num">23</div><div class="label">Commands</div></div>
     <div class="stat-card"><div class="num">6</div><div class="label">Agent Types</div></div>
@@ -547,7 +547,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <g transform="translate(435,473)">
         <rect width="150" height="52" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
         <text x="75" y="17" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">LanceDB Corpus</text>
-        <text x="75" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">2,054 papers, 166K chunks</text>
+        <text x="75" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">2,151 papers, 175K chunks</text>
         <text x="75" y="43" text-anchor="middle" fill="#64748b" font-size="8">41 semantic dimensions</text>
       </g>
 
@@ -711,7 +711,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div><div class="card-title">corpus-agent</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 2,054-paper corpus. Offers 7 modes via interactive Slack menu: Fast Search (semantic query expansion + unified search), Fast Review (~15 min literature review), Deep Search (multi-round gap analysis), Deep Review (60+ min full pipeline with parallel readers and synthesis), Conversation (direct Q&amp;A with tool access), News Search (search recent news from <code>#mint-community</code> and <code>#firehose</code>), and Catch Me Up (summarize what you missed over the past N days). Creates Slack canvases for long-form output.</p>
+        <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 2,151-paper corpus. Offers 7 modes via interactive Slack menu: Fast Search (semantic query expansion + unified search), Fast Review (~15 min literature review), Deep Search (multi-round gap analysis), Deep Review (60+ min full pipeline with parallel readers and synthesis), Conversation (direct Q&amp;A with tool access), News Search (search recent news from <code>#mint-community</code> and <code>#firehose</code>), and Catch Me Up (summarize what you missed over the past N days). Creates Slack canvases for long-form output.</p>
         <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Claude Opus (search, synthesis, QA, conversation), Codex GPT-5.2 (deep review readers &mdash; xhigh for top-tier, medium for summary-tier)</span></div>
         <div class="detail-row"><span class="detail-label">Deep review</span><span class="detail-val">4-phase pipeline: Multi-round search &rarr; Parallel Codex readers (top-tier + summary-tier) &rarr; Opus synthesis &rarr; QA verification + fix pass</span></div>
         <div class="detail-row"><span class="detail-label">Search</span><span class="detail-val">Warm search server (pre-loaded 4GB LanceDB table), unified multi-modal search with Reciprocal Rank Fusion across 49 embedding dimensions</span></div>
@@ -822,13 +822,13 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 <!-- ============ CORPUS ============ -->
 <section id="corpus" class="fade-in">
   <h2><span class="icon">&#128218;</span> The Research Corpus</h2>
-  <p>The MINT Lab's intellectual engine: 2,054 papers on AI safety, ethics, alignment, governance, and capabilities &mdash; all embedded, analyzed, and searchable.</p>
+  <p>The MINT Lab's intellectual engine: 2,151 papers on AI safety, ethics, alignment, governance, and capabilities &mdash; all embedded, analyzed, and searchable.</p>
 
   <div class="grid-2" style="margin-top:16px">
     <div>
       <h3>Scale</h3>
       <table class="ref-table">
-        <tr><td>Papers</td><td><strong>2,054</strong></td></tr>
+        <tr><td>Papers</td><td><strong>2,151</strong></td></tr>
         <tr><td>Text chunks</td><td>154,509 (<code>chunks_md</code> table, markdown-aware)</td></tr>
         <tr><td>Semantic analyses</td><td>1,744 (41 questions each)</td></tr>
         <tr><td>RAPTOR summaries</td><td>1,674</td></tr>
@@ -1253,7 +1253,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <table class="ref-table">
     <thead><tr><th>Database</th><th>Technology</th><th>Embedding Model</th><th>Contents</th><th>Location</th></tr></thead>
     <tbody>
-      <tr><td>Paper Corpus</td><td>LanceDB (4.3 GB)</td><td>Voyage context-3 (2048d)</td><td>2,054 papers, 166K chunks (chunks_md), 41 semantic dimensions, 29 clusters</td><td><code>corpus-data/lancedb/</code></td></tr>
+      <tr><td>Paper Corpus</td><td>LanceDB (4.3 GB)</td><td>Voyage context-3 (2048d)</td><td>2,151 papers, 175K chunks (chunks_md), 41 semantic dimensions, 29 clusters</td><td><code>corpus-data/lancedb/</code></td></tr>
       <tr><td>Slack Messages</td><td>ChromaDB</td><td>Voyage voyage-3</td><td>All public Slack messages, refreshed every 4h</td><td><code>data/slack_index/</code></td></tr>
       <tr><td>News Messages</td><td>ChromaDB</td><td>Voyage voyage-3</td><td><code>#mint-community</code> and <code>#firehose</code> messages, refreshed hourly</td><td><code>data/news_index/</code></td></tr>
       <tr><td>Workspace Files</td><td>ChromaDB</td><td>OpenAI</td><td>Markdown, Python, PDF, DOCX across all workspace dirs</td><td><code>data/workspace_index/</code></td></tr>
@@ -1470,7 +1470,7 @@ const searchData = [
   {t:'news-pdf-bot',d:'Find PDFs and generate markdown for paper URLs in #mint-community',tag:'Daemon',c:'#a78bfa',s:'#daemons'},
   {t:'yesterday-in-ai',d:'Daily AI news digest email to 28 lab members, gpt-5.3-codex-spark fact-checking',tag:'Daemon',c:'#f472b6',s:'#daemons'},
   {t:'last-week-in-ai',d:'Weekly AI digest with multi-agent sectioned pipeline',tag:'Daemon',c:'#f472b6',s:'#daemons'},
-  {t:'corpus-agent',d:'@robo-minty Slack bot: 7 modes (Fast Search, Fast Review, Deep Search, Deep Review, Conversation, News Search, Catch Me Up), 2,054-paper corpus, Opus + Codex pipeline',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
+  {t:'corpus-agent',d:'@robo-minty Slack bot: 7 modes (Fast Search, Fast Review, Deep Search, Deep Review, Conversation, News Search, Catch Me Up), 2,151-paper corpus, Opus + Codex pipeline',tag:'Daemon',c:'#38bdf8',s:'#daemons'},
   {t:'corpus-ingest-local',d:'Overnight batch processor: 8 workers, 11-stage pipeline, active 20:15-07:45 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-slack',d:'Daytime real-time Slack ingestion: 2 workers, active 08:00-20:00 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-writer',d:'Serialized LanceDB writer: eliminates concurrent write conflicts, always on',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
@@ -1482,7 +1482,7 @@ const searchData = [
   {t:'CLAUDE.md',d:'Master agent instructions, Iron Laws, strategies',tag:'Config',c:'#fbbf24',s:'#overview'},
   {t:'session_db.py',d:'SQLite session tracking with FTS5 search',tag:'Script',c:'#fb923c',s:'#infra'},
   {t:'platform_config.py',d:'Cross-platform paths, secrets, env helpers for daemons',tag:'Script',c:'#fb923c',s:'#files'},
-  {t:'LanceDB',d:'Vector DB: 2,054 papers, 166K chunks (chunks_md), 29 topic clusters, 4.3 GB',tag:'Database',c:'#2dd4bf',s:'#corpus'},
+  {t:'LanceDB',d:'Vector DB: 2,151 papers, 175K chunks (chunks_md), 29 topic clusters, 4.3 GB',tag:'Database',c:'#2dd4bf',s:'#corpus'},
   {t:'ChromaDB (Slack)',d:'Indexed Slack messages, refreshed every 4 hours',tag:'Database',c:'#818cf8',s:'#infra'},
   {t:'ChromaDB (Workspace)',d:'Indexed workspace files, refreshed daily',tag:'Database',c:'#818cf8',s:'#infra'},
   {t:'/start',d:'Initialize session with git sync, UUID, parallel briefing',tag:'Command',c:'#4ade80',s:'#skills'},
