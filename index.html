@@ -264,10 +264,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <h1>Agentic Infrastructure for the <span class="gradient">MINT Lab</span></h1>
   <p class="subtitle">A complete guide to the autonomous systems, research tools, and AI agents powering the Machine Intelligence &amp; Normative Theory research lab at Johns Hopkins University.</p>
   <div class="stats">
-    <div class="stat-card"><div class="num">20</div><div class="label">Daemons</div></div>
+    <div class="stat-card"><div class="num">12</div><div class="label">Daemons</div></div>
     <div class="stat-card"><div class="num">1,903</div><div class="label">Papers Indexed</div></div>
-    <div class="stat-card"><div class="num">16</div><div class="label">Skills</div></div>
-    <div class="stat-card"><div class="num">24</div><div class="label">Commands</div></div>
+    <div class="stat-card"><div class="num">15</div><div class="label">Skills</div></div>
+    <div class="stat-card"><div class="num">23</div><div class="label">Commands</div></div>
     <div class="stat-card"><div class="num">6</div><div class="label">Agent Types</div></div>
     <div class="stat-card"><div class="num">4</div><div class="label">Vector DBs</div></div>
   </div>
@@ -276,7 +276,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 <!-- ============ OVERVIEW ============ -->
 <section class="fade-in">
   <h2><span class="icon">&#127968;</span> What Is This System?</h2>
-  <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 20 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
+  <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 12 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
 
   <div class="grid-2" style="margin-top:20px">
     <div>
@@ -462,47 +462,50 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <text x="70" y="55" text-anchor="middle" fill="#64748b" font-size="9">2 writers / 3 readers</text>
       </g>
 
-      <!-- #mint-community (human-facing channel, right side) -->
-      <g transform="translate(710,100)">
+      <!-- ===== RIGHT COLUMN: Digest loop (#firehose → y-in-ai → #mint-community → #firehose) ===== -->
+
+      <!-- Arrow RIGHT from #firehose to yesterday-in-ai -->
+      <line x1="580" y1="130" x2="640" y2="130" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPink)"/>
+
+      <!-- yesterday-in-ai (right of #firehose) -->
+      <g transform="translate(648,108)">
+        <rect width="150" height="50" rx="8" fill="url(#nodeGrad)" stroke="#f472b6" stroke-width="1.5"/>
+        <text x="75" y="19" text-anchor="middle" fill="#f472b6" font-size="10" font-weight="700">yesterday-in-ai</text>
+        <text x="75" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Daily/weekly digest</text>
+        <text x="75" y="44" text-anchor="middle" fill="#64748b" font-size="8">#mint-community + email</text>
+      </g>
+
+      <!-- Email offshoot (right of yesterday-in-ai) -->
+      <line x1="798" y1="133" x2="838" y2="133" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPink)"/>
+      <g transform="translate(846,114)">
+        <rect width="100" height="38" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <text x="50" y="16" text-anchor="middle" fill="#f472b6" font-size="9" font-weight="600">&#x2709; Email</text>
+        <text x="50" y="30" text-anchor="middle" fill="#64748b" font-size="8">28 lab members</text>
+      </g>
+
+      <!-- Arrow DOWN from yesterday-in-ai to #mint-community -->
+      <line x1="723" y1="158" x2="723" y2="200" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPink)"/>
+      <text x="755" y="183" fill="#f472b6" font-size="7" opacity=".85" font-style="italic">daily digest</text>
+
+      <!-- #mint-community (below yesterday-in-ai) -->
+      <g transform="translate(633,208)">
         <rect width="180" height="58" rx="10" fill="#0d2847" stroke="#4ade80" stroke-width="1.5"/>
         <text x="90" y="18" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">#mint-community</text>
         <text x="90" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Human discussion channel</text>
         <text x="90" y="46" text-anchor="middle" fill="#64748b" font-size="8">Daily digest + Seth &amp; lab Q&amp;A</text>
       </g>
       <!-- Annotation: share-to-minty also watches #mint-community -->
-      <text x="800" y="168" text-anchor="middle" fill="#fb923c" font-size="7" opacity=".75" font-style="italic">share-to-minty also watches</text>
+      <text x="723" y="276" text-anchor="middle" fill="#fb923c" font-size="7" opacity=".75" font-style="italic">share-to-minty also watches</text>
 
-      <!-- ===== ROW 2: Y-split — digest left, paper pipeline center ===== -->
+      <!-- Loop back: #mint-community left → up → #firehose right -->
+      <line x1="633" y1="245" x2="605" y2="245" stroke="#4ade80" stroke-width="1.5"/>
+      <line x1="605" y1="245" x2="605" y2="152" stroke="#4ade80" stroke-width="1.5"/>
+      <line x1="605" y1="152" x2="580" y2="152" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
 
-      <!-- Vertical line down from hub -->
-      <line x1="510" y1="170" x2="510" y2="205" stroke="#94a3b8" stroke-width="1.5"/>
-      <!-- Fork left to yesterday-in-ai -->
-      <line x1="510" y1="205" x2="275" y2="205" stroke="#f472b6" stroke-width="1.5"/>
-      <line x1="275" y1="205" x2="275" y2="225" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPink)"/>
-      <!-- Fork down to news-pdf-bot -->
-      <line x1="510" y1="205" x2="510" y2="225" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
+      <!-- ===== ROW 2: Paper pipeline (straight down from hub) ===== -->
 
-      <!-- LEFT: yesterday-in-ai -->
-      <g transform="translate(200,228)">
-        <rect width="150" height="50" rx="8" fill="url(#nodeGrad)" stroke="#f472b6" stroke-width="1.5"/>
-        <text x="75" y="19" text-anchor="middle" fill="#f472b6" font-size="10" font-weight="700">yesterday-in-ai</text>
-        <text x="75" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Daily/weekly digest</text>
-        <text x="75" y="44" text-anchor="middle" fill="#64748b" font-size="8">Email + #mint-community</text>
-      </g>
-      <!-- Arrow DOWN to email -->
-      <line x1="275" y1="278" x2="275" y2="303" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPink)"/>
-      <!-- Arrow RIGHT from yesterday-in-ai to #mint-community box -->
-      <line x1="350" y1="253" x2="380" y2="253" stroke="#f472b6" stroke-width="1.5"/>
-      <line x1="380" y1="253" x2="380" y2="288" stroke="#f472b6" stroke-width="1.5"/>
-      <line x1="380" y1="288" x2="700" y2="288" stroke="#f472b6" stroke-width="1.5"/>
-      <line x1="700" y1="288" x2="700" y2="158" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPink)"/>
-      <text x="545" y="283" text-anchor="middle" fill="#f472b6" font-size="7" opacity=".85">daily digest canvas</text>
-
-      <g transform="translate(210,306)">
-        <rect width="130" height="38" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="65" y="16" text-anchor="middle" fill="#f472b6" font-size="9" font-weight="600">&#x2709; Email</text>
-        <text x="65" y="30" text-anchor="middle" fill="#64748b" font-size="8">28 lab members</text>
-      </g>
+      <!-- Vertical line down from hub to news-pdf-bot -->
+      <line x1="510" y1="170" x2="510" y2="225" stroke="#a78bfa" stroke-width="1.5" marker-end="url(#arrowPurple)"/>
 
       <!-- ===== CENTER: Main paper pipeline (vertical spine) ===== -->
 
@@ -527,8 +530,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <g transform="translate(440,373)">
         <rect width="140" height="50" rx="8" fill="url(#nodeGrad)" stroke="#2dd4bf" stroke-width="1.5"/>
         <text x="70" y="19" text-anchor="middle" fill="#2dd4bf" font-size="10" font-weight="700">corpus-ingest</text>
-        <text x="70" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">3-daemon system</text>
-        <text x="70" y="44" text-anchor="middle" fill="#64748b" font-size="8">local + slack + writer</text>
+        <text x="70" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Unified pipeline</text>
+        <text x="70" y="44" text-anchor="middle" fill="#64748b" font-size="8">12-stage ingestion</text>
       </g>
       <!-- ===== ROW 3: LanceDB (centered on spine) ===== -->
       <line x1="510" y1="423" x2="510" y2="470" stroke="#2dd4bf" stroke-width="1.5" marker-end="url(#arrowTeal)"/>
@@ -589,8 +592,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ DAEMONS ============ -->
 <section id="daemons" class="fade-in">
-  <h2><span class="icon">&#9881;</span> The 20 Daemons</h2>
-  <p>All daemons run on the Mac Studio via macOS <code>launchd</code>. They share a common <code>platform_config.py</code> for paths and secrets, and a shared Python 3.12 venv at <code>daemons/pipeline/.venv/</code>. <span style="color:var(--text3);font-size:12px">Tap any card to expand.</span></p>
+  <h2><span class="icon">&#9881;</span> The 12 Daemons</h2>
+  <p>All daemons run on the Mac Studio via macOS <code>launchd</code>. Most share a Python 3.12 venv at <code>daemons/pipeline/.venv/</code>. <span style="color:var(--text3);font-size:12px">Tap any card to expand.</span></p>
 
   <div class="cards" id="daemonCards">
 
@@ -665,18 +668,6 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </div>
     </div>
 
-    <div class="card" data-search="last-week-in-ai weekly digest lab meeting summary">
-      <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(244,114,182,.15)">&#128197;</div>
-        <div><div class="card-title">last-week-in-ai</div><div class="card-sub"><span class="tag tag-weekly">Wednesday 08:00</span> <span class="health-ok">&#9679;</span></div></div>
-      </div>
-      <div class="card-body">
-        <p>Weekly variant of yesterday-in-ai. Uses multi-agent pipeline for the larger volume: classifies messages into 8 thematic sections (Normative Competence, Philosophy of AI, Agents, Post-AGI, Regulation, Capabilities, Industry, Other), spawns parallel section writers, assembles final digest. Posted to <code>#lab-meetings</code> as a Slack canvas.</p>
-        <div class="detail-row"><span class="detail-label">Sections</span><span class="detail-val">8 thematic categories, multi-agent when >50 messages</span></div>
-        <div class="detail-row"><span class="detail-label">Output</span><span class="detail-val">Markdown canvas in <code>#lab-meetings</code></span></div>
-      </div>
-    </div>
-
     <div class="card" data-search="corpus-agent robo-minty research bot slack mcp search papers query">
       <div class="card-head" onclick="toggleCard(this)">
         <div class="card-icon" style="background:rgba(56,189,248,.15)">&#129302;</div>
@@ -693,48 +684,17 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </div>
     </div>
 
-    <div class="card" data-search="corpus-ingest-local ingest pipeline embed analyze raptor zotero paper pdf download markdown local overnight batch">
+    <div class="card" data-search="corpus-ingest ingest pipeline embed analyze raptor zotero paper pdf download markdown batch slack">
       <div class="card-head" onclick="toggleCard(this)">
         <div class="card-icon" style="background:rgba(45,212,191,.15)">&#128230;</div>
-        <div><div class="card-title">corpus-ingest-local</div><div class="card-sub"><span class="tag tag-persistent">Persistent (20:15&ndash;07:45)</span> <span class="health-ok">&#9679;</span></div></div>
+        <div><div class="card-title">corpus-ingest</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Overnight batch processor for local PDF files. Runs 8 concurrent workers through the full 11-stage pipeline during off-peak hours (20:15&ndash;07:45 AEDT). Processes PDFs from <code>Resources/local-pdfs/</code> with active-hours gating at the application level.</p>
-        <div class="detail-row"><span class="detail-label">Architecture</span><span class="detail-val">Part of the 3-daemon corpus-ingest system. Ingestion workers run in parallel; all DB writes go through corpus-ingest-writer.</span></div>
-        <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Codex gpt-5.2 xhigh (analysis), gpt-5.3-codex-spark high (enrichment), Voyage voyage-context-3 2048d (embedding)</span></div>
-        <div class="detail-row"><span class="detail-label">Stages</span><span class="detail-val">Download &rarr; Rename &rarr; Markdown &rarr; Embed &rarr; Enrich &rarr; Analyze &rarr; RAPTOR &rarr; Verify &rarr; Drive Links &rarr; Zotero &rarr; Report</span></div>
-        <div class="detail-row"><span class="detail-label">Worker pools</span><span class="detail-val">Pipeline: 8 &bull; Embed: 4 &bull; Enrich: 4 &bull; Analyze: 6 &bull; RAPTOR: 6</span></div>
-        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Persistent (KeepAlive), active hours 20:15&ndash;07:45 AEDT</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/ingest.py</code>, <code>pipeline.py</code>, <code>lib/</code>, <code>config.yaml</code></span></div>
-      </div>
-    </div>
-
-    <div class="card" data-search="corpus-ingest-slack ingest pipeline slack papers news realtime daytime">
-      <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#128172;</div>
-        <div><div class="card-title">corpus-ingest-slack</div><div class="card-sub"><span class="tag tag-persistent">Persistent (08:00&ndash;20:00)</span> <span class="health-ok">&#9679;</span></div></div>
-      </div>
-      <div class="card-body">
-        <p>Daytime real-time ingestion daemon for papers shared in Slack. Monitors <code>#papers</code> for PDF uploads during business hours (08:00&ndash;20:00 AEDT) with 2 concurrent workers. Designed for low-latency processing of newly shared papers.</p>
-        <div class="detail-row"><span class="detail-label">Architecture</span><span class="detail-val">Part of the 3-daemon corpus-ingest system. Lightweight daytime complement to corpus-ingest-local's overnight batch processing.</span></div>
-        <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Codex gpt-5.2 xhigh (analysis), gpt-5.3-codex-spark high (enrichment), Voyage voyage-context-3 2048d (embedding)</span></div>
-        <div class="detail-row"><span class="detail-label">Workers</span><span class="detail-val">Pipeline: 2</span></div>
-        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Persistent (KeepAlive), active hours 08:00&ndash;20:00 AEDT</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/ingest.py</code>, <code>config.yaml</code></span></div>
-      </div>
-    </div>
-
-    <div class="card" data-search="corpus-ingest-writer ingest writer lancedb database serialized queue concurrent write">
-      <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#128190;</div>
-        <div><div class="card-title">corpus-ingest-writer</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
-      </div>
-      <div class="card-body">
-        <p>Serialized database writer that eliminates LanceDB concurrent write conflicts. All workers from ingest-local and ingest-slack write JSON update files to a shared queue directory. The writer process consumes these sequentially, writes to LanceDB, and posts Slack completion notifications.</p>
-        <div class="detail-row"><span class="detail-label">Architecture</span><span class="detail-val">Part of the 3-daemon corpus-ingest system. Solves the old architecture's concurrent DB write problem by serializing all writes through a single process.</span></div>
-        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (pure infrastructure &mdash; DB writes only)</span></div>
-        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Persistent (KeepAlive, always on)</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/writer.py</code></span></div>
+        <p>Unified paper ingestion pipeline. Monitors Slack <code>#firehose</code> and <code>#papers</code> for PDF uploads, running a 12-stage pipeline per paper: dedup (SHA-256), pre-check (arXiv/CrossRef metadata), markdown conversion (6-tier cascade), chunk+embed (Voyage voyage-context-3 2048d into LanceDB), 41-question semantic analysis, RAPTOR hierarchical summaries, rename, citation enrichment, Google Drive upload, JSON write, archive, and Zotero cataloguing.</p>
+        <div class="detail-row"><span class="detail-label">Models</span><span class="detail-val">Codex gpt-5.2 xhigh (analysis + RAPTOR), Voyage voyage-context-3 2048d (embedding)</span></div>
+        <div class="detail-row"><span class="detail-label">Stages</span><span class="detail-val">Dedup &rarr; Pre-check &rarr; Markdown &rarr; Chunk+Embed &rarr; Analyze &rarr; RAPTOR &rarr; Name &rarr; Cite &rarr; Drive &rarr; Write JSON &rarr; Archive &rarr; Zotero</span></div>
+        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Persistent (KeepAlive, RunAtLoad), polls every 600s</span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/ingest.py</code>, <code>pipeline.py</code>, <code>lib/</code></span></div>
       </div>
     </div>
 
@@ -753,57 +713,6 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <div class="detail-row"><span class="detail-label">Index</span><span class="detail-val">ChromaDB at <code>data/slack_index/</code>, Voyage voyage-3 embeddings</span></div>
         <div class="detail-row"><span class="detail-label">News index</span><span class="detail-val">A separate news index (ChromaDB at <code>data/news_index/</code>) indexes <code>#mint-community</code> and <code>#firehose</code> for dedicated news search via <code>@robo-minty</code>'s News Search and Catch Me Up modes.</span></div>
         <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>index_slack.py</code>, <code>watcher.py</code>, <code>search_dispatch.py</code>, <code>agents/search_agent.md</code></span></div>
-      </div>
-    </div>
-
-    <div class="card" data-search="workspace-index workspace search semantic files markdown python pdf chromadb">
-      <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(129,140,248,.15)">&#128451;</div>
-        <div><div class="card-title">workspace-index</div><div class="card-sub"><span class="tag tag-polling">Every 6h</span> <span class="health-ok">&#9679;</span></div></div>
-      </div>
-      <div class="card-body">
-        <p>Incremental index of all workspace files (markdown, Python, PDF, DOCX, etc.) into ChromaDB using OpenAI embeddings. Enables semantic search across the entire workspace &mdash; "where did we discuss X" or "find code related to Y".</p>
-        <div class="detail-row"><span class="detail-label">Scope</span><span class="detail-val">Minty/, daemons/, Local-Repos/</span></div>
-        <div class="detail-row"><span class="detail-label">Store</span><span class="detail-val">ChromaDB at <code>data/workspace_index/</code></span></div>
-      </div>
-    </div>
-
-    <div class="card" data-search="rclone-sync rclone google drive sync backup bisync resources pdfs">
-      <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#9729;</div>
-        <div><div class="card-title">rclone-sync</div><div class="card-sub"><span class="tag tag-polling">Every 10m</span> <span class="health-ok">&#9679;</span></div></div>
-      </div>
-      <div class="card-body">
-        <p>Three jobs: (1) Bidirectional <code>rclone bisync</code> of <code>Resources/pdfs/</code> and <code>Resources/markdown/</code> with Google Shared Drive. (2) Daily compressed backup of LanceDB corpus (7 retained). (3) Twice-daily Minty repo snapshots (14 retained). Uses RCLONE_TEST marker files to prevent accidental deletes if Drive is unreachable.</p>
-        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (pure infrastructure)</span></div>
-        <div class="detail-row"><span class="detail-label">Remote</span><span class="detail-val"><code>mint-drive</code> (Google Shared Drive as mintlabjhu@gmail.com)</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>sync.sh</code>, <code>backup_index.sh</code>, <code>backup_repo.sh</code></span></div>
-      </div>
-    </div>
-
-    <div class="card" data-search="archive-feed-channels feed rotation cleanup stale channels">
-      <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(251,191,36,.15)">&#128451;</div>
-        <div><div class="card-title">archive-feed-channels</div><div class="card-sub"><span class="tag tag-weekly">Wednesday 12:00</span> <span class="health-ok">&#9679;</span></div></div>
-      </div>
-      <div class="card-body">
-        <p>Housekeeping daemon that archives stale <code>#feed-{dayname}</code> channels after Last Week in AI has consumed them. Runs Wednesday at noon (4 hours after LWAI's 08:00 run). Updates the active channel cache used by feedme-daily and feed-promote.</p>
-        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (pure infrastructure)</span></div>
-        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Wednesday 12:00 (after LWAI finishes)</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/pipeline/scripts/archive_feed_channels.py</code>, <code>channel_rotation.py</code></span></div>
-      </div>
-    </div>
-
-    <div class="card" data-search="corpus-ingest-handoff handoff slack local overnight transfer">
-      <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#128259;</div>
-        <div><div class="card-title">corpus-ingest-handoff</div><div class="card-sub"><span class="tag tag-daily">Daily 20:15</span> <span class="health-ok">&#9679;</span></div></div>
-      </div>
-      <div class="card-body">
-        <p>Moves unprocessed PDFs from the Slack download queue to the local processing directory at the start of the overnight window. Bridges the daytime Slack ingestion and overnight batch processing daemons.</p>
-        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (file mover)</span></div>
-        <div class="detail-row"><span class="detail-label">Schedule</span><span class="detail-val">Daily at 20:15 AEDT</span></div>
-        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/corpus-ingest/handoff_slack_to_local.py</code></span></div>
       </div>
     </div>
 
@@ -832,14 +741,16 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </div>
     </div>
 
-    <div class="card" data-search="cloudflared cloudflare tunnel dns routing">
+    <div class="card" data-search="subscribe-endpoint subscribe email newsletter http api endpoint">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#9729;</div>
-        <div><div class="card-title">cloudflared</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#9993;</div>
+        <div><div class="card-title">subscribe-endpoint</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
-        <p>Cloudflare Tunnel daemon that routes <code>mintresearch.org</code> traffic to the local Ghost instance at <code>localhost:2368</code>. Provides HTTPS termination and DDoS protection without exposing the Mac Studio's IP.</p>
-        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (network tunnel)</span></div>
+        <p>Tiny HTTP server on <code>127.0.0.1:8099</code> accepting newsletter subscription requests. Validates email format, checks for duplicates, and appends to <code>yesterday-in-ai/subscribers.txt</code>. Public access via Cloudflare Tunnel at <code>/api/subscribe</code>.</p>
+        <div class="detail-row"><span class="detail-label">Model</span><span class="detail-val">None (HTTP endpoint)</span></div>
+        <div class="detail-row"><span class="detail-label">Spam prevention</span><span class="detail-val">Honeypot field, rate limiting (5/min per IP), CORS restricted to <code>mint-philosophy.github.io</code></span></div>
+        <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>daemons/subscribe-endpoint/subscribe_endpoint.py</code></span></div>
       </div>
     </div>
 
@@ -1019,7 +930,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <p>Hierarchical summaries per paper: a document-level overview (~300 words) plus section summaries for Introduction, Methods, Results, Discussion, and Conclusion. These serve dual purposes: fast search index (via <code>document_summary_embedding</code>) and context-efficient paper reading (agents read summaries instead of full text).</p>
 
   <h3>Corpus-Ingest Pipeline Detail</h3>
-  <p>Each paper flows through 11 stages end-to-end within its own worker. The pipeline is split across two ingestion daemons: corpus-ingest-local (8 workers, overnight) and corpus-ingest-slack (2 workers, daytime). All DB writes are serialized through corpus-ingest-writer to eliminate LanceDB concurrent write conflicts. Models: Codex gpt-5.2 xhigh (analysis), gpt-5.3-codex-spark high (enrichment), Voyage voyage-context-3 (embedding).</p>
+  <p>Each paper flows through 12 stages in the unified corpus-ingest daemon. The pipeline supports resume from the last completed stage. Models: Codex gpt-5.2 xhigh (analysis + RAPTOR), Voyage voyage-context-3 2048d (embedding).</p>
   <div class="pipeline-wrap">
     <svg viewBox="0 0 960 200" width="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
