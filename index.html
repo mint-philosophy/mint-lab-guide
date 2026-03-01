@@ -832,11 +832,6 @@ section {
 
 .q-cell .q-tooltip {
   display: none;
-}
-
-.q-cell:hover .q-tooltip {
-  display: block;
-  position: absolute;
   background: var(--bg-4);
   padding: 12px;
   border-radius: 8px;
@@ -847,10 +842,30 @@ section {
   font-size: 12px;
   font-family: 'Sora', sans-serif;
   color: var(--text-2);
-  top: 100%;
-  left: 50%;
-  transform: translateX(-50%);
-  margin-top: 4px;
+  line-height: 1.5;
+  margin-top: 8px;
+}
+
+.q-cell:hover .q-tooltip,
+.q-cell.expanded .q-tooltip {
+  display: block;
+  position: relative;
+  width: auto;
+}
+
+.q-cell.expanded {
+  grid-column: 1 / -1;
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  align-items: baseline;
+  background: var(--bg-4);
+  border-color: var(--border-hover);
+}
+
+.q-cell.expanded .q-tooltip {
+  flex-basis: 100%;
 }
 
 /* ===== Iron Laws ===== */
@@ -1006,10 +1021,61 @@ ul.clean li::before {
   margin: 12px 0;
 }
 
+/* Mobile menu button */
+.mobile-menu-btn {
+  display: none;
+  position: fixed;
+  top: 16px;
+  right: 16px;
+  z-index: 150;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 8px;
+  padding: 8px;
+  color: var(--text-2);
+  cursor: pointer;
+  transition: color 0.2s, border-color 0.2s;
+}
+.mobile-menu-btn:hover {
+  color: var(--mint);
+  border-color: var(--mint);
+}
+
 /* ===== Responsive: 768px ===== */
 @media (max-width: 768px) {
+  .mobile-menu-btn {
+    display: block;
+  }
+
   nav.sidebar {
+    display: flex;
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 260px;
+    height: 100vh;
+    transform: translateX(-100%);
+    transition: transform 0.3s ease;
+    z-index: 140;
+    background: var(--bg-0);
+    border-right: 1px solid var(--border);
+  }
+
+  nav.sidebar.open {
+    transform: translateX(0);
+  }
+
+  .mobile-overlay {
     display: none;
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    z-index: 130;
+    backdrop-filter: blur(4px);
+  }
+
+  .mobile-overlay.open {
+    display: block;
   }
 
   main {
@@ -1073,6 +1139,12 @@ ul.clean li::before {
 </head>
 <body>
 <!-- Part 2 continues from here -->
+<button class="mobile-menu-btn" onclick="toggleMobileMenu()" aria-label="Menu">
+  <svg width="22" height="22" viewBox="0 0 22 22" fill="none">
+    <path d="M4 6h14M4 11h14M4 16h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/>
+  </svg>
+</button>
+<div class="mobile-overlay" id="mobileOverlay" onclick="toggleMobileMenu()"></div>
 <nav class="sidebar">
   <div class="logo">
     <h2>MINT</h2>
@@ -1120,115 +1192,9 @@ ul.clean li::before {
   </div>
 </section>
 
-<!-- ============ OVERVIEW ============ -->
-<section class="fade-in">
-  <h2><span class="section-num">01</span> What Is This System?</h2>
-  <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 12 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
-
-  <div class="grid-2" style="margin-top:20px">
-    <div>
-      <h3>Core Idea</h3>
-      <p>Information flows through a pipeline: external sources (Twitter, arXiv, RSS, Substack, Bluesky, email, PhilPapers) are automatically fetched, classified by relevance using Claude Opus, and posted to Slack. Papers are downloaded, converted to markdown via a 6-tier cascade, embedded in a vector database, analyzed across 41 semantic dimensions, and made searchable via a Slack bot. A daily digest email goes out to 28 lab members.</p>
-    </div>
-    <div>
-      <h3>Key Design Principles</h3>
-      <ul class="clean">
-        <li><strong>Delegation-first:</strong> The main agent orchestrates; subagents do the work</li>
-        <li><strong>Slack as message bus:</strong> All daemons communicate through Slack channels</li>
-        <li><strong>CLI subscriptions, not API:</strong> All LLM calls go through <code>claude -p</code> or Codex CLI</li>
-        <li><strong>Graceful degradation:</strong> Every stage can fail without stopping the pipeline</li>
-        <li><strong>Single-tier vault:</strong> All credentials in macOS login keychain, direct access for all agents and daemons</li>
-      </ul>
-    </div>
-  </div>
-</section>
-
-<!-- ============ FOR LAB MEMBERS ============ -->
-<section id="guide" class="fade-in">
-  <h2><span class="section-num">02</span> For Lab Members</h2>
-  <p class="lead">A practical guide to using the MINT Lab's automated systems from Slack. Everything here runs in the background &mdash; you interact with it through Slack channels and bot mentions.</p>
-
-  <div class="callout" style="border-left-color:var(--amber)">
-    <p><strong>Two access tiers:</strong> Everyone in <code>#mint-community</code> can use <code>@robo-minty</code> for corpus search, news search, and research questions &mdash; plus receive the daily digest email and upload papers to <code>#papers</code>. <code>@minty-search</code> (Slack message search) is available to full lab members only.</p>
-  </div>
-
-  <h3 id="bots">Bots</h3>
-
-  <h3>What Happens Automatically</h3>
-  <ul class="clean">
-    <li><strong>Daily digest email</strong> &mdash; Each morning, a curated summary of yesterday's AI news arrives in your inbox (Yesterday in AI). <a href="#subscribe">Subscribe here</a></li>
-    <li><strong>Weekly roundup</strong> &mdash; Each Wednesday, a comprehensive weekly digest is posted as a canvas in <code>#lab-meetings</code> (Last Week in AI)</li>
-    <li><strong>PDF attachment</strong> &mdash; When papers or articles are shared in <code>#mint-community</code>, PDFs are automatically found, downloaded, and posted as thread replies</li>
-    <li><strong>Corpus ingestion</strong> &mdash; Papers uploaded to <code>#papers</code> are automatically processed into the searchable research corpus (embedding, 41-dimension analysis, Zotero cataloguing)</li>
-  </ul>
-
-  <h3>Using @robo-minty (Corpus Search)</h3>
-  <p>Available to everyone in <code>#mint-community</code>. Mention <code>@robo-minty</code> in any channel where it's a member with a research question. You'll get an interactive menu offering 7 modes:</p>
-  <table class="ref-table">
-    <thead><tr><th>Mode</th><th>Speed</th><th>What It Does</th></tr></thead>
-    <tbody>
-      <tr><td><strong>Conversation</strong></td><td>Instant</td><td>Direct Q&amp;A with tool access to the corpus &mdash; good for quick factual questions</td></tr>
-      <tr><td><strong>Fast Search</strong></td><td>~2 min</td><td>Semantic query expansion across 49 embedding dimensions with Reciprocal Rank Fusion</td></tr>
-      <tr><td><strong>Fast Review</strong></td><td>~15 min</td><td>Short literature review &mdash; search + synthesis in one pass</td></tr>
-      <tr><td><strong>Deep Search</strong></td><td>~5 min</td><td>Multi-round search with gap analysis &mdash; finds papers that a single-pass search misses</td></tr>
-      <tr><td><strong>Deep Review</strong></td><td>~60 min</td><td>Full 4-phase pipeline: multi-round search, parallel paper reading, synthesis, QA verification. Produces a 3,000&ndash;5,000 word literature review posted as a Slack canvas.</td></tr>
-      <tr><td><strong>News Search</strong></td><td>~1 min</td><td>Search recent news from <code>#mint-community</code> and <code>#firehose</code> via the dedicated news index</td></tr>
-      <tr><td><strong>Catch Me Up</strong></td><td>~2 min</td><td>Summarize what you missed &mdash; pulls recent news and highlights from the past N days</td></tr>
-    </tbody>
-  </table>
-  <p style="font-size:13px;margin-top:8px"><strong>Shortcuts:</strong> Skip the menu by prefixing your message &mdash; <code>search:</code>, <code>review:</code>, <code>deep:</code>, <code>research:</code>, <code>overview:</code>. Use <code>list</code> to see your past queries, <code>--end</code> to close a session.</p>
-
-  <h3>Using @minty-search (Slack Search)</h3>
-  <p>Full lab members only &mdash; not available in <code>#mint-community</code>. Mention <code>@minty-search</code> with a natural-language query to search across all indexed Slack messages.</p>
-  <ul class="clean">
-    <li>Filter by channel: <code>@minty-search what did we discuss about alignment in:#papers</code></li>
-    <li>Filter by person: <code>@minty-search from:seth posts about governance</code></li>
-    <li>Filter by time: <code>@minty-search days:7 recent discussions on tool use</code></li>
-    <li>Follow up in the same thread for refined searches</li>
-  </ul>
-
-  <h3>Adding Papers to the Corpus</h3>
-  <div class="grid-2">
-    <div>
-      <h3 style="color:var(--mint);margin-top:8px">One at a time</h3>
-      <p>Upload a PDF directly to <code>#papers</code> in Slack. The ingestion pipeline processes it automatically &mdash; you'll see a check-mark reaction and a thread reply when it's done. The paper gets embedded, analyzed across 41 dimensions, summarised, and catalogued in Zotero.</p>
-    </div>
-    <div>
-      <h3 style="color:var(--amber);margin-top:8px">Bulk uploads</h3>
-      <p>Upload PDFs to the <strong>local-pdfs</strong> folder in Google Drive. They sync down to the Mac Studio and are processed overnight by the batch ingestion daemon (8 concurrent workers). This is the right path for adding dozens of papers at once &mdash; don't dump bulk uploads in <code>#papers</code>.</p>
-    </div>
-  </div>
-  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-    <a href="https://drive.google.com/drive/folders/1QjnK2zOQwgOgljj-ohUFt9YFdfuxGdJ3?usp=drive_link" target="_blank" class="badge badge-blue" style="font-size:12px;padding:6px 14px;text-decoration:none">Browse all lab PDFs</a>
-    <a href="https://drive.google.com/drive/folders/1Kzj8mG-5BQCTk7ICu9nY-rWDytMxz4k1?usp=sharing" target="_blank" class="badge badge-green" style="font-size:12px;padding:6px 14px;text-decoration:none">Upload papers for corpus ingestion</a>
-  </div>
-
-  <h3>How News Gets Curated</h3>
-  <p style="font-size:13px">The daily flow: <strong>feedme-daily</strong> fetches hundreds of items from external sources (Twitter, arXiv, RSS, Bluesky, email, PhilPapers) each morning and classifies them by relevance. The top 20&ndash;40% land in a private <code>#feed</code> channel where Seth reviews and thumbs-up the best items. Those are automatically promoted to <code>#firehose</code> by feed-promote. From there, <strong>yesterday-in-ai</strong> produces a daily digest posted to <code>#mint-community</code>, where lab members discuss AI news and interact with <code>@robo-minty</code> for research questions.</p>
-
-  <h3 id="slack-channels">Slack Channels</h3>
-  <p>The workspace has ~57 channels. Most day-to-day activity happens in a handful of them.</p>
-  <table class="ref-table">
-    <thead><tr><th>Channel</th><th>What It's For</th></tr></thead>
-    <tbody>
-      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Everyday</td></tr>
-      <tr><td><code>#general</code></td><td>Announcements and all-hands discussion</td></tr>
-      <tr><td><code>#random</code></td><td>Off-topic, jokes, misc</td></tr>
-      <tr><td><code>#mint-community</code></td><td>AI news and discussion &mdash; daily digest canvas posted by yesterday-in-ai, humans share and discuss content, and agents (<code>@robo-minty</code>) answer research questions. share-to-minty watches this channel and pushes URLs to <code>#firehose</code>.</td></tr>
-      <tr><td><code>#firehose</code></td><td>Automated content firehose &mdash; all daemon-posted content flows through here. Lab members can join for raw access to the full feed.</td></tr>
-      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Research Projects</td></tr>
-      <tr><td><code>#proj-*</code></td><td>One channel per active project (e.g. <code>#proj-unhobbling-agents</code>, <code>#proj-claims-secil</code>). Each links to its Google Drive folder. Post project-specific discussion, drafts, and updates here.</td></tr>
-      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Reference &amp; Coordination</td></tr>
-      <tr><td><code>#papers</code></td><td>Upload PDFs to add them to the research corpus (auto-ingested)</td></tr>
-      <tr><td><code>#lab-meetings</code></td><td>Weekly digest canvas and meeting coordination</td></tr>
-      <tr><td><code>#review-wip</code></td><td>Share works-in-progress for lab feedback</td></tr>
-    </tbody>
-  </table>
-</section>
-
 <!-- ============ PIPELINE ============ -->
-<section id="pipeline" class="fade-in">
-  <h2><span class="section-num">03</span> The Content Pipeline</h2>
+<section id="pipeline" class="fade-in" style="max-width:none;padding-left:24px;padding-right:24px">
+  <h2>The Content Pipeline</h2>
   <p>Here's how information flows from external sources to lab members. Slack's <code>#firehose</code> channel is the automated hub &mdash; daemons write classified content here. Three daemons read from it: <em>yesterday-in-ai</em> produces a daily digest for <code>#mint-community</code>, <em>news-pdf-bot</em> finds PDFs, and <em>corpus-ingest</em> feeds the research database.</p>
 
   <div class="pipeline-wrap">
@@ -1473,6 +1439,114 @@ ul.clean li::before {
     <p><strong>Key insight:</strong> The system forms a funnel. External sources produce hundreds of items daily. <em>feedme-daily</em> classifies them down to ~20-40%. Seth's thumbs-up on <em>#feed</em> curates further. Everything that reaches <em>#firehose</em> gets PDFs attached, ingested into the corpus, and summarized in the daily digest posted to <em>#mint-community</em>.</p>
   </div>
 </section>
+
+
+<!-- ============ OVERVIEW ============ -->
+<section class="fade-in">
+  <h2><span class="section-num">01</span> What Is This System?</h2>
+  <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 12 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
+
+  <div class="grid-2" style="margin-top:20px">
+    <div>
+      <h3>Core Idea</h3>
+      <p>Information flows through a pipeline: external sources (Twitter, arXiv, RSS, Substack, Bluesky, email, PhilPapers) are automatically fetched, classified by relevance using Claude Opus, and posted to Slack. Papers are downloaded, converted to markdown via a 6-tier cascade, embedded in a vector database, analyzed across 41 semantic dimensions, and made searchable via a Slack bot. A daily digest email goes out to 28 lab members.</p>
+    </div>
+    <div>
+      <h3>Key Design Principles</h3>
+      <ul class="clean">
+        <li><strong>Delegation-first:</strong> The main agent orchestrates; subagents do the work</li>
+        <li><strong>Slack as message bus:</strong> All daemons communicate through Slack channels</li>
+        <li><strong>CLI subscriptions, not API:</strong> All LLM calls go through <code>claude -p</code> or Codex CLI</li>
+        <li><strong>Graceful degradation:</strong> Every stage can fail without stopping the pipeline</li>
+        <li><strong>Single-tier vault:</strong> All credentials in macOS login keychain, direct access for all agents and daemons</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- ============ FOR LAB MEMBERS ============ -->
+<section id="guide" class="fade-in">
+  <h2><span class="section-num">02</span> For Lab Members</h2>
+  <p class="lead">A practical guide to using the MINT Lab's automated systems from Slack. Everything here runs in the background &mdash; you interact with it through Slack channels and bot mentions.</p>
+
+  <div class="callout" style="border-left-color:var(--amber)">
+    <p><strong>Two access tiers:</strong> Everyone in <code>#mint-community</code> can use <code>@robo-minty</code> for corpus search, news search, and research questions &mdash; plus receive the daily digest email and upload papers to <code>#papers</code>. <code>@minty-search</code> (Slack message search) is available to full lab members only.</p>
+  </div>
+
+  <h3 id="bots">Bots</h3>
+
+  <h3>What Happens Automatically</h3>
+  <ul class="clean">
+    <li><strong>Daily digest email</strong> &mdash; Each morning, a curated summary of yesterday's AI news arrives in your inbox (Yesterday in AI). <a href="#subscribe">Subscribe here</a></li>
+    <li><strong>Weekly roundup</strong> &mdash; Each Wednesday, a comprehensive weekly digest is posted as a canvas in <code>#lab-meetings</code> (Last Week in AI)</li>
+    <li><strong>PDF attachment</strong> &mdash; When papers or articles are shared in <code>#mint-community</code>, PDFs are automatically found, downloaded, and posted as thread replies</li>
+    <li><strong>Corpus ingestion</strong> &mdash; Papers uploaded to <code>#papers</code> are automatically processed into the searchable research corpus (embedding, 41-dimension analysis, Zotero cataloguing)</li>
+  </ul>
+
+  <h3>Using @robo-minty (Corpus Search)</h3>
+  <p>Available to everyone in <code>#mint-community</code>. Mention <code>@robo-minty</code> in any channel where it's a member with a research question. You'll get an interactive menu offering 7 modes:</p>
+  <table class="ref-table">
+    <thead><tr><th>Mode</th><th>Speed</th><th>What It Does</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Conversation</strong></td><td>Instant</td><td>Direct Q&amp;A with tool access to the corpus &mdash; good for quick factual questions</td></tr>
+      <tr><td><strong>Fast Search</strong></td><td>~2 min</td><td>Semantic query expansion across 49 embedding dimensions with Reciprocal Rank Fusion</td></tr>
+      <tr><td><strong>Fast Review</strong></td><td>~15 min</td><td>Short literature review &mdash; search + synthesis in one pass</td></tr>
+      <tr><td><strong>Deep Search</strong></td><td>~5 min</td><td>Multi-round search with gap analysis &mdash; finds papers that a single-pass search misses</td></tr>
+      <tr><td><strong>Deep Review</strong></td><td>~60 min</td><td>Full 4-phase pipeline: multi-round search, parallel paper reading, synthesis, QA verification. Produces a 3,000&ndash;5,000 word literature review posted as a Slack canvas.</td></tr>
+      <tr><td><strong>News Search</strong></td><td>~1 min</td><td>Search recent news from <code>#mint-community</code> and <code>#firehose</code> via the dedicated news index</td></tr>
+      <tr><td><strong>Catch Me Up</strong></td><td>~2 min</td><td>Summarize what you missed &mdash; pulls recent news and highlights from the past N days</td></tr>
+    </tbody>
+  </table>
+  <p style="font-size:13px;margin-top:8px"><strong>Shortcuts:</strong> Skip the menu by prefixing your message &mdash; <code>search:</code>, <code>review:</code>, <code>deep:</code>, <code>research:</code>, <code>overview:</code>. Use <code>list</code> to see your past queries, <code>--end</code> to close a session.</p>
+
+  <h3>Using @minty-search (Slack Search)</h3>
+  <p>Full lab members only &mdash; not available in <code>#mint-community</code>. Mention <code>@minty-search</code> with a natural-language query to search across all indexed Slack messages.</p>
+  <ul class="clean">
+    <li>Filter by channel: <code>@minty-search what did we discuss about alignment in:#papers</code></li>
+    <li>Filter by person: <code>@minty-search from:seth posts about governance</code></li>
+    <li>Filter by time: <code>@minty-search days:7 recent discussions on tool use</code></li>
+    <li>Follow up in the same thread for refined searches</li>
+  </ul>
+
+  <h3>Adding Papers to the Corpus</h3>
+  <div class="grid-2">
+    <div>
+      <h3 style="color:var(--mint);margin-top:8px">One at a time</h3>
+      <p>Upload a PDF directly to <code>#papers</code> in Slack. The ingestion pipeline processes it automatically &mdash; you'll see a check-mark reaction and a thread reply when it's done. The paper gets embedded, analyzed across 41 dimensions, summarised, and catalogued in Zotero.</p>
+    </div>
+    <div>
+      <h3 style="color:var(--amber);margin-top:8px">Bulk uploads</h3>
+      <p>Upload PDFs to the <strong>local-pdfs</strong> folder in Google Drive. They sync down to the Mac Studio and are processed overnight by the batch ingestion daemon (8 concurrent workers). This is the right path for adding dozens of papers at once &mdash; don't dump bulk uploads in <code>#papers</code>.</p>
+    </div>
+  </div>
+  <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
+    <a href="https://drive.google.com/drive/folders/1QjnK2zOQwgOgljj-ohUFt9YFdfuxGdJ3?usp=drive_link" target="_blank" class="badge badge-blue" style="font-size:12px;padding:6px 14px;text-decoration:none">Browse all lab PDFs</a>
+    <a href="https://drive.google.com/drive/folders/1Kzj8mG-5BQCTk7ICu9nY-rWDytMxz4k1?usp=sharing" target="_blank" class="badge badge-green" style="font-size:12px;padding:6px 14px;text-decoration:none">Upload papers for corpus ingestion</a>
+  </div>
+
+  <h3>How News Gets Curated</h3>
+  <p style="font-size:13px">The daily flow: <strong>feedme-daily</strong> fetches hundreds of items from external sources (Twitter, arXiv, RSS, Bluesky, email, PhilPapers) each morning and classifies them by relevance. The top 20&ndash;40% land in a private <code>#feed</code> channel where Seth reviews and thumbs-up the best items. Those are automatically promoted to <code>#firehose</code> by feed-promote. From there, <strong>yesterday-in-ai</strong> produces a daily digest posted to <code>#mint-community</code>, where lab members discuss AI news and interact with <code>@robo-minty</code> for research questions.</p>
+
+  <h3 id="slack-channels">Slack Channels</h3>
+  <p>The workspace has ~57 channels. Most day-to-day activity happens in a handful of them.</p>
+  <table class="ref-table">
+    <thead><tr><th>Channel</th><th>What It's For</th></tr></thead>
+    <tbody>
+      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Everyday</td></tr>
+      <tr><td><code>#general</code></td><td>Announcements and all-hands discussion</td></tr>
+      <tr><td><code>#random</code></td><td>Off-topic, jokes, misc</td></tr>
+      <tr><td><code>#mint-community</code></td><td>AI news and discussion &mdash; daily digest canvas posted by yesterday-in-ai, humans share and discuss content, and agents (<code>@robo-minty</code>) answer research questions. share-to-minty watches this channel and pushes URLs to <code>#firehose</code>.</td></tr>
+      <tr><td><code>#firehose</code></td><td>Automated content firehose &mdash; all daemon-posted content flows through here. Lab members can join for raw access to the full feed.</td></tr>
+      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Research Projects</td></tr>
+      <tr><td><code>#proj-*</code></td><td>One channel per active project (e.g. <code>#proj-unhobbling-agents</code>, <code>#proj-claims-secil</code>). Each links to its Google Drive folder. Post project-specific discussion, drafts, and updates here.</td></tr>
+      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Reference &amp; Coordination</td></tr>
+      <tr><td><code>#papers</code></td><td>Upload PDFs to add them to the research corpus (auto-ingested)</td></tr>
+      <tr><td><code>#lab-meetings</code></td><td>Weekly digest canvas and meeting coordination</td></tr>
+      <tr><td><code>#review-wip</code></td><td>Share works-in-progress for lab feedback</td></tr>
+    </tbody>
+  </table>
+</section>
+
 <section id="daemons" class="fade-in">
   <span class="section-num">04</span>
   <h2>The 12 Daemons</h2>
@@ -2444,6 +2518,21 @@ ul.clean li::before {
 </main>
 
 <script>
+// ===== Mobile menu =====
+function toggleMobileMenu() {
+  document.querySelector('.sidebar').classList.toggle('open');
+  document.getElementById('mobileOverlay').classList.toggle('open');
+}
+
+document.querySelectorAll('.sidebar .nav-link').forEach(function(link) {
+  link.addEventListener('click', function() {
+    if (window.innerWidth <= 768) {
+      document.querySelector('.sidebar').classList.remove('open');
+      document.getElementById('mobileOverlay').classList.remove('open');
+    }
+  });
+});
+
 // ===== Card toggle =====
 function toggleCard(el) {
   const card = el.closest('.card');
@@ -2549,6 +2638,13 @@ function doSearch(q) {
 document.addEventListener('keydown', e => {
   if ((e.metaKey || e.ctrlKey) && e.key === 'k') { e.preventDefault(); openSearch(); }
   if (e.key === 'Escape') closeSearch();
+});
+
+// ===== 41Q cell click to expand =====
+document.querySelectorAll('.q-cell').forEach(function(cell) {
+  cell.addEventListener('click', function() {
+    this.classList.toggle('expanded');
+  });
 });
 
 // ===== Scroll spy =====
