@@ -957,63 +957,54 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
 <!-- ============ HERO ============ -->
 <section class="hero" id="overview">
-  <!-- Squid watermark SVG -- detailed Minty mascot -->
-  <svg viewBox="0 0 240 340" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;right:10%;top:50%;transform:translateY(-50%);width:500px;height:auto;opacity:0.045;pointer-events:none;z-index:0" class="hero-squid">
-    <!-- Head: diamond/arrow pointing up with flat bottom -->
-    <path d="M120 8 L160 50 L170 75 L168 110 L155 130 L120 142 L85 130 L72 110 L70 75 L80 50 Z" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linejoin="round"/>
-    <!-- Inner head gradient highlight (curved line) -->
-    <path d="M100 35 Q120 28 140 35 Q155 55 158 85 Q150 65 120 58 Q90 65 82 85 Q85 55 100 35" stroke="currentColor" stroke-width="0.6" fill="none" opacity="0.5"/>
-    <!-- Head fin/point at top -->
-    <path d="M108 50 L120 8 L132 50" stroke="currentColor" stroke-width="0.8" fill="none"/>
+  <!-- Squid watermark SVG — Minty with proper mantle, blank eyes, no mask -->
+  <svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;right:10%;top:50%;transform:translateY(-50%);width:520px;height:auto;opacity:0.045;pointer-events:none;z-index:0" class="hero-squid">
+    <!-- Mantle: wide diamond/arrow hood, the signature Minty silhouette -->
+    <path d="M130 6 L148 30 L168 55 L178 82 L176 108 L170 125 L130 138 L90 125 L84 108 L82 82 L92 55 L112 30 Z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/>
+    <!-- Mantle inner contour (volume/depth) -->
+    <path d="M130 20 L144 38 L160 60 L168 84 L166 106 L160 118 L130 128 L100 118 L94 106 L92 84 L100 60 L116 38 Z" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3"/>
+    <!-- Mantle highlight sheen -->
+    <path d="M110 40 Q130 32 150 40 Q162 58 164 82 Q155 65 130 58 Q105 65 96 82 Q98 58 110 40" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.35"/>
+    <!-- Mantle point fin lines -->
+    <path d="M118 30 L130 6 L142 30" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.4"/>
 
-    <!-- Eye mask band (the characteristic mask shape) -->
-    <path d="M68 88 Q72 78 85 75 Q100 72 120 72 Q140 72 155 75 Q168 78 172 88 Q168 100 155 103 Q140 106 120 108 Q100 106 85 103 Q72 100 68 88 Z" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    <!-- Head/face: rounder area below mantle -->
+    <path d="M88 115 Q88 140 100 155 Q115 168 130 168 Q145 168 160 155 Q172 140 172 115" stroke="currentColor" stroke-width="1.2" fill="none"/>
 
-    <!-- Left eye (large, round with pupil) -->
-    <circle cx="96" cy="90" r="14" stroke="currentColor" stroke-width="1.2" fill="none"/>
-    <circle cx="93" cy="87" r="6" stroke="currentColor" stroke-width="0.8" fill="none"/>
-    <circle cx="91" cy="85" r="2.5" stroke="currentColor" stroke-width="1" fill="none"/>
+    <!-- Left eye (large, blank) -->
+    <circle cx="108" cy="128" r="16" stroke="currentColor" stroke-width="1.3" fill="none"/>
 
-    <!-- Right eye (large, round with pupil) -->
-    <circle cx="144" cy="90" r="14" stroke="currentColor" stroke-width="1.2" fill="none"/>
-    <circle cx="141" cy="87" r="6" stroke="currentColor" stroke-width="0.8" fill="none"/>
-    <circle cx="139" cy="85" r="2.5" stroke="currentColor" stroke-width="1" fill="none"/>
-
-    <!-- Mouth (small happy curve) -->
-    <path d="M112 118 Q120 124 128 118" stroke="currentColor" stroke-width="0.8" fill="none"/>
+    <!-- Right eye (large, blank) -->
+    <circle cx="152" cy="128" r="16" stroke="currentColor" stroke-width="1.3" fill="none"/>
 
     <!-- Small arms/fins on sides -->
-    <path d="M70 95 Q55 88 45 95 Q38 102 42 108" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
-    <path d="M170 95 Q185 88 195 95 Q202 102 198 108" stroke="currentColor" stroke-width="1" fill="none" stroke-linecap="round"/>
+    <path d="M84 120 Q68 112 56 118 Q48 126 52 134 Q56 138 60 134" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round"/>
+    <path d="M176 120 Q192 112 204 118 Q212 126 208 134 Q204 138 200 134" stroke="currentColor" stroke-width="1.1" fill="none" stroke-linecap="round"/>
 
-    <!-- Tentacles: 5 flowing curves with varying character -->
-    <!-- Left outer tentacle (curving outward) -->
-    <path d="M82 140 Q72 165 62 195 Q52 225 48 245 Q44 260 52 272 Q58 278 62 270" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <!-- Left inner tentacle -->
-    <path d="M95 144 Q88 175 85 205 Q82 235 80 255 Q78 270 84 278 Q88 282 90 275" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <!-- Center tentacle -->
-    <path d="M120 148 Q120 180 118 210 Q116 240 117 265 Q118 280 120 288 Q122 280 123 265" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <!-- Right inner tentacle -->
-    <path d="M145 144 Q152 175 155 205 Q158 235 160 255 Q162 270 156 278 Q152 282 150 275" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
-    <!-- Right outer tentacle (curving outward) -->
-    <path d="M158 140 Q168 165 178 195 Q188 225 192 245 Q196 260 188 272 Q182 278 178 270" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <!-- Tentacles: 6 flowing curves -->
+    <path d="M95 162 Q82 190 70 220 Q58 252 52 275 Q48 292 56 305 Q62 310 64 300" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M105 166 Q96 198 92 230 Q88 260 86 282 Q84 298 90 308 Q94 312 96 302" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M118 170 Q115 200 113 232 Q112 260 114 285 Q115 300 118 312 Q120 316 122 308" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M142 170 Q145 200 147 232 Q148 260 146 285 Q145 300 142 312 Q140 316 138 308" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M155 166 Q164 198 168 230 Q172 260 174 282 Q176 298 170 308 Q166 312 164 302" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
+    <path d="M165 162 Q178 190 190 220 Q202 252 208 275 Q212 292 204 305 Q198 310 196 300" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
 
-    <!-- Tentacle suckers (small circles along tentacles) -->
-    <circle cx="68" cy="180" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="60" cy="215" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="54" cy="245" r="1.5" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="88" cy="190" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="85" cy="225" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="82" cy="255" r="1.5" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="152" cy="190" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="155" cy="225" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="158" cy="255" r="1.5" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="172" cy="180" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="182" cy="215" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
-    <circle cx="188" cy="245" r="1.5" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.4"/>
+    <!-- Tentacle suckers -->
+    <circle cx="76" cy="210" r="2.2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.35"/>
+    <circle cx="64" cy="248" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3"/>
+    <circle cx="56" cy="278" r="1.8" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.25"/>
+    <circle cx="96" cy="218" r="2.2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.35"/>
+    <circle cx="92" cy="252" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3"/>
+    <circle cx="90" cy="282" r="1.8" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.25"/>
+    <circle cx="164" cy="218" r="2.2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.35"/>
+    <circle cx="168" cy="252" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3"/>
+    <circle cx="170" cy="282" r="1.8" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.25"/>
+    <circle cx="184" cy="210" r="2.2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.35"/>
+    <circle cx="196" cy="248" r="2" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.3"/>
+    <circle cx="204" cy="278" r="1.8" stroke="currentColor" stroke-width="0.5" fill="none" opacity="0.25"/>
 
-    <!-- Shadow/float ellipse at bottom -->
-    <ellipse cx="120" cy="310" rx="40" ry="6" stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.3"/>
+    <!-- Shadow/float ellipse -->
+    <ellipse cx="130" cy="340" rx="42" ry="7" stroke="currentColor" stroke-width="0.8" fill="none" opacity="0.25"/>
   </svg>
   <h1>Agentic Infrastructure for the <span class="gradient">MINT Lab</span></h1>
   <p class="subtitle">Machine Intelligence &amp; Normative Theory &mdash; ANU and Johns Hopkins University</p>
