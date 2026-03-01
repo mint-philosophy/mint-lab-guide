@@ -548,15 +548,32 @@ section > h3:first-of-type::before {
 @keyframes pulse { 0%, 100% { opacity: 1; } 50% { opacity: 0.3; } }
 
 /* ===== Pipeline SVG ===== */
+/* Dotted grid paper background for inset boxes */
+.inset-grid-bg {
+  background-color: var(--bg-2);
+  background-image:
+    radial-gradient(circle, rgba(46, 196, 182, 0.12) 0.5px, transparent 0.5px),
+    radial-gradient(circle, rgba(46, 196, 182, 0.12) 0.5px, transparent 0.5px);
+  background-size: 20px 20px;
+  background-position: 0 0, 10px 10px;
+}
 .pipeline-wrap {
-  background: var(--bg-2); border: 1px dashed var(--border);
+  background-color: var(--bg-2);
+  background-image:
+    radial-gradient(circle, rgba(46, 196, 182, 0.10) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  border: 1px dashed var(--border);
   border-radius: var(--radius); padding: 24px; margin: 20px 0; overflow-x: auto;
 }
 .pipeline-wrap svg text { font-family: inherit; }
 
 /* ===== Timeline ===== */
 .timeline-wrap {
-  background: var(--bg-2); border: 1px dashed var(--border);
+  background-color: var(--bg-2);
+  background-image:
+    radial-gradient(circle, rgba(46, 196, 182, 0.10) 0.5px, transparent 0.5px);
+  background-size: 24px 24px;
+  border: 1px dashed var(--border);
   border-radius: var(--radius); padding: 24px; margin: 20px 0;
 }
 .timeline-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
@@ -870,7 +887,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 .mp-services .mp-pill { flex: 0 0 auto; }
 
 /* ===== Corpus-Ingest Vertical Pipeline ===== */
-.ingest-pipeline { background: var(--bg-2); border: 1px dashed var(--border); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
+.ingest-pipeline { background-color: var(--bg-2); background-image: radial-gradient(circle, rgba(46, 196, 182, 0.10) 0.5px, transparent 0.5px); background-size: 24px 24px; border: 1px dashed var(--border); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
 .ingest-stages { display: flex; flex-direction: column; padding-left: 8px; }
 .ingest-stage { display: flex; align-items: flex-start; position: relative; padding-left: 24px; min-height: 48px; }
 .ingest-dot { position: absolute; left: 0; top: 12px; width: 10px; height: 10px; border-radius: 50%; z-index: 2; }
@@ -958,7 +975,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 <!-- ============ HERO ============ -->
 <section class="hero" id="overview">
   <!-- Squid watermark SVG — Minty with proper mantle, blank eyes, no mask -->
-  <svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;right:8%;top:55%;transform:translateY(-45%);width:480px;height:auto;opacity:0.05;pointer-events:none;z-index:0" class="hero-squid">
+  <svg viewBox="0 0 260 380" fill="none" xmlns="http://www.w3.org/2000/svg" style="position:absolute;right:4%;top:8%;width:420px;height:auto;opacity:0.05;pointer-events:none;z-index:0" class="hero-squid">
     <!-- Mantle: wide diamond/arrow hood, the signature Minty silhouette -->
     <path d="M130 6 L148 30 L168 55 L178 82 L176 108 L170 125 L130 138 L90 125 L84 108 L82 82 L92 55 L112 30 Z" stroke="currentColor" stroke-width="1.4" fill="none" stroke-linejoin="round"/>
     <!-- Mantle inner contour (volume/depth) -->
@@ -968,14 +985,14 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
     <!-- Mantle point fin lines -->
     <path d="M118 30 L130 6 L142 30" stroke="currentColor" stroke-width="0.7" fill="none" opacity="0.4"/>
 
-    <!-- Head/face: rounder area below mantle, connects smoothly -->
-    <path d="M90 125 Q88 142 100 156 Q115 170 130 170 Q145 170 160 156 Q172 142 170 125" stroke="currentColor" stroke-width="1.2" fill="none"/>
+    <!-- Head/face: rounder area below mantle -->
+    <path d="M90 130 Q88 148 100 162 Q115 175 130 175 Q145 175 160 162 Q172 148 170 130" stroke="currentColor" stroke-width="1.2" fill="none"/>
 
-    <!-- Left eye (large, blank) -->
-    <circle cx="110" cy="136" r="15" stroke="currentColor" stroke-width="1.3" fill="none"/>
+    <!-- Left eye (large, blank) — sits well inside face curve -->
+    <circle cx="110" cy="144" r="14" stroke="currentColor" stroke-width="1.3" fill="none"/>
 
     <!-- Right eye (large, blank) -->
-    <circle cx="150" cy="136" r="15" stroke="currentColor" stroke-width="1.3" fill="none"/>
+    <circle cx="150" cy="144" r="14" stroke="currentColor" stroke-width="1.3" fill="none"/>
 
     <!-- Tentacles: 6 flowing curves from below face -->
     <path d="M98 168 Q84 196 72 226 Q60 258 54 280 Q50 296 58 308 Q64 313 66 304" stroke="currentColor" stroke-width="1.2" fill="none" stroke-linecap="round"/>
@@ -1470,7 +1487,6 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
 </section>
 
-<div class="section-divider" aria-hidden="true">&#9670;</div>
 <!-- ============ OVERVIEW ============ -->
 <section class="fade-in" id="what-is-this">
   <span class="section-num">01</span>
@@ -1480,7 +1496,6 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   <p>Information flows through a pipeline: external sources (Twitter, arXiv, RSS, Substack, Bluesky, email) are automatically fetched, classified by relevance using Claude Opus, and posted to Slack. Papers are downloaded, converted to markdown via a 6-tier cascade, embedded in a vector database, analyzed across 41 semantic dimensions, and made searchable via a Slack bot. A daily digest goes out to 29 subscribers across 11 institutions.</p>
 </section>
 
-<div class="section-divider" aria-hidden="true">&#9670;</div>
 <!-- ============ CONTENT PIPELINE ============ -->
 <section id="content-pipeline" class="fade-in">
   <span class="section-num">02</span>
@@ -2189,7 +2204,6 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   </div>
 </section>
 
-<div class="section-divider" aria-hidden="true">&#9670;</div>
 <!-- ============ THE CORPUS ============ -->
 <section id="corpus-overview" class="fade-in">
   <span class="section-num">04</span>
@@ -2385,7 +2399,6 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   <div class="callout"><p><strong>Resilience:</strong> If the pipeline fails, the system falls back to a legacy approach. It never returns empty-handed if papers were found.</p></div>
 </section>
 
-<div class="section-divider section-divider--dashed" aria-hidden="true">&#9670;</div>
 <!-- ============ MINTY PERSONA ============ -->
 <section id="persona" class="fade-in">
   <span class="section-num">06</span>
@@ -2770,7 +2783,6 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
 <!-- Full-width bleed line: practical guide → technical sections -->
 <div class="bleed-line bleed-line--dashed" aria-hidden="true"></div>
-<div class="section-divider section-divider--dashed" aria-hidden="true">&#9670;</div>
 <!-- ============ AGENT ENGINEERING ============ -->
 <section id="agents" class="fade-in">
   <span class="section-num">10</span>
