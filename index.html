@@ -1537,11 +1537,10 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   <a class="nav-link" href="#content-pipeline"><span class="nav-mark">&#9659;</span> Content Pipeline</a>
   <a class="nav-link" href="#corpus"><span class="nav-mark">&#9659;</span> Corpus Ingestion</a>
   <a class="nav-link" href="#corpus-overview"><span class="nav-mark">&#9659;</span> The Corpus</a>
-  <a class="nav-link" href="#corpus-search"><span class="nav-mark">&#9659;</span> @robo-minty</a>
+  <a class="nav-link" href="#corpus-search"><span class="nav-mark">&#9659;</span> @Minty</a>
   <a class="nav-link" href="#persona"><span class="nav-mark">&#9659;</span> Minty Persona</a>
   <a class="nav-link" href="#daemons"><span class="nav-mark">&#9659;</span> Daemons</a>
   <a class="nav-link" href="#timeline"><span class="nav-mark">&#9659;</span> Schedule</a>
-  <a class="nav-link" href="#stats"><span class="nav-mark">&#9659;</span> Stats</a>
   <div style="padding:8px 20px;font-size:10px;color:var(--text-3);text-transform:uppercase;letter-spacing:2px;font-family:'JetBrains Mono',monospace;border-top:1px solid var(--border);margin-top:4px;padding-top:12px">Practical Guide</div>
   <a class="nav-link" href="#guide"><span class="nav-mark">&#9659;</span> For Lab Members</a>
   <a class="nav-link sub-link" href="#bots"><span class="nav-mark">&#8250;</span> Bots</a>
@@ -1740,10 +1739,10 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
       <line x1="510" y1="525" x2="510" y2="555" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
       <!-- corpus-agent -->
-      <g class="pn" data-tip="Slack bot (@robo-minty) offering 7 search modes: fast search, deep review, catch me up, semantic similarity, dimension search, chunk search, and unified multi-modal search with Reciprocal Rank Fusion." style="cursor:pointer" transform="translate(415,558)">
+      <g class="pn" data-tip="Slack bot (@Minty) offering 7 search modes: fast search, deep review, catch me up, semantic similarity, dimension search, chunk search, and unified multi-modal search with Reciprocal Rank Fusion." style="cursor:pointer" transform="translate(415,558)">
         <rect width="190" height="52" rx="8" fill="url(#nodeGrad)" stroke="#22d3ee" stroke-width="1.5"/>
         <text x="95" y="17" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="700">corpus-agent</text>
-        <text x="95" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@robo-minty &#x2022; 7 modes &#x2022; News Search</text>
+        <text x="95" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@Minty &#x2022; 7 modes &#x2022; News Search</text>
         <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Deep Review &#x2022; Catch Me Up &#x2022; more</text>
       </g>
 
@@ -1964,10 +1963,10 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
       <line x1="328" y1="657" x2="328" y2="684" stroke="#22d3ee" stroke-width="1.2" marker-end="url(#mArrBlue)"/>
 
       <!-- corpus-agent (y=692) -->
-      <g class="pn" data-tip="Slack bot (@robo-minty) with 7 search modes including fast search, deep review, catch me up, and unified multi-modal search." style="cursor:pointer" transform="translate(248,692)">
+      <g class="pn" data-tip="Slack bot (@Minty) with 7 search modes including fast search, deep review, catch me up, and unified multi-modal search." style="cursor:pointer" transform="translate(248,692)">
         <rect width="160" height="42" rx="6" fill="url(#mGrad)" stroke="#22d3ee" stroke-width="1.2"/>
         <text x="80" y="15" text-anchor="middle" fill="#22d3ee" font-size="9" font-weight="700">corpus-agent</text>
-        <text x="80" y="27" text-anchor="middle" fill="#94a3b8" font-size="7">@robo-minty &bull; 7 search modes</text>
+        <text x="80" y="27" text-anchor="middle" fill="#94a3b8" font-size="7">@Minty &bull; 7 search modes</text>
         <text x="80" y="37" text-anchor="middle" fill="#64748b" font-size="6">Deep Review &bull; Catch Me Up</text>
       </g>
 
@@ -2042,78 +2041,73 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   <h2>The Content Pipeline</h2>
   <p class="lead">Information flows from external sources to lab members through a single Slack channel &mdash; <code>#firehose</code> &mdash; that acts as the automated hub. Two daemons write to it; three daemons read from it. The source code lives in the <a href="https://github.com/mint-philosophy/minty-private">minty-private</a> repository under <code>daemons/pipeline/</code>.</p>
 
-  <!-- Flow summary -->
-  <div style="display:flex;align-items:center;justify-content:center;gap:0;flex-wrap:wrap;margin:28px 0 24px;padding:20px;background:var(--bg-0);border:1px solid var(--border);border-radius:var(--radius)">
-    <div style="text-align:center;padding:12px 18px">
-      <div style="font-size:22px;margin-bottom:4px">&#128225;</div>
-      <div style="font-size:12px;font-weight:600;color:var(--cyan)">7 Sources</div>
-      <div style="font-size:10px;color:var(--text-3)">Twitter, arXiv, RSS,<br>Bluesky, Email, PhilPapers,<br>LinkedIn</div>
-    </div>
-    <div style="color:var(--text-3);font-size:18px;padding:0 6px">&#8594;</div>
-    <div style="text-align:center;padding:12px 18px">
-      <div style="font-size:22px;margin-bottom:4px">&#129302;</div>
-      <div style="font-size:12px;font-weight:600;color:var(--cyan)">Classify</div>
-      <div style="font-size:10px;color:var(--text-3)">Claude Opus scores<br>6 dimensions</div>
-    </div>
-    <div style="color:var(--text-3);font-size:18px;padding:0 6px">&#8594;</div>
-    <div style="text-align:center;padding:12px 18px">
-      <div style="font-size:22px;margin-bottom:4px">&#128077;</div>
-      <div style="font-size:12px;font-weight:600;color:var(--amber)">Curate</div>
-      <div style="font-size:10px;color:var(--text-3)">Seth reviews<br>#feed channels</div>
-    </div>
-    <div style="color:var(--text-3);font-size:18px;padding:0 6px">&#8594;</div>
-    <div style="text-align:center;padding:12px 18px;background:rgba(34,211,238,0.06);border-radius:8px;border:1px solid rgba(34,211,238,0.15)">
-      <div style="font-size:22px;margin-bottom:4px">&#128293;</div>
-      <div style="font-size:12px;font-weight:700;color:var(--cyan)">#firehose</div>
-      <div style="font-size:10px;color:var(--text-3)">Central hub</div>
-    </div>
-    <div style="color:var(--text-3);font-size:18px;padding:0 6px">&#8594;</div>
-    <div style="text-align:center;padding:12px 18px">
-      <div style="font-size:22px;margin-bottom:4px">&#9881;</div>
-      <div style="font-size:12px;font-weight:600;color:var(--mint)">Distribute</div>
-      <div style="font-size:10px;color:var(--text-3)">Digest, PDFs,<br>corpus ingest</div>
-    </div>
-  </div>
-
-  <!-- Key stats grid -->
-  <div class="grid-2" style="margin:20px 0 28px">
-    <div class="callout" style="margin:0">
-      <p style="margin:0"><strong>The funnel:</strong> External sources produce hundreds of items daily. <em>feedme-daily</em> classifies them down to ~20&ndash;40%. Seth's thumbs-up on <em>#feed</em> curates further. Everything that reaches <em>#firehose</em> gets PDFs attached, ingested into the corpus, and summarized in the daily digest for <em>#mint-community</em>.</p>
-    </div>
-    <div style="display:grid;grid-template-columns:1fr 1fr;gap:10px">
-      <div style="background:var(--bg-0);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center">
-        <div style="font-size:24px;font-weight:700;color:var(--cyan);font-family:'JetBrains Mono',monospace">7</div>
-        <div style="font-size:11px;color:var(--text-3)">Source types</div>
+  <!-- Flow summary: 7-stage pipeline overview -->
+  <div style="margin:28px 0 24px">
+    <div style="display:flex;align-items:center;justify-content:center;gap:8px;flex-wrap:wrap">
+      <div style="background:var(--bg-0);border-left:3px solid var(--cyan);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer"
+           data-ingest-tip="6 fetchers pull from Twitter, arXiv, RSS/Substack, Bluesky, Email, and LinkedIn in parallel via a thread pool. A PhilPapers scraper is also available for periodic runs."
+           data-ingest-color="#22d3ee">
+        <div style="font-size:12px;font-weight:700;color:var(--cyan)">Sources</div>
+        <div style="font-size:10px;color:var(--text-3)">6 parallel fetchers</div>
       </div>
-      <div style="background:var(--bg-0);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center">
-        <div style="font-size:24px;font-weight:700;color:var(--mint);font-family:'JetBrains Mono',monospace">2+3</div>
-        <div style="font-size:11px;color:var(--text-3)">Writers + readers</div>
+      <div style="color:var(--text-3);font-size:16px;line-height:1">&rarr;</div>
+      <div style="background:var(--bg-0);border-left:3px solid var(--mint);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer"
+           data-ingest-tip="Claude Opus scores 6 dimensions (relevance, quality, authority, novelty, actionability, engagement), generates a 5&ndash;10 word headline, assigns one of 16 categories, and explains its reasoning. 16 parallel workers, ~40K tokens per batch."
+           data-ingest-color="#00e8a2">
+        <div style="font-size:12px;font-weight:700;color:var(--mint)">Classify</div>
+        <div style="font-size:10px;color:var(--text-3)">Opus, 6 dimensions</div>
       </div>
-      <div style="background:var(--bg-0);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center">
-        <div style="font-size:24px;font-weight:700;color:var(--amber);font-family:'JetBrains Mono',monospace">16</div>
-        <div style="font-size:11px;color:var(--text-3)">Content categories</div>
+      <div style="color:var(--text-3);font-size:16px;line-height:1">&rarr;</div>
+      <div style="background:var(--bg-0);border-left:3px solid var(--amber);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer"
+           data-ingest-tip="Seth reviews #feed-{day} channels each morning. Thumbs-up promotes items to #firehose via the feed-promote daemon, which polls every 5 minutes."
+           data-ingest-color="#f59e0b">
+        <div style="font-size:12px;font-weight:700;color:var(--amber)">Curate</div>
+        <div style="font-size:10px;color:var(--text-3)">Human review</div>
       </div>
-      <div style="background:var(--bg-0);border:1px solid var(--border);border-radius:var(--radius-sm);padding:14px;text-align:center">
-        <div style="font-size:24px;font-weight:700;color:var(--pink);font-family:'JetBrains Mono',monospace">29</div>
-        <div style="font-size:11px;color:var(--text-3)">Digest subscribers</div>
+      <div style="color:var(--text-3);font-size:16px;line-height:1">&rarr;</div>
+      <div style="background:rgba(34,211,238,0.06);border:1px solid rgba(34,211,238,0.15);border-left:3px solid var(--cyan);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer"
+           data-ingest-tip="Central hub. Everything curated lands here. Three downstream daemons read from it: news-pdf-bot, corpus-ingest, and yesterday-in-ai."
+           data-ingest-color="#22d3ee">
+        <div style="font-size:12px;font-weight:700;color:var(--cyan)">#firehose</div>
+        <div style="font-size:10px;color:var(--text-3)">Central hub</div>
+      </div>
+      <div style="color:var(--text-3);font-size:16px;line-height:1">&rarr;</div>
+      <div style="background:var(--bg-0);border-left:3px solid var(--purple);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer"
+           data-ingest-tip="news-pdf-bot attaches PDFs via 3-tier acquisition (pattern matching, thread expansion, sandboxed Claude agent). corpus-ingest runs an 11-stage pipeline: markdown conversion, embedding, metadata extraction, cataloguing."
+           data-ingest-color="#a78bfa">
+        <div style="font-size:12px;font-weight:700;color:var(--purple)">Ingest</div>
+        <div style="font-size:10px;color:var(--text-3)">PDFs + corpus pipeline</div>
+      </div>
+      <div style="color:var(--text-3);font-size:16px;line-height:1">&rarr;</div>
+      <div style="background:var(--bg-0);border-left:3px solid var(--indigo);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer"
+           data-ingest-tip="corpus-agent performs deep semantic analysis on ingested papers: 41 analytical questions, thematic clustering, cross-paper connection mapping."
+           data-ingest-color="#818cf8">
+        <div style="font-size:12px;font-weight:700;color:var(--indigo)">Analyse</div>
+        <div style="font-size:10px;color:var(--text-3)">41Q deep analysis</div>
+      </div>
+      <div style="color:var(--text-3);font-size:16px;line-height:1">&rarr;</div>
+      <div style="background:var(--bg-0);border-left:3px solid var(--pink);border-radius:var(--radius-sm);padding:10px 14px;cursor:pointer"
+           data-ingest-tip="yesterday-in-ai generates a daily narrative digest for subscribers and posts to #mint-community. A weekly Minty's Week in AI summary is produced for lab meetings."
+           data-ingest-color="#f472b6">
+        <div style="font-size:12px;font-weight:700;color:var(--pink)">Report</div>
+        <div style="font-size:10px;color:var(--text-3)">Daily + weekly digests</div>
       </div>
     </div>
   </div>
 
   <h3 style="margin-top:28px;font-size:14px;color:var(--cyan)">Intake Path 1: Automated Discovery</h3>
 
-  <p>The <strong>feedme-daily</strong> daemon runs daily, fetching from seven source types in parallel via a thread pool:</p>
+  <p>The <strong>feedme-daily</strong> daemon runs daily, fetching from six source types in parallel via a thread pool:</p>
 
   <table class="ref-table" style="font-size:12px;margin:12px 0">
     <thead><tr><th>Source</th><th>Method</th><th>Window</th><th>Max Items</th></tr></thead>
     <tbody>
-      <tr><td>Twitter/X</td><td>API v2 (OAuth1)</td><td>24h</td><td>500</td></tr>
-      <tr><td>Bluesky</td><td>Feed API</td><td>24h</td><td>150</td></tr>
-      <tr><td>RSS/Substack</td><td>Feed parser</td><td>7 days</td><td>100</td></tr>
-      <tr><td>arXiv</td><td>API</td><td>5 days</td><td>100</td></tr>
-      <tr><td>PhilPapers</td><td>Scraper</td><td>2 days</td><td>100</td></tr>
-      <tr><td>LinkedIn</td><td>Browser scroll</td><td>100 posts</td><td>50</td></tr>
-      <tr><td>Email newsletters</td><td>Gmail API</td><td>7 days</td><td>50</td></tr>
+      <tr><td>Twitter/X</td><td>API v2 (OAuth1)</td><td>24h</td><td>200</td></tr>
+      <tr><td>Bluesky</td><td>Feed API</td><td>24h</td><td>200</td></tr>
+      <tr><td>RSS/Substack</td><td>Feed parser</td><td>7 days</td><td>30</td></tr>
+      <tr><td>arXiv</td><td>API</td><td>5 days</td><td>50</td></tr>
+      <tr><td>LinkedIn</td><td>Browser automation</td><td>100 posts</td><td>50</td></tr>
+      <tr><td>Email newsletters</td><td>Gmail API</td><td>7 days</td><td>30</td></tr>
     </tbody>
   </table>
 
@@ -2133,13 +2127,97 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
     </tbody>
   </table>
 
-  <p>The weighted composite score determines whether an item passes. Thresholds are source-specific: arXiv must score &ge;0.60 (higher bar due to volume), PhilPapers &ge;0.45 (lower bar for inclusivity), everything else &ge;0.50. The classifier also assigns one of 16 categories (<code>normative_competence</code>, <code>agentic_ai</code>, <code>ai_safety</code>, <code>frontier_labs</code>, <code>progress_studies</code>, <code>political_economy</code>, etc.), generates a short headline, and explains its reasoning in one sentence. Items in <code>progress_studies</code> and <code>ai_science</code> get a +0.06 composite boost. Allowlisted accounts (frequent high-value sources like <code>@karpathy</code>, <code>@simonw</code>, <code>@anthropicai</code>) bypass classification entirely.</p>
+  <p>The weighted composite score determines whether an item passes. Thresholds are source-specific: arXiv must score &ge;0.60 (higher bar due to volume), PhilPapers &ge;0.45 (lower bar for inclusivity), everything else &ge;0.50. Items in <code>progress_studies</code> and <code>ai_science</code> get a +0.06 composite boost. Allowlisted accounts (frequent high-value sources like <code>@karpathy</code>, <code>@simonw</code>, <code>@anthropicai</code>) bypass classification entirely.</p>
 
-  <p><strong>Summarisation</strong> runs after classification for long-form content &mdash; RSS articles, Substack posts, email newsletters, and any item over 3,000 characters. A separate Claude Opus pass generates an intelligent reading of each piece (not a mechanical pr&eacute;cis), leading with the central insight, laying out supporting arguments with specific data, and annotating the original word count. Summaries are written as a knowledgeable peer, not a book-report student.</p>
+  <h3 style="margin-top:28px;font-size:14px;color:var(--mint)">Inside the Classification Prompt</h3>
+  <p style="font-size:13px;color:var(--text-2);margin-bottom:16px">Every item that enters the pipeline is evaluated by Claude Opus against a 177-line classification prompt. The prompt encodes the lab's research identity, a 30+ topic taxonomy, quality heuristics, scoring floors, and hard exclusions &mdash; a substantive decision system, not a simple relevance filter. Hover over each theme to see exact language from the prompt.</p>
 
-  <p><strong>Posting to Slack.</strong> Items are sorted by composite score (best first) and posted to daily <code>#feed-{dayname}</code> channels. Social posts (tweets, Bluesky) appear with full inline content, the original URL, and a metadata footer showing source, timestamp, score, category, and classification reason. Long threads (>3,000 chars) get the summariser's condensed version instead. RSS and newsletter articles appear with the summary text, not the full article. Each post includes any PDFs found during enrichment as thread attachments.</p>
+  <div class="cards" style="grid-template-columns: repeat(3, 1fr)">
+    <div class="card" style="border-color:var(--mint)" data-ingest-tip="Anchors every classification in the lab's institutional identity and research mission. From the prompt: 'You are a research feed classifier for the MINT Research Lab at Johns Hopkins University, directed by Seth Lazar. The lab works on AI safety, normative competence of LLMs, agentic AI governance, and political philosophy of AI.' And: 'The lab's research is situated within a broader concern: liberal democracies face institutional, economic, and cultural decline. AI offers the best opportunity to reverse this trajectory &mdash; but only if deployed wisely.'" data-ingest-color="#00e8a2">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(0,232,162,0.08);color:var(--mint)">&#x1F3DB;</div>
+        <div><div class="card-title">Lab Identity &amp; Mission</div><div class="card-sub">Framed around institutional renewal</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--cyan)" data-ingest-tip="Defines 30+ equally weighted interest areas &mdash; the classifier must not treat any as 'core' vs. 'peripheral.' From the prompt: 'ALL of these interests are equally important: normative competence, benchmark methodology, agent governance, calibrated safety, catastrophic risk, AI and democracy, AI policy, agent security, interpretability, AI economics, platform governance, frontier lab developments, progress studies, advancement of science, abundance agenda, institutional dysfunction/reform...' And: 'Domestic and international politics ONLY when about structural/institutional change. Exclude: commentary about individual politicians, horse-race coverage, partisan debates.'" data-ingest-color="#22d3ee">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(34,211,238,0.08);color:var(--cyan)">&#x1F4CB;</div>
+        <div><div class="card-title">Topic Taxonomy</div><div class="card-sub">30+ equally weighted interest areas</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--indigo)" data-ingest-tip="Explicitly counteracts length bias &mdash; judges density of insight, not word count. From the prompt: 'Substance can come in ANY length. A concise post with a genuine insight, novel argument, important evidence, or breaking news is high quality regardless of word count.' And: 'A 280-character post making a genuine point is better than a long rehash.' And: 'Do NOT penalize reshares/link-posts if the underlying content is relevant and substantive. Judge what's being pointed to, not just the wrapper.'" data-ingest-color="#818cf8">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(129,140,248,0.08);color:var(--indigo)">&#x2696;</div>
+        <div><div class="card-title">Quality Over Length</div><div class="card-sub">Density of insight, not word count</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--amber)" data-ingest-tip="Sets scoring floors for strategically important sources &mdash; frontier model releases, trusted authors, and global labs. From the prompt: 'New foundation model releases from ANY lab worldwide &mdash; score 0.85+ relevance. This includes video/image/audio models, not just language models.' And: 'Chinese labs (DeepSeek, ByteDance/Doubao, Baidu ERNIE, Alibaba Qwen, Zhipu GLM, Moonshot/Kimi, 01.AI/Yi) &mdash; score 0.85+. Track the global frontier, not just Western labs.' Named boost targets include Institute for Progress, Works in Progress, Patrick Collison, Tyler Cowen, and others." data-ingest-color="#f59e0b">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(245,158,11,0.08);color:var(--amber)">&#x2B06;</div>
+        <div><div class="card-title">Boosted Sources</div><div class="card-sub">Scoring floors for key sources</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--purple)" data-ingest-tip="Specialised handling for philosophy papers &mdash; topic relevance and abstract quality trump journal prestige. From the prompt: 'Seth is interested in philosophy of AI broadly &mdash; he wants to see what's being published in this space, even from lesser-known journals and authors.' And: 'Judge primarily on TOPIC RELEVANCE and ABSTRACT QUALITY, not journal prestige.' AI consciousness, model welfare, and AI personhood all score 0.8+ relevance." data-ingest-color="#a78bfa">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(167,139,250,0.08);color:var(--purple)">&#x1F4DA;</div>
+        <div><div class="card-title">PhilPapers</div><div class="card-sub">Topic relevance over journal prestige</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--pink)" data-ingest-tip="Explicit exclusion list that prevents noise from reaching the team. From the prompt: 'anti_interest: hype, crypto, celebrity gossip, partisan political commentary, culture war, ethics-slop, marketing emails, promotional content, webinar invitations.' And: 'Ethics-slop &mdash; vague normative language without testable claims.' Marketing content scores Relevance 0.1, Quality 0.1 regardless of topic." data-ingest-color="#f472b6">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(244,114,182,0.08);color:var(--pink)">&#x1F6AB;</div>
+        <div><div class="card-title">Hard Exclusions</div><div class="card-sub">Crypto, hype, ethics-slop, marketing</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--green)" data-ingest-tip="Detects academic paper links for downstream enrichment &mdash; PDF download, abstract extraction, corpus ingestion. From the prompt: 'Check whether the content references or links to academic papers/preprints. Look for: arXiv URLs, DOI links, academic publisher URLs (nature.com, science.org, pnas.org, openreview.net, aclweb.org, etc.).' Detected paper URLs are passed to the enrichment stage." data-ingest-color="#4ade80">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(74,222,128,0.08);color:var(--green)">&#x1F4C4;</div>
+        <div><div class="card-title">Paper Detection</div><div class="card-sub">Academic papers flagged for enrichment</div></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:#8892a6" data-ingest-tip="The prompt's default posture: when uncertain, let it through for human review rather than filtering it out. From the prompt: 'When in doubt about relevance, err toward higher scores &mdash; the lab team reviews after.' Target pass rate is 25&ndash;30%. 'Do NOT shoehorn items into categories where they don't clearly belong.'" data-ingest-color="#8892a6">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(136,146,166,0.08);color:#8892a6">&#x2714;</div>
+        <div><div class="card-title">Err Toward Inclusion</div><div class="card-sub">25&ndash;30% target pass rate</div></div>
+      </div>
+    </div>
+  </div>
 
-  <p><strong>Promotion.</strong> Seth reviews <code>#feed</code> each morning and reacts with &#x1F44D; to items worth tracking. The <strong>feed-promote</strong> daemon polls every 5 minutes, copies promoted messages verbatim to <code>#firehose</code> (including validated PDF attachments from threads), and tracks promoted IDs to prevent duplicates.</p>
+  <h3 style="margin-top:28px;font-size:14px;color:var(--mint)">After Classification: Upsampling &amp; Delivery</h3>
+  <p style="font-size:13px;color:var(--text-2);margin-bottom:16px">Classification doesn't just filter &mdash; it transforms each raw feed item into a structured record with new metadata. Four further stages prepare items for delivery.</p>
+
+  <div style="display:grid;grid-template-columns:3px 1fr;gap:0 16px;margin:20px 0">
+    <!-- Upsampling -->
+    <div style="background:var(--mint);border-radius:2px"></div>
+    <div style="padding:12px 0">
+      <div style="font-size:13px;font-weight:700;color:var(--mint);margin-bottom:4px">Upsampling</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">The classifier generates a punchy <strong>5&ndash;10 word headline</strong>, assigns one of <strong>16 categories</strong> (<code style="font-size:11px">normative_competence</code>, <code style="font-size:11px">agentic_ai</code>, <code style="font-size:11px">ai_safety</code>, <code style="font-size:11px">frontier_labs</code>, <code style="font-size:11px">progress_studies</code>, <code style="font-size:11px">political_economy</code>, etc.), writes a one-sentence <strong>classification reason</strong>, and flags any <strong>paper links</strong> (arXiv, DOI, publisher URLs). Every item emerges with six numerical scores, a category, a headline, and a reason &mdash; metadata that didn't exist in the raw feed.</div>
+    </div>
+    <!-- Summarisation -->
+    <div style="background:var(--cyan);border-radius:2px"></div>
+    <div style="padding:12px 0;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;color:var(--cyan);margin-bottom:4px">Summarisation</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">A separate Claude Opus pass runs in parallel for long-form content &mdash; RSS articles, Substack posts, email newsletters, and any social post over 3,000 characters. Generates an intelligent reading (not a mechanical pr&eacute;cis): leads with the central insight, lays out supporting arguments with specific data, annotates the original word count. Honest about partial sources: if it only has a newsletter abstract, it says so.</div>
+    </div>
+    <!-- Enrichment -->
+    <div style="background:var(--amber);border-radius:2px"></div>
+    <div style="padding:12px 0;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;color:var(--amber);margin-bottom:4px">Enrichment</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">Resolves shortlinks (t.co, bit.ly) to final destinations. Scrapes <strong>abstracts</strong> from 30+ academic publisher domains via domain-specific CSS selectors. Downloads <strong>PDFs</strong> using publisher-specific URL transforms (arXiv <code style="font-size:11px">/abs/</code> &rarr; <code style="font-size:11px">/pdf/</code>, Wiley ePDF, etc.) and the ANU institutional proxy for paywalled journals.</div>
+    </div>
+    <!-- Posting -->
+    <div style="background:var(--indigo);border-radius:2px"></div>
+    <div style="padding:12px 0;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;color:var(--indigo);margin-bottom:4px">Posting to Slack</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">Items sorted by composite score (best first) and posted to daily <code style="font-size:11px">#feed-{dayname}</code> channels. Each message leads with the <strong>classifier headline</strong> in bold. Social posts show full inline content; long threads (&gt;3,000 chars) get the summariser's condensed version. RSS/email articles show the summary. Metadata footer: source, timestamp, score, category, reason. Abstracts and PDFs posted as thread replies.</div>
+    </div>
+    <!-- Promotion -->
+    <div style="background:var(--pink);border-radius:2px"></div>
+    <div style="padding:12px 0;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;color:var(--pink);margin-bottom:4px">Promotion</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">Seth reviews <code style="font-size:11px">#feed</code> each morning and reacts with &#x1F44D;. The <strong>feed-promote</strong> daemon polls every 5 minutes, copies promoted messages verbatim to <code style="font-size:11px">#firehose</code> (including validated PDF attachments from threads), and tracks promoted IDs to prevent duplicates.</div>
+    </div>
+  </div>
 
   <h3 style="margin-top:24px;font-size:14px;color:var(--amber)">Intake Path 2: Manual Sharing</h3>
 
@@ -2147,19 +2225,38 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
   <h3 style="margin-top:24px;font-size:14px;color:var(--pink)">Reader 1: yesterday-in-ai</h3>
 
-  <p>Generates a narrative daily digest from the previous day's <code>#firehose</code> posts using Claude, writing as intelligent prose rather than a mechanical list. Sends as a rich HTML email to 29 subscribers across 11 institutions, posts to <code>#mint-community</code> for lab discussion, and publishes to the Ghost blog. A weekly <em>Last Week in AI</em> summary also goes out before lab meetings. For more detail, see the <em>Yesterday in AI</em> section at the bottom of &sect;06.</p>
+  <p>Generates a narrative daily digest from the previous day's <code>#firehose</code> posts using Claude, writing as intelligent prose rather than a mechanical list. Sends as a rich HTML email to 29 subscribers across 11 institutions, posts to <code>#mint-community</code> for lab discussion, and publishes to the Ghost blog. A weekly <em>Minty's Week in AI</em> summary also goes out before lab meetings. For more detail, see the <em>Yesterday in AI</em> section at the bottom of &sect;06.</p>
 
   <h3 style="margin-top:24px;font-size:14px;color:var(--purple)">Reader 2: news-pdf-bot</h3>
 
-  <p>Polls <code>#firehose</code> every 5 minutes looking for messages with links that don't yet have an attached PDF. Uses a three-tier acquisition strategy:</p>
+  <p style="font-size:13px;color:var(--text-2);margin-bottom:16px">Polls <code>#firehose</code> every 5 minutes looking for messages with links that don't yet have an attached PDF. Uses a three-tier acquisition strategy, escalating until a PDF is found.</p>
 
-  <p><strong>Tier 1 &mdash; Programmatic pattern matching.</strong> Extracts URLs from the message and tweet entities (resolving t.co shortlinks first). Matches against known academic URL patterns: arXiv <code>/abs/</code> &rarr; <code>/pdf/</code>, OpenReview <code>/forum</code> &rarr; <code>/pdf</code>, bioRxiv <code>.full.pdf</code>, plus direct <code>.pdf</code> links from 30+ publisher domains. Downloads and validates the file (checks <code>%PDF</code> magic bytes).</p>
-
-  <p><strong>Tier 2 &mdash; Thread expansion.</strong> If the message links to a tweet that looks like a thread (reply count > 0, or contains &#x1F9F5;, &ldquo;thread&rdquo;, or &ldquo;1/&rdquo;), fetches the full self-reply chain via Twitter API and scans all tweets for paper URLs.</p>
-
-  <p><strong>Tier 3 &mdash; Sandboxed Claude agent.</strong> For items where neither pattern matching nor thread expansion finds a PDF, the bot spawns a sandboxed Claude Opus subprocess with a single allowed tool (Bash) and a maximum of 12 turns. The agent follows a 6-step cascade using a CLI toolkit (<code>paper_finder_tools.py</code>) that provides URL resolution, page scraping, Semantic Scholar search, Unpaywall DOI lookup, and browser-based download for paywalled or Cloudflare-protected sites. The agent has access to the ANU institutional proxy for paywalled journals. Budget: 8 Bash calls maximum.</p>
-
-  <p>Found PDFs are uploaded as thread replies to the original Slack message with canonical filenames (<code>Author et al - Year - Title.pdf</code>) and, for arXiv papers, the full abstract in the reply text. The bot deduplicates by checking whether it has already replied to each message before processing.</p>
+  <div style="display:grid;grid-template-columns:3px 1fr;gap:0 16px;margin:20px 0">
+    <!-- Tier 1 -->
+    <div style="background:var(--purple);border-radius:2px"></div>
+    <div style="padding:12px 0">
+      <div style="font-size:13px;font-weight:700;color:var(--purple);margin-bottom:4px">Tier 1 &mdash; Programmatic Pattern Matching</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">Extracts URLs from the message and tweet entities (resolving t.co shortlinks first). Matches against known academic URL patterns: arXiv <code style="font-size:11px">/abs/</code> &rarr; <code style="font-size:11px">/pdf/</code>, OpenReview <code style="font-size:11px">/forum</code> &rarr; <code style="font-size:11px">/pdf</code>, bioRxiv <code style="font-size:11px">.full.pdf</code>, plus direct <code style="font-size:11px">.pdf</code> links from 30+ publisher domains. Downloads and validates the file (checks <code style="font-size:11px">%PDF</code> magic bytes).</div>
+    </div>
+    <!-- Tier 2 -->
+    <div style="background:var(--purple);border-radius:2px"></div>
+    <div style="padding:12px 0;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;color:var(--purple);margin-bottom:4px">Tier 2 &mdash; Thread Expansion</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">If the message links to a tweet that looks like a thread (reply count &gt; 0, or contains &#x1F9F5;, &ldquo;thread&rdquo;, or &ldquo;1/&rdquo;), fetches the full self-reply chain via Twitter API and scans all tweets for paper URLs.</div>
+    </div>
+    <!-- Tier 3 -->
+    <div style="background:var(--purple);border-radius:2px"></div>
+    <div style="padding:12px 0;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;color:var(--purple);margin-bottom:4px">Tier 3 &mdash; Sandboxed Claude Agent</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">Spawns a sandboxed Claude Opus subprocess with a single allowed tool (Bash) and a maximum of 12 turns. The agent follows a 6-step cascade using a CLI toolkit (<code style="font-size:11px">paper_finder_tools.py</code>) that provides URL resolution, page scraping, Semantic Scholar search, Unpaywall DOI lookup, and browser-based download for paywalled or Cloudflare-protected sites. Has access to the ANU institutional proxy for paywalled journals. Budget: 8 Bash calls maximum.</div>
+    </div>
+    <!-- Delivery -->
+    <div style="background:var(--text-3);border-radius:2px"></div>
+    <div style="padding:12px 0;border-top:1px solid var(--border)">
+      <div style="font-size:13px;font-weight:700;color:var(--text-2);margin-bottom:4px">Delivery</div>
+      <div style="font-size:12.5px;color:var(--text-2);line-height:1.6">Found PDFs are uploaded as thread replies to the original Slack message with canonical filenames (<code style="font-size:11px">Author et al - Year - Title.pdf</code>) and, for arXiv papers, the full abstract in the reply text. Deduplicates by checking whether it has already replied to each message before processing.</div>
+    </div>
+  </div>
 
   <h3 style="margin-top:24px;font-size:14px;color:var(--teal)">Reader 3: corpus-ingest</h3>
 
@@ -2598,15 +2695,52 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   <p>Hierarchical summaries per paper: a document-level overview (~300 words) plus section summaries for Introduction, Methods, Results, Discussion, and Conclusion. These serve dual purposes: fast search index (via <code>document_summary_embedding</code>) and context-efficient paper reading (agents read summaries instead of full text).</p>
 
   <h3>Four Vector Databases</h3>
-  <table class="ref-table">
-    <thead><tr><th>Database</th><th>Technology</th><th>Embedding</th><th>Contents</th></tr></thead>
-    <tbody>
-      <tr><td>Paper Corpus</td><td>LanceDB (~4.5 GB)</td><td>Voyage context-3 (2048d)</td><td>~2,000 papers, ~155K chunks, 41 semantic dimensions, 29 clusters</td></tr>
-      <tr><td>Slack Messages</td><td>ChromaDB</td><td>Voyage voyage-3</td><td>All public Slack messages, refreshed every 4h</td></tr>
-      <tr><td>News Messages</td><td>ChromaDB</td><td>Voyage voyage-3</td><td>#mint-community and #firehose messages, refreshed hourly</td></tr>
-      <tr><td>Workspace Files</td><td>ChromaDB</td><td>OpenAI</td><td>Markdown, Python, PDF, DOCX across workspace</td></tr>
-    </tbody>
-  </table>
+  <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(220px, 1fr))">
+    <div class="card" style="border-color:var(--teal)">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(45,212,191,0.08);color:#2dd4bf">&#9733;</div>
+        <div><div class="card-title">Paper Corpus</div><div class="card-sub">LanceDB &bull; ~4.5 GB</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--text-2);padding:8px 12px 12px;line-height:1.5">
+        <div>~2,000 papers &bull; ~155K chunks</div>
+        <div>41 semantic dimensions &bull; 29 clusters</div>
+        <div style="margin-top:6px;color:var(--text-3)"><code style="font-size:10px">Voyage context-3 (2048d)</code></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--indigo)">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(129,140,248,0.08);color:#818cf8">&#128172;</div>
+        <div><div class="card-title">Slack Messages</div><div class="card-sub">ChromaDB &bull; Every 4h</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--text-2);padding:8px 12px 12px;line-height:1.5">
+        <div>All public Slack messages</div>
+        <div>Thread replies concatenated into parents</div>
+        <div style="margin-top:6px;color:var(--text-3)"><code style="font-size:10px">Voyage voyage-3</code></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--pink)">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(244,114,182,0.08);color:#f472b6">&#128240;</div>
+        <div><div class="card-title">News Messages</div><div class="card-sub">ChromaDB &bull; Hourly</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--text-2);padding:8px 12px 12px;line-height:1.5">
+        <div>#mint-community and #firehose</div>
+        <div>Dedicated news search index</div>
+        <div style="margin-top:6px;color:var(--text-3)"><code style="font-size:10px">Voyage voyage-3</code></div>
+      </div>
+    </div>
+    <div class="card" style="border-color:var(--amber)">
+      <div class="card-head">
+        <div class="card-icon" style="background:rgba(251,191,36,0.08);color:#fbbf24">&#128193;</div>
+        <div><div class="card-title">Workspace Files</div><div class="card-sub">ChromaDB &bull; Every 6h</div></div>
+      </div>
+      <div style="font-size:12px;color:var(--text-2);padding:8px 12px 12px;line-height:1.5">
+        <div>Markdown, Python, PDF, DOCX</div>
+        <div>Semantic search across workspace</div>
+        <div style="margin-top:6px;color:var(--text-3)"><code style="font-size:10px">OpenAI embeddings</code></div>
+      </div>
+    </div>
+  </div>
 </section>
 
 <!-- ============ THE CORPUS ============ -->
@@ -2661,24 +2795,47 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
     </div>
   </div>
 
-  <h3 style="margin-top:28px">Cluster Visualization</h3>
-  <p>The interactive visualization below shows all ~1,600 papers projected into 2D space via UMAP, coloured by cluster. Papers that are semantically close in the embedding space appear near each other. Zoom, pan, and click individual points to see paper titles and metadata.</p>
+  <h3 style="margin-top:28px">By Discipline</h3>
+  <p style="font-size:13px;color:var(--text-2);margin-bottom:12px">Papers span 15 disciplines, reflecting the lab's interdisciplinary scope.</p>
+  <div style="display:flex;flex-direction:column;gap:6px;margin:12px 0 28px">
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Computer Science &amp; AI</span><div style="height:14px;border-radius:2px;background:var(--cyan);width:calc(552/552*100%)"></div><span style="font-size:10px;color:var(--text-3)">552</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">AI Safety &amp; Alignment</span><div style="height:14px;border-radius:2px;background:var(--mint);width:calc(326/552*100%)"></div><span style="font-size:10px;color:var(--text-3)">326</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Philosophy</span><div style="height:14px;border-radius:2px;background:var(--purple);width:calc(300/552*100%)"></div><span style="font-size:10px;color:var(--text-3)">300</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Psychology &amp; Cognitive Science</span><div style="height:14px;border-radius:2px;background:var(--indigo);width:calc(124/552*100%)"></div><span style="font-size:10px;color:var(--text-3)">124</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Policy &amp; Public Admin</span><div style="height:14px;border-radius:2px;background:var(--amber);width:calc(90/552*100%)"></div><span style="font-size:10px;color:var(--text-3)">90</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Law &amp; Legal Studies</span><div style="height:14px;border-radius:2px;background:var(--pink);width:calc(77/552*100%)"></div><span style="font-size:10px;color:var(--text-3)">77</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Economics</span><div style="height:14px;border-radius:2px;background:var(--teal);width:calc(74/552*100%)"></div><span style="font-size:10px;color:var(--text-3)">74</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">AI Ethics &amp; Governance</span><div style="height:14px;border-radius:2px;background:var(--mint);width:calc(66/552*100%);opacity:0.7"></div><span style="font-size:10px;color:var(--text-3)">66</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Political Science &amp; IR</span><div style="height:14px;border-radius:2px;background:var(--amber);width:calc(53/552*100%);opacity:0.7"></div><span style="font-size:10px;color:var(--text-3)">53</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Sociology &amp; Social Science</span><div style="height:14px;border-radius:2px;background:var(--indigo);width:calc(53/552*100%);opacity:0.7"></div><span style="font-size:10px;color:var(--text-3)">53</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">HCI</span><div style="height:14px;border-radius:2px;background:var(--cyan);width:calc(39/552*100%);opacity:0.6"></div><span style="font-size:10px;color:var(--text-3)">39</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">STS</span><div style="height:14px;border-radius:2px;background:var(--purple);width:calc(30/552*100%);opacity:0.6"></div><span style="font-size:10px;color:var(--text-3)">30</span></div>
+    <div style="display:flex;align-items:center;gap:8px"><span style="font-size:11px;color:var(--text-2);width:200px;text-align:right;flex-shrink:0">Communication &amp; Media</span><div style="height:14px;border-radius:2px;background:var(--pink);width:calc(23/552*100%);opacity:0.6"></div><span style="font-size:10px;color:var(--text-3)">23</span></div>
+  </div>
 
-  <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:16px 0">
-    <iframe id="cluster-viz" src="" style="width:100%;height:600px;border:none;display:none" loading="lazy"></iframe>
-    <div id="cluster-viz-placeholder" style="display:flex;align-items:center;justify-content:center;height:400px;color:var(--text-3);font-size:14px;font-style:italic">
+  <h3 style="margin-top:28px">Cluster Visualization</h3>
+  <p>~2,000 papers projected into 2D space via UMAP, coloured by research area. Papers that are semantically close in the embedding space appear near each other. Zoom, pan, and click individual points to open the paper PDF.</p>
+
+  <div style="background:var(--bg-3);border:1px solid var(--border);border-radius:var(--radius);overflow:hidden;margin:16px 0;position:relative;height:600px">
+    <iframe id="cluster-viz" src="" style="width:100%;height:100%;border:none;opacity:0;transition:opacity 0.4s ease"></iframe>
+    <div id="cluster-viz-placeholder" style="position:absolute;top:0;left:0;right:0;bottom:0;display:flex;align-items:center;justify-content:center;color:var(--text-3);font-size:14px;font-style:italic;pointer-events:none">
       Cluster visualization loading&hellip;
     </div>
   </div>
-  <p style="font-size:11px;color:var(--text-3)">Visualization generated on the Mac Studio using UMAP dimensionality reduction over Voyage context-3 embeddings. Clusters assigned by HDBSCAN with min_cluster_size=15.</p>
+  <div style="display:flex;align-items:center;gap:12px;margin-top:8px">
+    <a href="https://mint-philosophy.github.io/paper-map/" target="_blank" rel="noopener" style="display:inline-flex;align-items:center;gap:6px;font-size:12px;color:var(--cyan);text-decoration:none;border:1px solid var(--border);border-radius:var(--radius);padding:6px 14px;transition:border-color 0.2s">
+      Explore full map with filters &#8599;
+    </a>
+    <span style="font-size:11px;color:var(--text-3)">Inspired by <a href="https://jalammar.github.io/assets/neurips_2025.html" target="_blank" rel="noopener" style="color:var(--text-3);text-decoration:underline">Jay Alammar</a> &bull; Adapted for MINT by Cameron Pattison &bull; Built with <a href="https://github.com/TutteInstitute/datamapplot" target="_blank" rel="noopener" style="color:var(--text-3);text-decoration:underline">datamapplot</a></span>
+  </div>
 
 </section>
 
 <!-- ============ @ROBO-MINTY: CORPUS SEARCH ============ -->
 <section id="corpus-search" class="fade-in">
   <span class="section-num">05</span>
-  <h2>@robo-minty: Corpus Search</h2>
-  <p class="lead">The lab's primary research interface. Mention <code>@robo-minty</code> in <code>#mint-community</code> with a research question to get an interactive menu of search modes.</p>
+  <h2>@Minty: Corpus Search</h2>
+  <p class="lead">The lab's primary research interface. Mention <code>@Minty</code> in <code>#mint-community</code> with a research question to get an interactive menu of search modes.</p>
 
   <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(280px, 1fr))">
     <div class="card" style="border-color:var(--cyan)" data-ingest-tip="Semantic query expansion across 48 embedding dimensions with Reciprocal Rank Fusion. Returns ranked papers with relevance snippets. Uses a warm search server with pre-loaded 4GB LanceDB table for sub-second retrieval." data-ingest-color="#22d3ee">
@@ -2983,7 +3140,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
         <div class="detail-row"><span class="detail-label">UX</span><span class="detail-val">Haiku-generated contextual placeholder while Opus works. Whimsical progress messages after 2 min. Catch-up sweep on restart recovers missed queries.</span></div>
         <div class="detail-row"><span class="detail-label">Filters</span><span class="detail-val"><code>in:#channel</code>, <code>from:user</code>, <code>days:N</code>. Self-referential detection: "my posts" auto-maps to requesting user.</span></div>
         <div class="detail-row"><span class="detail-label">Index</span><span class="detail-val">ChromaDB at <code>data/slack_index/</code>, Voyage voyage-3 embeddings</span></div>
-        <div class="detail-row"><span class="detail-label">News index</span><span class="detail-val">A separate news index (ChromaDB at <code>data/news_index/</code>) indexes <code>#mint-community</code> and <code>#firehose</code> for dedicated news search via <code>@robo-minty</code>'s News Search and Catch Me Up modes.</span></div>
+        <div class="detail-row"><span class="detail-label">News index</span><span class="detail-val">A separate news index (ChromaDB at <code>data/news_index/</code>) indexes <code>#mint-community</code> and <code>#firehose</code> for dedicated news search via <code>@Minty</code>'s News Search and Catch Me Up modes.</span></div>
         <div class="detail-row"><span class="detail-label">Key files</span><span class="detail-val"><code>index_slack.py</code>, <code>watcher.py</code>, <code>search_dispatch.py</code>, <code>agents/search_agent.md</code></span></div>
       </div>
     </div>
@@ -3063,24 +3220,10 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   </div>
 </section>
 
-<!-- ============ STATS ============ -->
-<section id="stats" class="fade-in" style="text-align:center;padding:32px 48px">
-  <span class="section-num">09</span>
-  <h2 style="justify-content:center">By the Numbers</h2>
-  <div class="stats">
-    <div class="stat-card"><div class="num">17</div><div class="label">Daemons</div></div>
-    <div class="stat-card"><div class="num">~2,000</div><div class="label">Papers</div></div>
-    <div class="stat-card"><div class="num">7</div><div class="label">Search Modes</div></div>
-    <div class="stat-card"><div class="num">4</div><div class="label">Vector DBs</div></div>
-    <div class="stat-card"><div class="num">29</div><div class="label">Subscribers</div></div>
-    <div class="stat-card"><div class="num">15</div><div class="label">Skills</div></div>
-  </div>
-</section>
-
 <!-- ============ LAB MEMBERS ============ -->
 
 <section id="guide" class="fade-in">
-  <h2><span class="section-num">10</span> For Lab Members</h2>
+  <h2><span class="section-num">09</span> For Lab Members</h2>
   <p class="lead">A practical guide to using the MINT Lab's automated systems from Slack. Everything runs in the background &mdash; you interact with it through Slack channels and bot mentions.</p>
 
   <details class="lab-accordion">
@@ -3088,7 +3231,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
     <div class="accordion-inner">
       <ul class="clean">
         <li><strong>Daily digest</strong> &mdash; Each morning, a curated summary of yesterday's AI news arrives in your inbox and is posted as a canvas in <code>#mint-community</code> (Yesterday in AI). <a href="#subscribe">Subscribe here</a></li>
-        <li><strong>Weekly roundup</strong> &mdash; Each Wednesday, a comprehensive weekly digest is posted as a canvas in <code>#lab-meetings</code> (Last Week in AI)</li>
+        <li><strong>Weekly roundup</strong> &mdash; Each Wednesday, a comprehensive weekly digest is posted as a canvas in <code>#lab-meetings</code> (Minty's Week in AI)</li>
         <li><strong>PDF attachment</strong> &mdash; When papers or articles are shared in <code>#mint-community</code>, PDFs are automatically found, downloaded, and posted as thread replies</li>
         <li><strong>Corpus ingestion</strong> &mdash; Papers uploaded to <code>#papers</code> are automatically processed into the searchable research corpus (embedding, 41-dimension analysis, Zotero cataloguing)</li>
       </ul>
@@ -3096,9 +3239,9 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   </details>
 
   <details class="lab-accordion" id="bots">
-    <summary>Using @robo-minty (Corpus Search)</summary>
+    <summary>Using @Minty (Corpus Search)</summary>
     <div class="accordion-inner">
-      <p>Available to everyone in <code>#mint-community</code>. Mention <code>@robo-minty</code> with a research question to get an interactive menu of 7 search modes &mdash; from instant Q&amp;A to 60-minute deep literature reviews posted as Slack canvases. See <a href="#corpus-search">&sect;05 @robo-minty</a> for full details.</p>
+      <p>Available to everyone in <code>#mint-community</code>. Mention <code>@Minty</code> with a research question to get an interactive menu of 7 search modes &mdash; from instant Q&amp;A to 60-minute deep literature reviews posted as Slack canvases. See <a href="#corpus-search">&sect;05 @Minty</a> for full details.</p>
     </div>
   </details>
 
@@ -3152,7 +3295,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
           <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Everyday</td></tr>
           <tr><td><code>#general</code></td><td>Announcements and all-hands discussion</td></tr>
           <tr><td><code>#random</code></td><td>Off-topic, jokes, misc</td></tr>
-          <tr><td><code>#mint-community</code></td><td>AI news and discussion &mdash; daily digest, <code>@robo-minty</code> research Q&amp;A</td></tr>
+          <tr><td><code>#mint-community</code></td><td>AI news and discussion &mdash; daily digest, <code>@Minty</code> research Q&amp;A</td></tr>
           <tr><td><code>#firehose</code></td><td>Automated content hub &mdash; all daemon-posted content flows through here</td></tr>
           <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Research Projects</td></tr>
           <tr><td><code>#proj-*</code></td><td>One channel per active project. Post project-specific discussion, drafts, and updates.</td></tr>
@@ -3168,7 +3311,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   <details class="lab-accordion">
     <summary>Security</summary>
     <div class="accordion-inner">
-      <p>The system runs on a dedicated secure machine with a two-tier credential vault. No private data, personal API keys, or credentials are exposed to agents or lab members.</p>
+      <p>The system runs on a dedicated secure machine with credentials stored in the macOS Keychain. No private data, personal API keys, or credentials are exposed to agents or lab members.</p>
     </div>
   </details>
 </section>
@@ -3176,7 +3319,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
 <!-- ============ AGENT ENGINEERING ============ -->
 <section id="agents" class="fade-in">
-  <span class="section-num">11</span>
+  <span class="section-num">10</span>
   <h2>Agent Engineering</h2>
 
   <h3>Worker Agent Types</h3>
@@ -3272,7 +3415,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
       <table class="ref-table">
         <thead><tr><th>Skill</th><th>Purpose</th></tr></thead>
         <tbody>
-          <tr><td><code>vault</code></td><td>Two-tier credential vault with biometric and daemon access tiers</td></tr>
+          <tr><td><code>vault</code></td><td>Credential vault &mdash; macOS Keychain storage for all API keys and tokens</td></tr>
           <tr><td><code>github</code></td><td>GitHub repo management for <code>mint-philosophy</code> org</td></tr>
           <tr><td><code>workspace-search</code></td><td>Semantic search across entire workspace via ChromaDB</td></tr>
           <tr><td><code>codex-cli</code></td><td>OpenAI Codex CLI in headless exec mode</td></tr>
@@ -3426,28 +3569,28 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
 <!-- ============ INTEGRATIONS ============ -->
 <section id="integrations" class="fade-in">
-  <span class="section-num">12</span>
+  <span class="section-num">11</span>
   <h2>External Integrations</h2>
   <p>The system connects to 16 external services across five categories.</p>
 
   <h3 style="margin-top:20px">LLM &amp; Embedding</h3>
   <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))">
-    <div class="card" style="border-color:var(--indigo)">
+    <div class="card" style="border-color:var(--indigo)" data-ingest-tip="Primary model for all substantive work. Powers classification (16 parallel workers), corpus analysis (41 semantic questions), daily digest generation, deep literature reviews, and all agent reasoning. Used via CLI subscription with per-account daily rate limits." data-ingest-color="#818cf8">
       <div class="card-head">
         <div><div class="card-title">Claude Opus</div><div class="card-sub">Default model for all substantive work: analysis, classification, code generation, writing. Via CLI subscription.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--indigo)">
+    <div class="card" style="border-color:var(--indigo)" data-ingest-tip="Used for retrieval-only tasks that don't require deep reasoning: fetching data, reading and reporting file contents, searching indexes, checking daemon health, status collection. Reduces compute costs without sacrificing quality on mechanical tasks." data-ingest-color="#818cf8">
       <div class="card-head">
         <div><div class="card-title">Claude Sonnet 4.6</div><div class="card-sub">Retrieval-only tasks: fetching data, reading files, status checks. Via CLI subscription.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--indigo)">
+    <div class="card" style="border-color:var(--indigo)" data-ingest-tip="OpenAI models used as secondary LLMs. GPT-5.2 handles code review, corpus analysis enrichment, fact-checking, and link verification in the deep review pipeline. Spark (lightweight variant) for cheaper tasks like markdown cleanup." data-ingest-color="#818cf8">
       <div class="card-head">
         <div><div class="card-title">Codex GPT-5.2 / Spark</div><div class="card-sub">Code review, corpus analysis, enrichment, fact-checking, link verification. Spark for lighter tasks.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--indigo)">
+    <div class="card" style="border-color:var(--indigo)" data-ingest-tip="Voyage AI embedding models. context-3 produces 2048-dimensional vectors for the paper corpus (48 separate embeddings per document across semantic dimensions). voyage-3 produces 1024d vectors for Slack message and workspace file indexing." data-ingest-color="#818cf8">
       <div class="card-head">
         <div><div class="card-title">Voyage context-3 / voyage-3</div><div class="card-sub">Embedding models: context-3 (2048d) for paper corpus, voyage-3 (1024d) for Slack messages.</div></div>
       </div>
@@ -3456,17 +3599,17 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
   <h3>Communication</h3>
   <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))">
-    <div class="card" style="border-color:var(--green)">
+    <div class="card" style="border-color:var(--green)" data-ingest-tip="Central communication hub. Three bot tokens (Minty for corpus search, minty-search for indexing, feedme for content pipeline). Socket Mode for real-time events (messages, reactions, mentions), Web API for posting. 6+ monitored channels including #firehose, #mint-community, #minty-inbox." data-ingest-color="#4ade80">
       <div class="card-head">
-        <div><div class="card-title">Slack</div><div class="card-sub">3 bots (robo-minty, minty-search, feedme), 6+ monitored channels. Socket Mode for real-time, Web API for posting.</div></div>
+        <div><div class="card-title">Slack</div><div class="card-sub">3 bots (Minty, minty-search, feedme), 6+ monitored channels. Socket Mode for real-time, Web API for posting.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--green)">
+    <div class="card" style="border-color:var(--green)" data-ingest-tip="Two accounts: work (seth@mintresearch.org) for interactive sessions, personal (sethlazar@gmail.com) for daemon operations. OAuth2 with separate client credentials. Handles daily digest delivery to 29 subscribers and automated agent correspondence." data-ingest-color="#4ade80">
       <div class="card-head">
         <div><div class="card-title">Gmail</div><div class="card-sub">Daily digest delivery to 29 subscribers. Agent inbox for automated correspondence.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--green)">
+    <div class="card" style="border-color:var(--green)" data-ingest-tip="Self-hosted Ghost CMS instance powering mintresearch.org. Hosts the lab website, blog, and email newsletter platform. Runs locally on port 2368, exposed to the internet via Cloudflare Tunnel. Yesterday in AI posts are published here daily." data-ingest-color="#4ade80">
       <div class="card-head">
         <div><div class="card-title">Ghost CMS</div><div class="card-sub">newsletter.mintresearch.org &mdash; blog and email newsletter platform via Cloudflare Tunnel.</div></div>
       </div>
@@ -3475,22 +3618,22 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
   <h3>Academic Sources</h3>
   <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))">
-    <div class="card" style="border-color:var(--amber)">
+    <div class="card" style="border-color:var(--amber)" data-ingest-tip="Primary source for preprints. The feedme-daily daemon fetches new papers from tracked categories using the arXiv API with a 5-day rolling window (to handle weekend gaps). Direct PDF download via /abs/ &rarr; /pdf/ URL transform. Also provides HTML full-text for newer papers." data-ingest-color="#fbbf24">
       <div class="card-head">
         <div><div class="card-title">arXiv</div><div class="card-sub">Daily paper fetch (last 5 days window). Direct PDF + HTML access.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--amber)">
+    <div class="card" style="border-color:var(--amber)" data-ingest-tip="Three complementary APIs for metadata enrichment. Semantic Scholar provides citation counts and related papers. CrossRef resolves DOIs to full bibliographic records. Unpaywall finds open-access PDF versions of paywalled papers via DOI lookup." data-ingest-color="#fbbf24">
       <div class="card-head">
         <div><div class="card-title">Semantic Scholar / CrossRef / Unpaywall</div><div class="card-sub">Metadata enrichment, citation data, open-access PDF resolution.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--amber)">
+    <div class="card" style="border-color:var(--amber)" data-ingest-tip="Reference manager integration via Zotero API. Papers are automatically catalogued after corpus ingestion: title, authors, year, abstract, and tags derived from cluster labels. 1,237 items catalogued (817 added, 420 pre-existing)." data-ingest-color="#fbbf24">
       <div class="card-head">
         <div><div class="card-title">Zotero</div><div class="card-sub">Bibliographic cataloging. Papers uploaded after ingestion.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--amber)">
+    <div class="card" style="border-color:var(--amber)" data-ingest-tip="Philosophy-specific academic database. Used for discovering papers in normative ethics, political philosophy, philosophy of AI, and related areas that may not appear on arXiv. Periodic scraping for new entries in tracked categories." data-ingest-color="#fbbf24">
       <div class="card-head">
         <div><div class="card-title">PhilPapers</div><div class="card-sub">Philosophy-specific paper discovery and metadata.</div></div>
       </div>
@@ -3499,17 +3642,17 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
   <h3>Content &amp; Social Feeds</h3>
   <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))">
-    <div class="card" style="border-color:var(--red)">
+    <div class="card" style="border-color:var(--red)" data-ingest-tip="OAuth1 authentication via API v2. Monitors curated lists and timelines for AI/ML researchers, labs, and policy organisations. The feedme-daily daemon fetches tweets, resolves t.co shortlinks, and expands threads. news-pdf-bot uses the API for thread expansion (Tier 2 PDF acquisition)." data-ingest-color="#f87171">
       <div class="card-head">
         <div><div class="card-title" style="color:var(--red)">Twitter/X API v2</div><div class="card-sub">OAuth1 auth. Timeline and list monitoring for AI/ML content.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--red)">
+    <div class="card" style="border-color:var(--red)" data-ingest-tip="AT Protocol firehose connection monitoring AI safety and governance discussions on Bluesky. Fetches posts from tracked feeds and user lists. Integrated into the feedme-daily pipeline alongside Twitter and RSS sources." data-ingest-color="#f87171">
       <div class="card-head">
         <div><div class="card-title" style="color:var(--red)">Bluesky</div><div class="card-sub">Firehose monitoring for AI safety and governance discussions.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--red)">
+    <div class="card" style="border-color:var(--red)" data-ingest-tip="30+ RSS and Substack feeds tracked via feedparser. Sources include Alignment Forum, LessWrong, AI safety newsletters, policy blogs, and selected Substack authors. Full article content extracted where available; abstracts used as fallback." data-ingest-color="#f87171">
       <div class="card-head">
         <div><div class="card-title" style="color:var(--red)">RSS / Substack</div><div class="card-sub">30+ feeds including Alignment Forum, LessWrong, AI newsletters.</div></div>
       </div>
@@ -3518,12 +3661,12 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
 
   <h3>Infrastructure</h3>
   <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(240px, 1fr))">
-    <div class="card" style="border-color:var(--cyan)">
+    <div class="card" style="border-color:var(--cyan)" data-ingest-tip="Bidirectional sync via rclone daemon (every 10 minutes). PDFs uploaded after corpus ingestion with canonical naming. Markdown conversions stored alongside originals. Shared lab folders for collaborative access. Also serves as the backing store for paper-map click-through links." data-ingest-color="#22d3ee">
       <div class="card-head">
         <div><div class="card-title">Google Drive</div><div class="card-sub">Bidirectional sync via rclone. PDF upload, markdown storage, shared lab folders.</div></div>
       </div>
     </div>
-    <div class="card" style="border-color:var(--cyan)">
+    <div class="card" style="border-color:var(--cyan)" data-ingest-tip="mint-philosophy GitHub organisation. 12 repositories including minty (public agent workspace), corpus-search (retrieval infrastructure), yesterday-in-ai (digest pipeline), paper-map (corpus visualisation), and mint-lab-guide (this site). Automated via PAT for push operations." data-ingest-color="#22d3ee">
       <div class="card-head">
         <div><div class="card-title">GitHub</div><div class="card-sub">mint-philosophy org. 12 repos including minty, corpus-search, yesterday-in-ai.</div></div>
       </div>
@@ -3539,7 +3682,7 @@ details.lab-accordion .accordion-inner ul.clean li { font-size: 13px; }
   <p style="color:var(--text-2);margin-bottom:20px">Daily AI news digest from the MINT Lab. One email per weekday morning.</p>
   <div style="background:var(--bg-0);border-radius:8px;padding:20px 24px;margin:20px 0;text-align:left;font-size:13.5px;line-height:1.7;border:1px solid var(--border);color:var(--text-2)">
     <p style="margin:0 0 12px 0"><span style="color:var(--text-1);font-weight:600">Yesterday in AI</span> lands in your inbox each weekday morning. Every edition covers the previous day's developments in AI safety, ethics, governance, and capabilities &mdash; written as coherent, narrative prose rather than bullet-point headlines. The voice is contextual journalism: facts, technical substance, named researchers and institutions, where a result fits in existing debates. No punditry, no hype.</p>
-    <p style="margin:0 0 12px 0">A companion digest, <span style="color:var(--text-1);font-weight:600">Last Week in AI</span>, ships each Wednesday morning as a Slack canvas in <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-3)">#lab-meetings</span>. It pulls the week's coverage into thematic sections &mdash; models and benchmarks, policy and governance, industry moves, research highlights &mdash; giving lab members a single document to prepare for the weekly meeting.</p>
+    <p style="margin:0 0 12px 0">A companion digest, <span style="color:var(--text-1);font-weight:600">Minty's Week in AI</span>, ships each Wednesday morning as a Slack canvas in <span style="font-family:'JetBrains Mono',monospace;font-size:12px;color:var(--text-3)">#lab-meetings</span>. It pulls the week's coverage into thematic sections &mdash; models and benchmarks, policy and governance, industry moves, research highlights &mdash; giving lab members a single document to prepare for the weekly meeting.</p>
     <p style="margin:0;color:var(--text-3);font-size:12.5px">Both digests are assembled from content that flows through the lab's Slack daemons &mdash; feedme-daily, feed-promote, and the <span style="font-family:'JetBrains Mono',monospace;font-size:11.5px">#firehose</span> channel &mdash; then synthesized overnight by Claude Opus into the final edition.</p>
   </div>
   <form id="subscribe-form" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
@@ -3696,7 +3839,7 @@ const searchData = [
   {t:'news-pdf-bot',d:'Find PDFs and generate markdown for paper URLs in #mint-community',tag:'Daemon',c:'#a78bfa',s:'#daemons'},
   {t:'yesterday-in-ai',d:'Daily AI news digest to 29 subscribers across 11 institutions',tag:'Daemon',c:'#f472b6',s:'#daemons'},
   {t:'last-week-in-ai',d:'Weekly AI digest with multi-agent sectioned pipeline',tag:'Daemon',c:'#f472b6',s:'#daemons'},
-  {t:'corpus-agent (@robo-minty)',d:'Slack bot: 7 modes (Fast Search, Fast Review, Deep Review, Conversation, List Previous, News, Catch Me Up), ~2,000-paper corpus',tag:'Daemon',c:'#38bdf8',s:'#corpus-search'},
+  {t:'corpus-agent (@Minty)',d:'Slack bot: 7 modes (Fast Search, Fast Review, Deep Review, Conversation, List Previous, News, Catch Me Up), ~2,000-paper corpus',tag:'Daemon',c:'#38bdf8',s:'#corpus-search'},
   {t:'corpus-ingest-local',d:'Overnight batch processor: 8 workers, 10-stage pipeline, active 20:15-07:45 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-slack',d:'Daytime real-time Slack ingestion: 2 workers, active 08:00-20:00 AEDT',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
   {t:'corpus-ingest-writer',d:'Serialized LanceDB writer: eliminates concurrent write conflicts, always on',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
@@ -3704,7 +3847,7 @@ const searchData = [
   {t:'minty-search',d:'Agentic Slack search: Opus agent with multi-query RRF fusion, 3-tier resilience, contextual UX',tag:'Daemon',c:'#818cf8',s:'#daemons'},
   {t:'workspace-index',d:'Semantic workspace file search via ChromaDB',tag:'Daemon',c:'#818cf8',s:'#daemons'},
   {t:'rclone-sync',d:'Google Drive bisync + daily corpus backups',tag:'Daemon',c:'#2dd4bf',s:'#daemons'},
-  {t:'vault.py',d:'Two-tier credential vault (biometric + daemon)',tag:'Infra',c:'#f87171',s:'#agents'},
+  {t:'vault.py',d:'Credential vault — macOS Keychain storage for API keys and tokens',tag:'Infra',c:'#f87171',s:'#agents'},
   {t:'CLAUDE.md',d:'Master agent instructions, Iron Laws, strategies',tag:'Config',c:'#fbbf24',s:'#overview'},
   {t:'session_db.py',d:'SQLite session tracking with FTS5 search',tag:'Script',c:'#fb923c',s:'#agents'},
   {t:'platform_config.py',d:'Cross-platform paths, secrets, env helpers for daemons',tag:'Script',c:'#fb923c',s:'#agents'},
@@ -3869,6 +4012,28 @@ document.getElementById('subscribe-form').addEventListener('submit', function(e)
     btn.textContent = 'Subscribe';
   });
 });
+
+// ===== Cluster viz lazy-load =====
+(function() {
+  var vizFrame = document.getElementById('cluster-viz');
+  var vizPlaceholder = document.getElementById('cluster-viz-placeholder');
+  if (!vizFrame) return;
+  var loaded = false;
+  var vizObserver = new IntersectionObserver(function(entries) {
+    entries.forEach(function(e) {
+      if (e.isIntersecting && !loaded) {
+        loaded = true;
+        vizFrame.src = 'https://mint-philosophy.github.io/paper-map/?embed=true';
+        vizFrame.onload = function() {
+          vizFrame.style.opacity = '1';
+          vizPlaceholder.style.display = 'none';
+        };
+        vizObserver.disconnect();
+      }
+    });
+  }, { threshold: 0.1 });
+  vizObserver.observe(vizFrame.parentElement);
+})();
 
 </script>
 </body>
