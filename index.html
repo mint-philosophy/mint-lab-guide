@@ -3,251 +3,1098 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
-<meta name="mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-capable" content="yes">
-<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-<meta name="theme-color" content="#0b1120">
-<title>Agentic Infrastructure for the MINT Lab</title>
-<link rel="manifest" href="data:application/json,%7B%22name%22%3A%22MINT%20Lab%20Infrastructure%22%2C%22short_name%22%3A%22MINT%20Infra%22%2C%22display%22%3A%22standalone%22%2C%22background_color%22%3A%22%230b1120%22%2C%22theme_color%22%3A%22%230b1120%22%2C%22start_url%22%3A%22.%22%7D">
+<title>MINT Lab Infrastructure Guide</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=JetBrains+Mono:wght@400;500&family=Newsreader:ital,wght@0,400;0,500;0,600;1,400;1,500;1,600&family=Sora:wght@400;500;600;700&display=swap" rel="stylesheet">
 <style>
+/* ===== Variables ===== */
 :root {
-  --bg: #0b1120; --bg2: #131c31; --bg3: #1a2540; --bg4: #223058;
-  --text: #e2e8f0; --text2: #94a3b8; --text3: #64748b;
-  --accent: #38bdf8; --accent2: #818cf8; --accent3: #a78bfa;
-  --green: #4ade80; --orange: #fb923c; --red: #f87171; --pink: #f472b6;
-  --yellow: #fbbf24; --teal: #2dd4bf;
-  --border: #1e3a5f; --card: #0f1b32; --card-hover: #162040;
-  --sidebar-w: 240px; --radius: 12px;
+  --bg-0: #06080c;
+  --bg-1: #0c0f16;
+  --bg-2: #13171f;
+  --bg-3: #1a1f2c;
+  --bg-4: #232a3a;
+  --mint: #00e8a2;
+  --mint-soft: rgba(0, 232, 162, 0.12);
+  --mint-glow: 0 0 20px rgba(0, 232, 162, 0.15);
+  --amber: #f59e0b;
+  --red: #ef4444;
+  --cyan: #22d3ee;
+  --indigo: #818cf8;
+  --purple: #a78bfa;
+  --pink: #f472b6;
+  --teal: #2dd4bf;
+  --green: #4ade80;
+  --yellow: #fbbf24;
+  --text-1: #e2e8f0;
+  --text-2: #8892a6;
+  --text-3: #4f5b6e;
+  --border: rgba(255,255,255,0.06);
+  --border-hover: rgba(0, 232, 162, 0.25);
+  --sidebar-w: 220px;
+  --radius: 10px;
+  --radius-sm: 6px;
 }
-* { margin:0; padding:0; box-sizing:border-box; }
-html { scroll-behavior: smooth; scroll-padding-top: 32px; }
-body { font-family: -apple-system, BlinkMacSystemFont, 'SF Pro Text', 'Segoe UI', system-ui, sans-serif; background: var(--bg); color: var(--text); line-height: 1.65; }
-a { color: var(--accent); text-decoration: none; }
-a:hover { text-decoration: underline; }
 
-/* Sidebar */
+/* ===== Base / Reset ===== */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html {
+  scroll-behavior: smooth;
+  scroll-padding-top: 32px;
+}
+
+body {
+  font-family: 'Sora', sans-serif;
+  background: var(--bg-1);
+  color: var(--text-1);
+  line-height: 1.65;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+/* ===== Noise Overlay ===== */
+body::after {
+  content: '';
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  pointer-events: none;
+  z-index: 9999;
+  opacity: 0.015;
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='200' height='200'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='1'/%3E%3C/svg%3E");
+  background-repeat: repeat;
+  background-size: 200px 200px;
+}
+
+/* ===== Typography ===== */
+a {
+  color: var(--cyan);
+  text-decoration: none;
+}
+
+a:hover {
+  text-decoration: underline;
+}
+
+h1 {
+  font-family: 'Newsreader', serif;
+  font-size: 40px;
+  font-weight: 500;
+  line-height: 1.2;
+  color: var(--text-1);
+}
+
+h1 .gradient {
+  background: linear-gradient(135deg, var(--mint), var(--cyan));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
+}
+
+h2 {
+  font-family: 'Newsreader', serif;
+  font-size: 26px;
+  font-weight: 500;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+  color: var(--text-1);
+}
+
+h3 {
+  font-family: 'Sora', sans-serif;
+  font-size: 15px;
+  font-weight: 600;
+  margin: 20px 0 8px;
+  color: var(--text-1);
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+}
+
+p {
+  color: var(--text-2);
+  margin-bottom: 12px;
+  font-size: 14px;
+}
+
+p.lead {
+  font-size: 16px;
+  line-height: 1.7;
+}
+
+/* ===== Section Numbers ===== */
+.section-num {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--mint);
+  opacity: 0.5;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  display: block;
+  margin-bottom: 8px;
+}
+
+/* ===== Sidebar ===== */
 nav.sidebar {
-  position: fixed; top: 0; left: 0; width: var(--sidebar-w); height: 100vh;
-  background: var(--bg2); border-right: 1px solid var(--border);
-  padding: 24px 0; overflow-y: auto; z-index: 100;
-  display: flex; flex-direction: column;
+  position: fixed;
+  left: 0;
+  top: 0;
+  width: var(--sidebar-w);
+  height: 100vh;
+  background: var(--bg-0);
+  border-right: 1px solid var(--border);
+  padding: 24px 0;
+  overflow-y: auto;
+  z-index: 100;
+  display: flex;
+  flex-direction: column;
 }
-nav.sidebar .logo { padding: 0 20px 20px; border-bottom: 1px solid var(--border); margin-bottom: 12px; }
-nav.sidebar .logo h2 { font-size: 15px; font-weight: 700; color: var(--accent); letter-spacing: .5px; }
-nav.sidebar .logo p { font-size: 11px; color: var(--text3); margin-top: 2px; }
-nav.sidebar a.nav-link {
-  display: flex; align-items: center; gap: 10px; padding: 9px 20px; font-size: 13px;
-  color: var(--text2); transition: all .2s; border-left: 3px solid transparent;
+
+nav.sidebar .logo {
+  padding: 0 20px 20px;
+  border-bottom: 1px solid var(--border);
 }
-nav.sidebar a.nav-link:hover { color: var(--text); background: var(--bg3); text-decoration: none; }
-nav.sidebar a.nav-link.active { color: var(--accent); background: rgba(56,189,248,.06); border-left-color: var(--accent); }
-nav.sidebar a.nav-link .icon { font-size: 16px; width: 22px; text-align: center; flex-shrink:0; }
 
-/* Search */
-.search-trigger { margin: 8px 16px; padding: 8px 12px; background: var(--bg); border: 1px solid var(--border); border-radius: 8px; color: var(--text3); font-size: 12px; cursor: pointer; display:flex; align-items:center; gap:8px; }
-.search-trigger:hover { border-color: var(--accent); }
-.search-trigger kbd { background: var(--bg3); padding: 1px 6px; border-radius: 4px; font-size: 10px; }
-.search-overlay { display:none; position:fixed; inset:0; background:rgba(0,0,0,.7); z-index:200; backdrop-filter:blur(4px); justify-content:center; padding-top:15vh; }
-.search-overlay.open { display:flex; }
-.search-box { width:560px; max-width:90vw; background:var(--bg2); border:1px solid var(--border); border-radius:16px; overflow:hidden; max-height:60vh; display:flex; flex-direction:column; }
-.search-box input { width:100%; padding:16px 20px; background:transparent; border:none; color:var(--text); font-size:16px; outline:none; border-bottom:1px solid var(--border); }
-.search-results { overflow-y:auto; padding:8px; }
-.search-results .sr-item { padding:10px 14px; border-radius:8px; cursor:pointer; }
-.search-results .sr-item:hover { background:var(--bg3); }
-.search-results .sr-item .sr-title { font-size:14px; font-weight:600; }
-.search-results .sr-item .sr-desc { font-size:12px; color:var(--text3); margin-top:2px; }
-.search-results .sr-item .sr-tag { display:inline-block; font-size:10px; padding:1px 7px; border-radius:4px; margin-right:6px; font-weight:600; }
+nav.sidebar .logo .logo-text {
+  font-family: 'JetBrains Mono', monospace;
+  letter-spacing: 3px;
+  text-transform: uppercase;
+  font-size: 13px;
+  color: var(--mint);
+}
 
-/* Main Content */
-main { margin-left: var(--sidebar-w); min-height: 100vh; display: flex; flex-direction: column; align-items: center; }
-section { padding: 48px 48px 64px; border-bottom: 1px solid var(--border); max-width: 1100px; width: 100%; }
-section:last-child { border-bottom:none; }
-h1 { font-size: 36px; font-weight: 800; letter-spacing: -.5px; line-height: 1.2; }
-h1 .gradient { background: linear-gradient(135deg, var(--accent), var(--accent3)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; }
-h2 { font-size: 24px; font-weight: 700; margin-bottom: 16px; display:flex; align-items:center; gap:10px; }
-h2 .icon { font-size: 24px; }
-h3 { font-size: 17px; font-weight: 600; margin: 20px 0 8px; color: var(--text); }
-p { color: var(--text2); margin-bottom: 12px; }
-p.lead { font-size: 17px; line-height: 1.7; color: var(--text2); }
+nav.sidebar .logo .logo-sub {
+  font-family: 'Sora', sans-serif;
+  font-size: 11px;
+  color: var(--text-3);
+}
 
-/* Hero */
-.hero { padding: 80px 48px 48px; text-align: center; position: relative; overflow: hidden; max-width: none; }
-.hero::before { content:''; position:absolute; top:-40%; left:20%; width:60%; height:80%; background:radial-gradient(ellipse, rgba(56,189,248,.08), transparent 70%); pointer-events:none; }
-.hero h1 { font-size: 42px; margin-bottom: 12px; }
-.hero .subtitle { font-size: 18px; color: var(--text2); max-width: 640px; margin: 0 auto 32px; }
+nav.sidebar a {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 8px 20px;
+  font-size: 13px;
+  font-family: 'Sora', sans-serif;
+  color: var(--text-3);
+  border-left: 2px solid transparent;
+  transition: all 0.2s;
+}
 
-/* Stats Row */
-.stats { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 16px; margin: 24px 0; }
-.stat-card { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 20px; text-align: center; transition: transform .2s, border-color .2s; }
-.stat-card:hover { transform: translateY(-2px); border-color: var(--accent); }
-.stat-card .num { font-size: 32px; font-weight: 800; color: var(--accent); }
-.stat-card .label { font-size: 12px; color: var(--text3); margin-top: 4px; text-transform: uppercase; letter-spacing: .5px; }
+nav.sidebar a:hover {
+  color: var(--text-2);
+  background: var(--bg-2);
+  text-decoration: none;
+}
 
-/* Cards grid */
-.cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 16px; margin-top: 16px; }
+nav.sidebar a.active {
+  color: var(--mint);
+  border-left-color: var(--mint);
+  background: rgba(0,232,162,0.04);
+}
+
+nav.sidebar a .nav-mark {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+  width: 18px;
+  text-align: center;
+  opacity: 0.4;
+}
+
+/* ===== Search ===== */
+.search-trigger {
+  margin: 12px 16px;
+  padding: 8px 12px;
+  background: var(--bg-1);
+  border: 1px solid var(--border);
+  border-radius: 6px;
+  color: var(--text-3);
+  font-size: 12px;
+  font-family: 'Sora', sans-serif;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.search-trigger:hover {
+  border-color: var(--mint);
+}
+
+.search-trigger kbd {
+  background: var(--bg-3);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+}
+
+.search-overlay {
+  position: fixed;
+  inset: 0;
+  background: rgba(0,0,0,0.75);
+  z-index: 200;
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  justify-content: center;
+  padding-top: 15vh;
+  display: none;
+}
+
+.search-overlay.open {
+  display: flex;
+}
+
+.search-box {
+  width: 560px;
+  max-width: 90vw;
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  overflow: hidden;
+  max-height: 60vh;
+  display: flex;
+  flex-direction: column;
+}
+
+.search-box input {
+  width: 100%;
+  padding: 16px 20px;
+  background: transparent;
+  border: none;
+  color: var(--text-1);
+  font-family: 'Sora', sans-serif;
+  font-size: 16px;
+  outline: none;
+  border-bottom: 1px solid var(--border);
+}
+
+.search-results {
+  overflow-y: auto;
+  padding: 8px;
+}
+
+.sr-item {
+  padding: 10px 14px;
+  border-radius: 8px;
+  cursor: pointer;
+}
+
+.sr-item:hover {
+  background: var(--bg-3);
+}
+
+.sr-title {
+  font-size: 14px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+}
+
+.sr-desc {
+  font-size: 12px;
+  color: var(--text-3);
+  margin-top: 2px;
+}
+
+.sr-tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 1px 7px;
+  border-radius: 4px;
+  margin-right: 6px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+}
+
+/* ===== Main Content ===== */
+main {
+  margin-left: var(--sidebar-w);
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+/* ===== Sections ===== */
+section {
+  padding: 48px 48px 64px;
+  border-bottom: 1px solid var(--border);
+  max-width: 1100px;
+  width: 100%;
+}
+
+/* ===== Hero ===== */
+.hero {
+  padding: 80px 48px 48px;
+  text-align: center;
+  position: relative;
+  overflow: hidden;
+  max-width: none;
+}
+
+.hero::before {
+  content: '';
+  position: absolute;
+  top: -50%;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 600px;
+  height: 600px;
+  background: radial-gradient(circle, rgba(0,232,162,0.06) 0%, transparent 70%);
+  pointer-events: none;
+}
+
+.hero h1 {
+  font-size: 44px;
+  margin-bottom: 12px;
+  position: relative;
+}
+
+.hero .subtitle {
+  font-size: 17px;
+  font-family: 'Sora', sans-serif;
+  color: var(--text-2);
+  max-width: 640px;
+  margin: 0 auto 32px;
+}
+
+/* ===== Stats Row ===== */
+.stats {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+  gap: 12px;
+  margin: 24px 0;
+}
+
+.stat-card {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 16px;
+  text-align: center;
+  transition: border-color 0.2s, box-shadow 0.2s, transform 0.2s;
+}
+
+.stat-card:hover {
+  border-color: var(--mint);
+  box-shadow: var(--mint-glow);
+  transform: translateY(-2px);
+}
+
+.stat-card .num {
+  font-size: 28px;
+  font-family: 'Newsreader', serif;
+  font-weight: 500;
+  color: var(--mint);
+}
+
+.stat-card .label {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-3);
+  margin-top: 4px;
+  letter-spacing: 1px;
+  text-transform: uppercase;
+}
+
+/* ===== Cards Grid ===== */
+.cards {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(320px, 1fr));
+  gap: 14px;
+  margin-top: 16px;
+}
+
 .card {
-  background: var(--card); border: 1px solid var(--border); border-radius: var(--radius);
-  overflow: hidden; transition: border-color .2s, transform .2s; cursor: pointer;
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  transition: border-color 0.2s, transform 0.2s;
+  cursor: pointer;
 }
-.card:hover { border-color: var(--accent); transform: translateY(-1px); }
-.card .card-head { padding: 16px 18px; display: flex; align-items: center; gap: 12px; position:relative; }
-.card .card-head::after { content:'›'; position:absolute; right:16px; top:50%; transform:translateY(-50%) rotate(90deg); color:var(--text3); font-size:18px; transition:transform .2s; }
-.card.open .card-head::after { transform:translateY(-50%) rotate(270deg); }
-.card .card-icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 20px; flex-shrink:0; }
-.card .card-title { font-size: 15px; font-weight: 700; }
-.card .card-sub { font-size: 12px; color: var(--text3); }
-.card .card-body { padding: 0 18px 16px; display: none; }
-.card.open .card-body { display: block; }
-.card .card-body p { font-size: 13px; }
-.card .card-body .detail-row { display:flex; gap:8px; margin:6px 0; font-size:12px; }
-.card .card-body .detail-label { color:var(--text3); min-width:80px; flex-shrink:0; }
-.card .card-body .detail-val { color:var(--text2); }
-.tag { display:inline-block; font-size:10px; padding:2px 8px; border-radius:4px; font-weight:600; }
-.tag-daemon { background:rgba(56,189,248,.15); color:var(--accent); }
-.tag-skill { background:rgba(129,140,248,.15); color:var(--accent2); }
-.tag-command { background:rgba(74,222,128,.15); color:var(--green); }
-.tag-persistent { background:rgba(251,146,60,.15); color:var(--orange); }
-.tag-polling { background:rgba(45,212,191,.15); color:var(--teal); }
-.tag-daily { background:rgba(167,139,250,.15); color:var(--accent3); }
-.tag-weekly { background:rgba(244,114,182,.15); color:var(--pink); }
-.health-ok { color: var(--green); } .health-warn { color: var(--orange); } .health-err { color: var(--red); }
 
-/* Pipeline SVG */
-.pipeline-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin: 20px 0; overflow-x: auto; }
-.pipeline-wrap svg text { font-family: inherit; }
-
-/* Timeline */
-.timeline-wrap { background: var(--card); border: 1px solid var(--border); border-radius: var(--radius); padding: 24px; margin: 20px 0; }
-.timeline-row { display: flex; align-items: center; gap: 12px; margin: 6px 0; }
-.timeline-label { width: 130px; font-size: 12px; color: var(--text2); text-align: right; flex-shrink:0; }
-.timeline-bar-bg { flex:1; height: 24px; background: var(--bg); border-radius: 4px; position: relative; overflow: hidden; }
-.timeline-bar-bg .hour-marks { position:absolute; inset:0; display:flex; }
-.timeline-bar-bg .hour-marks span { flex:1; border-right:1px solid var(--bg2); }
-.timeline-bar-bg .t-block { position:absolute; top:2px; bottom:2px; border-radius:3px; opacity:.8; }
-.timeline-bar-bg .t-block:hover { opacity:1; }
-.timeline-hours { display:flex; margin-top:4px; }
-.timeline-hours span { flex:1; font-size:9px; color:var(--text3); text-align:center; }
-
-/* Hierarchy tree */
-.hierarchy { display:flex; flex-direction:column; align-items:center; gap:12px; margin:24px 0; }
-.h-tier { display:flex; gap:12px; flex-wrap:wrap; justify-content:center; }
-.h-node { background:var(--card); border:1px solid var(--border); border-radius:10px; padding:12px 18px; text-align:center; min-width:120px; transition:border-color .2s; }
-.h-node:hover { border-color:var(--accent); }
-.h-node .h-title { font-size:13px; font-weight:700; }
-.h-node .h-sub { font-size:11px; color:var(--text3); }
-.h-connector { width:2px; height:24px; background:var(--border); }
-.h-fan { display:flex; gap:0; align-items:flex-start; }
-.h-fan-line { width:60px; height:2px; background:var(--border); margin-top:12px; }
-
-/* Tables */
-.ref-table { width:100%; border-collapse:collapse; margin:12px 0; font-size:13px; }
-.ref-table th { text-align:left; padding:8px 12px; background:var(--bg3); color:var(--text2); font-weight:600; font-size:11px; text-transform:uppercase; letter-spacing:.5px; border-bottom:1px solid var(--border); }
-.ref-table td { padding:8px 12px; border-bottom:1px solid rgba(30,58,95,.4); color:var(--text2); }
-.ref-table tr:hover td { background:rgba(56,189,248,.03); }
-.ref-table code { background:var(--bg3); padding:1px 6px; border-radius:4px; font-size:12px; color:var(--accent); }
-
-/* Tabs */
-.tabs { display:flex; gap:4px; margin:16px 0 0; border-bottom:1px solid var(--border); }
-.tab-btn { padding:8px 16px; font-size:13px; color:var(--text3); background:none; border:none; cursor:pointer; border-bottom:2px solid transparent; transition:all .2s; }
-.tab-btn:hover { color:var(--text2); }
-.tab-btn.active { color:var(--accent); border-bottom-color:var(--accent); }
-.tab-panel { display:none; padding:16px 0; }
-.tab-panel.active { display:block; }
-
-/* Accordion */
-.accordion-item { border:1px solid var(--border); border-radius:8px; margin:8px 0; overflow:hidden; }
-.accordion-head { padding:12px 16px; cursor:pointer; display:flex; justify-content:space-between; align-items:center; background:var(--card); font-size:14px; font-weight:600; }
-.accordion-head:hover { background:var(--card-hover); }
-.accordion-head .arrow { transition:transform .2s; color:var(--text3); }
-.accordion-item.open .accordion-head .arrow { transform:rotate(90deg); }
-.accordion-body { padding:0 16px 16px; display:none; font-size:13px; color:var(--text2); }
-.accordion-item.open .accordion-body { display:block; }
-
-/* Misc */
-.badge { display:inline-flex; align-items:center; gap:4px; font-size:11px; padding:3px 10px; border-radius:20px; font-weight:600; }
-.badge-blue { background:rgba(56,189,248,.15); color:var(--accent); }
-.badge-green { background:rgba(74,222,128,.15); color:var(--green); }
-.badge-purple { background:rgba(129,140,248,.15); color:var(--accent2); }
-.badge-orange { background:rgba(251,146,60,.15); color:var(--orange); }
-.callout { background:var(--bg3); border-left:3px solid var(--accent); padding:14px 18px; border-radius:0 8px 8px 0; margin:16px 0; font-size:13px; }
-.callout p { margin:0; }
-.code-path { font-family:'SF Mono',Menlo,Monaco,monospace; font-size:12px; color:var(--accent); background:var(--bg3); padding:2px 8px; border-radius:4px; }
-ul.clean { list-style:none; padding:0; }
-ul.clean li { padding:4px 0; font-size:13px; color:var(--text2); }
-ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font-weight:bold; }
-.grid-2 { display:grid; grid-template-columns:1fr 1fr; gap:16px; }
-@media (max-width:900px) { .grid-2 { grid-template-columns:1fr; } }
-@media (max-width:768px) {
-  nav.sidebar { display:none; }
-  main { margin-left:0; }
-  section { padding:24px 16px 32px; }
-  .hero { padding:40px 16px 24px; }
-  .hero h1 { font-size:26px; }
-  .hero .subtitle { font-size:15px; margin-bottom:20px; }
-  .cards { grid-template-columns:1fr; }
-  .stats { grid-template-columns:repeat(3, 1fr); gap:8px; }
-  .stat-card { padding:12px 8px; }
-  .stat-card .num { font-size:22px; }
-  .stat-card .label { font-size:9px; }
-  h2 { font-size:20px; }
-  h3 { font-size:15px; }
-  p.lead { font-size:15px; }
-  .pipeline-wrap { padding:12px; margin:12px -16px; border-radius:0; }
-  .pipeline-wrap svg { min-width:700px; }
-  .timeline-wrap { padding:12px; overflow-x:auto; }
-  .timeline-row { gap:8px; }
-  .timeline-label { width:90px; font-size:10px; }
-  .ref-table { display:block; overflow-x:auto; -webkit-overflow-scrolling:touch; }
-  .ref-table th, .ref-table td { padding:6px 8px; font-size:11px; white-space:nowrap; }
-  .tabs { overflow-x:auto; -webkit-overflow-scrolling:touch; flex-wrap:nowrap; }
-  .tab-btn { padding:6px 10px; font-size:12px; white-space:nowrap; flex-shrink:0; }
-  .hierarchy { gap:8px; }
-  .h-node { padding:8px 12px; min-width:90px; }
-  .h-node .h-title { font-size:11px; }
-  .h-node .h-sub { font-size:9px; }
-  .callout { padding:10px 14px; font-size:12px; }
-  .card .card-head { padding:12px 14px; }
-  .card .card-body { padding:0 14px 14px; }
-  .card .card-body .detail-row { flex-wrap:wrap; }
-  .card .card-body .detail-label { min-width:70px; }
-  .accordion-head { padding:10px 12px; font-size:13px; }
-  .accordion-body { padding:0 12px 12px; font-size:12px; }
-  .grid-2 { grid-template-columns:1fr; }
-  .search-trigger { display:none; }
+.card:hover {
+  border-color: var(--border-hover);
+  transform: translateY(-1px);
 }
-@media (max-width:400px) {
-  .stats { grid-template-columns:repeat(2, 1fr); }
-  .hero h1 { font-size:22px; }
-  section { padding:20px 12px 28px; }
+
+.card .card-head {
+  padding: 16px 18px;
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  position: relative;
 }
-.fade-in { opacity:0; transform:translateY(16px); transition:opacity .5s, transform .5s; }
-.fade-in.visible { opacity:1; transform:none; }
+
+.card .card-head::after {
+  content: '\203A';
+  position: absolute;
+  right: 16px;
+  color: var(--text-3);
+  transform: rotate(90deg);
+  transition: transform 0.2s;
+  font-size: 18px;
+}
+
+.card.open .card-head::after {
+  transform: rotate(270deg);
+}
+
+.card .card-icon {
+  width: 36px;
+  height: 36px;
+  border-radius: 8px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.card .card-title {
+  font-size: 14px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+}
+
+.card .card-sub {
+  font-size: 12px;
+  color: var(--text-3);
+}
+
+.card .card-body {
+  padding: 0 18px 16px;
+  display: none;
+}
+
+.card.open .card-body {
+  display: block;
+}
+
+.card .card-body p {
+  font-size: 13px;
+}
+
+.card .card-body .detail-row {
+  display: flex;
+  gap: 8px;
+  margin: 6px 0;
+  font-size: 12px;
+}
+
+.card .card-body .detail-label {
+  color: var(--text-3);
+  min-width: 80px;
+  flex-shrink: 0;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 11px;
+}
+
+.card .card-body .detail-val {
+  color: var(--text-2);
+}
+
+/* ===== Tags ===== */
+.tag {
+  display: inline-block;
+  font-size: 10px;
+  padding: 2px 8px;
+  border-radius: var(--radius-sm);
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+}
+
+.tag-daemon {
+  background: rgba(0,232,162,0.1);
+  color: var(--mint);
+}
+
+.tag-persistent {
+  background: rgba(251,146,60,0.1);
+  color: var(--amber);
+}
+
+.tag-polling {
+  background: rgba(45,212,191,0.1);
+  color: var(--teal);
+}
+
+.tag-daily {
+  background: rgba(129,140,248,0.1);
+  color: var(--indigo);
+}
+
+.tag-weekly {
+  background: rgba(244,114,182,0.1);
+  color: var(--pink);
+}
+
+/* ===== Status / Health ===== */
+.health-ok { color: var(--green); }
+.health-warn { color: var(--amber); }
+.health-err { color: var(--red); }
+
+.status-pulse {
+  animation: pulse 2.5s ease-in-out infinite;
+}
+
+@keyframes pulse {
+  0%, 100% { opacity: 1; }
+  50% { opacity: 0.3; }
+}
+
+/* ===== Pipeline SVG ===== */
+.pipeline-wrap {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin: 20px 0;
+  overflow-x: auto;
+}
+
+.pipeline-wrap svg text {
+  font-family: inherit;
+}
+
+/* ===== Timeline ===== */
+.timeline-wrap {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  padding: 24px;
+  margin: 20px 0;
+}
+
+.timeline-row {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin: 6px 0;
+}
+
+.timeline-label {
+  width: 130px;
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-2);
+  text-align: right;
+}
+
+.timeline-bar-bg {
+  flex: 1;
+  height: 24px;
+  background: var(--bg-0);
+  border-radius: 4px;
+  position: relative;
+  overflow: hidden;
+}
+
+.hour-marks {
+  position: absolute;
+  inset: 0;
+  display: flex;
+}
+
+.hour-marks span {
+  flex: 1;
+  border-right: 1px solid var(--bg-2);
+}
+
+.t-block {
+  position: absolute;
+  top: 2px;
+  bottom: 2px;
+  border-radius: 3px;
+  opacity: 0.7;
+  transition: opacity 0.2s;
+}
+
+.t-block:hover {
+  opacity: 1;
+}
+
+.timeline-hours {
+  display: flex;
+  margin-top: 4px;
+}
+
+.timeline-hours span {
+  flex: 1;
+  font-size: 9px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-3);
+}
+
+/* ===== Hierarchy Tree ===== */
+.tree {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 13px;
+  color: var(--text-2);
+  line-height: 1.8;
+}
+
+.tree .dir {
+  color: var(--cyan);
+}
+
+.tree .file {
+  color: var(--text-3);
+}
+
+.tree .highlight {
+  color: var(--mint);
+}
+
+/* ===== Tables ===== */
+.ref-table {
+  width: 100%;
+  border-collapse: collapse;
+  margin: 12px 0;
+  font-size: 13px;
+  font-family: 'Sora', sans-serif;
+}
+
+.ref-table th {
+  text-align: left;
+  padding: 8px 12px;
+  background: var(--bg-4);
+  color: var(--text-2);
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+  font-size: 11px;
+  text-transform: uppercase;
+  letter-spacing: 0.5px;
+  border-bottom: 1px solid var(--border);
+}
+
+.ref-table td {
+  padding: 8px 12px;
+  border-bottom: 1px solid var(--border);
+  color: var(--text-2);
+}
+
+.ref-table tr:hover td {
+  background: rgba(0,232,162,0.02);
+}
+
+.ref-table code {
+  background: var(--bg-4);
+  padding: 1px 6px;
+  border-radius: 4px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--mint);
+}
+
+/* ===== Tabs ===== */
+.tabs {
+  display: flex;
+  border-bottom: 1px solid var(--border);
+  margin-bottom: 16px;
+}
+
+.tab-btn {
+  padding: 8px 16px;
+  font-size: 13px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 500;
+  color: var(--text-3);
+  background: none;
+  border: none;
+  border-bottom: 2px solid transparent;
+  cursor: pointer;
+  transition: all 0.2s;
+}
+
+.tab-btn:hover {
+  color: var(--text-2);
+}
+
+.tab-btn.active {
+  color: var(--mint);
+  border-bottom-color: var(--mint);
+}
+
+.tab-pane {
+  display: none;
+}
+
+.tab-pane.active {
+  display: block;
+}
+
+/* ===== Accordions ===== */
+.accordion {
+  border: 1px solid var(--border);
+  border-radius: var(--radius);
+  overflow: hidden;
+  margin: 12px 0;
+}
+
+.accordion-item {
+  border-bottom: 1px solid var(--border);
+}
+
+.accordion-item:last-child {
+  border-bottom: none;
+}
+
+.accordion-trigger {
+  width: 100%;
+  padding: 12px 18px;
+  background: var(--bg-3);
+  border: none;
+  color: var(--text-1);
+  font-family: 'Sora', sans-serif;
+  font-size: 13px;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  transition: background 0.2s;
+}
+
+.accordion-trigger:hover {
+  background: var(--bg-4);
+}
+
+.accordion-trigger::after {
+  content: '+';
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 14px;
+  color: var(--mint);
+  transition: transform 0.2s;
+}
+
+.accordion-item.open .accordion-trigger::after {
+  content: '\2212';
+}
+
+.accordion-content {
+  padding: 0 18px;
+  max-height: 0;
+  overflow: hidden;
+  transition: max-height 0.3s, padding 0.3s;
+}
+
+.accordion-item.open .accordion-content {
+  padding: 14px 18px;
+  max-height: 600px;
+}
+
+/* ===== 41Q Grid ===== */
+.q-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(100px, 1fr));
+  gap: 6px;
+  margin: 16px 0;
+}
+
+.q-cell {
+  background: var(--bg-3);
+  border: 1px solid var(--border);
+  border-radius: var(--radius-sm);
+  padding: 8px 10px;
+  cursor: pointer;
+  transition: border-color 0.2s, background 0.2s;
+  text-align: center;
+  position: relative;
+}
+
+.q-cell:hover {
+  border-color: var(--border-hover);
+  background: var(--bg-4);
+}
+
+.q-cell .q-id {
+  font-size: 10px;
+  font-family: 'JetBrains Mono', monospace;
+  opacity: 0.5;
+}
+
+.q-cell .q-key {
+  font-size: 11px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: 500;
+  margin-top: 2px;
+}
+
+.q-cell .q-tooltip {
+  display: none;
+}
+
+.q-cell:hover .q-tooltip {
+  display: block;
+  position: absolute;
+  background: var(--bg-4);
+  padding: 12px;
+  border-radius: 8px;
+  border: 1px solid var(--border);
+  width: 280px;
+  z-index: 10;
+  text-align: left;
+  font-size: 12px;
+  font-family: 'Sora', sans-serif;
+  color: var(--text-2);
+  top: 100%;
+  left: 50%;
+  transform: translateX(-50%);
+  margin-top: 4px;
+}
+
+/* ===== Iron Laws ===== */
+.iron-laws {
+  max-width: 700px;
+  margin: 0 auto;
+  padding: 40px 0;
+}
+
+.law {
+  text-align: center;
+  padding: 28px 0;
+  border-top: 1px solid var(--border);
+}
+
+.law:first-child {
+  border-top: none;
+}
+
+.law-name {
+  font-family: 'Newsreader', serif;
+  font-style: italic;
+  font-size: 20px;
+  color: var(--mint);
+  margin-bottom: 8px;
+}
+
+.law-text {
+  font-family: 'Sora', sans-serif;
+  font-size: 14px;
+  color: var(--text-2);
+  max-width: 500px;
+  margin: 0 auto;
+}
+
+/* ===== Callout ===== */
+.callout {
+  background: var(--bg-3);
+  border-left: 2px solid var(--mint);
+  padding: 14px 18px;
+  border-radius: 0 8px 8px 0;
+  margin: 16px 0;
+  font-size: 13px;
+}
+
+/* ===== Utility: Code Path ===== */
+.code-path {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 12px;
+  color: var(--mint);
+  background: var(--bg-4);
+  padding: 2px 8px;
+  border-radius: 4px;
+}
+
+/* ===== Utility: Clean List ===== */
+ul.clean {
+  list-style: none;
+  padding: 0;
+}
+
+ul.clean li {
+  padding: 4px 0;
+  font-size: 13px;
+  color: var(--text-2);
+}
+
+ul.clean li::before {
+  content: '\203A';
+  color: var(--mint);
+  margin-right: 8px;
+  font-family: 'JetBrains Mono', monospace;
+  font-weight: bold;
+}
+
+/* ===== Utility: Grid 2-col ===== */
+.grid-2 {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 16px;
+}
+
+/* ===== Badges ===== */
+.badge {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  font-size: 11px;
+  padding: 3px 10px;
+  border-radius: 20px;
+  font-family: 'Sora', sans-serif;
+  font-weight: 600;
+}
+
+.badge-blue {
+  background: rgba(34,211,238,0.1);
+  color: var(--cyan);
+}
+
+.badge-green {
+  background: rgba(0,232,162,0.1);
+  color: var(--mint);
+}
+
+.badge-purple {
+  background: rgba(167,139,250,0.1);
+  color: var(--purple);
+}
+
+.badge-orange {
+  background: rgba(251,146,60,0.1);
+  color: var(--amber);
+}
+
+/* ===== Fade In Animation ===== */
+.fade-in {
+  opacity: 0;
+  transform: translateY(16px);
+  transition: opacity 0.5s, transform 0.5s;
+}
+
+.fade-in.visible {
+  opacity: 1;
+  transform: none;
+}
+
+/* ===== Subscribe Section ===== */
+.subscribe-card {
+  background: var(--bg-2);
+  border: 1px solid var(--border);
+  border-radius: 16px;
+  padding: 48px;
+  max-width: 600px;
+  margin: 0 auto;
+  text-align: center;
+}
+
+.subscribe-preview {
+  background: var(--bg-0);
+  border-radius: 8px;
+  padding: 16px 20px;
+  margin: 20px 0;
+  text-align: left;
+  font-size: 13px;
+  border: 1px solid var(--border);
+}
+
+.subscribe-proof {
+  font-size: 12px;
+  font-family: 'JetBrains Mono', monospace;
+  color: var(--text-3);
+  letter-spacing: 0.5px;
+  margin: 12px 0;
+}
+
+/* ===== Responsive: 768px ===== */
+@media (max-width: 768px) {
+  nav.sidebar {
+    display: none;
+  }
+
+  main {
+    margin-left: 0;
+  }
+
+  section {
+    padding: 32px 20px 40px;
+  }
+
+  .hero {
+    padding: 48px 20px 32px;
+  }
+
+  .hero h1 {
+    font-size: 28px;
+  }
+
+  .hero .subtitle {
+    font-size: 14px;
+  }
+
+  .cards {
+    grid-template-columns: 1fr;
+  }
+
+  .stats {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  .ref-table {
+    display: block;
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .search-trigger {
+    display: none;
+  }
+
+  .pipeline-wrap {
+    border-radius: 0;
+  }
+
+  .grid-2 {
+    grid-template-columns: 1fr;
+  }
+}
+
+/* ===== Responsive: 400px ===== */
+@media (max-width: 400px) {
+  .stats {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .hero h1 {
+    font-size: 22px;
+  }
+}
 </style>
 </head>
 <body>
-
+<!-- Part 2 continues from here -->
 <nav class="sidebar">
   <div class="logo">
-    <h2>MINT Lab</h2>
+    <h2>MINT</h2>
     <p>Agentic Infrastructure</p>
   </div>
   <div class="search-trigger" onclick="openSearch()">
     <span>&#128269;</span> Search... <kbd>&#8984;K</kbd>
   </div>
-  <a class="nav-link" href="#overview"><span class="icon">&#127968;</span> Overview</a>
-  <a class="nav-link" href="#guide"><span class="icon">&#128214;</span> For Lab Members</a>
-  <a class="nav-link" href="#bots" style="padding-left:36px;font-size:12px"><span class="icon">&#129302;</span> Bots</a>
-  <a class="nav-link" href="#slack-channels" style="padding-left:36px;font-size:12px"><span class="icon">&#128172;</span> Slack Channels</a>
-  <a class="nav-link" href="#pipeline"><span class="icon">&#9889;</span> Content Pipeline</a>
-  <a class="nav-link" href="#daemons"><span class="icon">&#9881;</span> Daemons</a>
-  <a class="nav-link" href="#timeline"><span class="icon">&#128339;</span> Schedule</a>
-  <a class="nav-link" href="#corpus"><span class="icon">&#128218;</span> Research Corpus</a>
-  <a class="nav-link" href="#agents"><span class="icon">&#129302;</span> Agent Architecture</a>
-  <a class="nav-link" href="#skills"><span class="icon">&#128295;</span> Skills &amp; Commands</a>
-  <a class="nav-link" href="#infra"><span class="icon">&#128274;</span> Infrastructure</a>
-  <a class="nav-link" href="#integrations"><span class="icon">&#128279;</span> Integrations</a>
-  <a class="nav-link" href="#files"><span class="icon">&#128193;</span> Directory Map</a>
-  <a class="nav-link" href="#subscribe"><span class="icon">&#9993;</span> Subscribe</a>
+  <a class="nav-link" href="#overview"><span class="nav-mark">&#9659;</span> Overview</a>
+  <a class="nav-link" href="#guide"><span class="nav-mark">&#9659;</span> For Lab Members</a>
+  <a class="nav-link sub-link" href="#bots"><span class="nav-mark">&#8250;</span> Bots</a>
+  <a class="nav-link sub-link" href="#slack-channels"><span class="nav-mark">&#8250;</span> Slack Channels</a>
+  <a class="nav-link" href="#pipeline"><span class="nav-mark">&#9659;</span> Content Pipeline</a>
+  <a class="nav-link" href="#daemons"><span class="nav-mark">&#9659;</span> Daemons</a>
+  <a class="nav-link" href="#timeline"><span class="nav-mark">&#9659;</span> Schedule</a>
+  <a class="nav-link" href="#corpus"><span class="nav-mark">&#9659;</span> Research Corpus</a>
+  <a class="nav-link" href="#agents"><span class="nav-mark">&#9659;</span> Agent Architecture</a>
+  <a class="nav-link" href="#skills"><span class="nav-mark">&#9659;</span> Skills &amp; Commands</a>
+  <a class="nav-link" href="#infra"><span class="nav-mark">&#9659;</span> Infrastructure</a>
+  <a class="nav-link" href="#integrations"><span class="nav-mark">&#9659;</span> Integrations</a>
+  <a class="nav-link" href="#files"><span class="nav-mark">&#9659;</span> Directory Map</a>
+  <a class="nav-link" href="#subscribe"><span class="nav-mark">&#9659;</span> Subscribe</a>
 </nav>
 
 <div class="search-overlay" id="searchOverlay" onclick="if(event.target===this)closeSearch()">
@@ -275,7 +1122,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ OVERVIEW ============ -->
 <section class="fade-in">
-  <h2><span class="icon">&#127968;</span> What Is This System?</h2>
+  <h2><span class="section-num">01</span> What Is This System?</h2>
   <p class="lead">The MINT Lab workspace is a research automation platform built around <strong>Minty</strong>, an AI research management agent. It runs on a Mac Studio and orchestrates 12 background daemons that automate tasks which would otherwise consume hours of researcher time &mdash; fetching, classifying, ingesting, indexing, summarizing, and distributing academic content &mdash; while enabling entirely new capabilities like deep multi-agent corpus analysis that simply weren't possible before. Research superpowers, not a replacement for researchers.</p>
 
   <div class="grid-2" style="margin-top:20px">
@@ -298,10 +1145,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ FOR LAB MEMBERS ============ -->
 <section id="guide" class="fade-in">
-  <h2><span class="icon">&#128214;</span> For Lab Members</h2>
+  <h2><span class="section-num">02</span> For Lab Members</h2>
   <p class="lead">A practical guide to using the MINT Lab's automated systems from Slack. Everything here runs in the background &mdash; you interact with it through Slack channels and bot mentions.</p>
 
-  <div class="callout" style="border-left-color:var(--yellow)">
+  <div class="callout" style="border-left-color:var(--amber)">
     <p><strong>Two access tiers:</strong> Everyone in <code>#mint-community</code> can use <code>@robo-minty</code> for corpus search, news search, and research questions &mdash; plus receive the daily digest email and upload papers to <code>#papers</code>. <code>@minty-search</code> (Slack message search) is available to full lab members only.</p>
   </div>
 
@@ -343,17 +1190,17 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <h3>Adding Papers to the Corpus</h3>
   <div class="grid-2">
     <div>
-      <h3 style="color:var(--green);margin-top:8px">One at a time</h3>
-      <p>Upload a PDF directly to <code>#papers</code> in Slack. The ingestion pipeline processes it automatically &mdash; you'll see a &#9989; reaction and a thread reply when it's done. The paper gets embedded, analyzed across 41 dimensions, summarised, and catalogued in Zotero.</p>
+      <h3 style="color:var(--mint);margin-top:8px">One at a time</h3>
+      <p>Upload a PDF directly to <code>#papers</code> in Slack. The ingestion pipeline processes it automatically &mdash; you'll see a check-mark reaction and a thread reply when it's done. The paper gets embedded, analyzed across 41 dimensions, summarised, and catalogued in Zotero.</p>
     </div>
     <div>
-      <h3 style="color:var(--orange);margin-top:8px">Bulk uploads</h3>
+      <h3 style="color:var(--amber);margin-top:8px">Bulk uploads</h3>
       <p>Upload PDFs to the <strong>local-pdfs</strong> folder in Google Drive. They sync down to the Mac Studio and are processed overnight by the batch ingestion daemon (8 concurrent workers). This is the right path for adding dozens of papers at once &mdash; don't dump bulk uploads in <code>#papers</code>.</p>
     </div>
   </div>
   <div style="display:flex;gap:12px;flex-wrap:wrap;margin-top:12px">
-    <a href="https://drive.google.com/drive/folders/1QjnK2zOQwgOgljj-ohUFt9YFdfuxGdJ3?usp=drive_link" target="_blank" class="badge badge-blue" style="font-size:12px;padding:6px 14px;text-decoration:none">&#128194; Browse all lab PDFs</a>
-    <a href="https://drive.google.com/drive/folders/1Kzj8mG-5BQCTk7ICu9nY-rWDytMxz4k1?usp=sharing" target="_blank" class="badge badge-green" style="font-size:12px;padding:6px 14px;text-decoration:none">&#128228; Upload papers for corpus ingestion</a>
+    <a href="https://drive.google.com/drive/folders/1QjnK2zOQwgOgljj-ohUFt9YFdfuxGdJ3?usp=drive_link" target="_blank" class="badge badge-blue" style="font-size:12px;padding:6px 14px;text-decoration:none">Browse all lab PDFs</a>
+    <a href="https://drive.google.com/drive/folders/1Kzj8mG-5BQCTk7ICu9nY-rWDytMxz4k1?usp=sharing" target="_blank" class="badge badge-green" style="font-size:12px;padding:6px 14px;text-decoration:none">Upload papers for corpus ingestion</a>
   </div>
 
   <h3>How News Gets Curated</h3>
@@ -364,14 +1211,14 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <table class="ref-table">
     <thead><tr><th>Channel</th><th>What It's For</th></tr></thead>
     <tbody>
-      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Everyday</td></tr>
+      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Everyday</td></tr>
       <tr><td><code>#general</code></td><td>Announcements and all-hands discussion</td></tr>
       <tr><td><code>#random</code></td><td>Off-topic, jokes, misc</td></tr>
       <tr><td><code>#mint-community</code></td><td>AI news and discussion &mdash; daily digest canvas posted by yesterday-in-ai, humans share and discuss content, and agents (<code>@robo-minty</code>) answer research questions. share-to-minty watches this channel and pushes URLs to <code>#firehose</code>.</td></tr>
       <tr><td><code>#firehose</code></td><td>Automated content firehose &mdash; all daemon-posted content flows through here. Lab members can join for raw access to the full feed.</td></tr>
-      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Research Projects</td></tr>
+      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Research Projects</td></tr>
       <tr><td><code>#proj-*</code></td><td>One channel per active project (e.g. <code>#proj-unhobbling-agents</code>, <code>#proj-claims-secil</code>). Each links to its Google Drive folder. Post project-specific discussion, drafts, and updates here.</td></tr>
-      <tr><td colspan="2" style="color:var(--accent);font-weight:600;padding-top:12px">Reference &amp; Coordination</td></tr>
+      <tr><td colspan="2" style="color:var(--mint);font-weight:600;padding-top:12px">Reference &amp; Coordination</td></tr>
       <tr><td><code>#papers</code></td><td>Upload PDFs to add them to the research corpus (auto-ingested)</td></tr>
       <tr><td><code>#lab-meetings</code></td><td>Weekly digest canvas and meeting coordination</td></tr>
       <tr><td><code>#review-wip</code></td><td>Share works-in-progress for lab feedback</td></tr>
@@ -381,40 +1228,40 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ PIPELINE ============ -->
 <section id="pipeline" class="fade-in">
-  <h2><span class="icon">&#9889;</span> The Content Pipeline</h2>
+  <h2><span class="section-num">03</span> The Content Pipeline</h2>
   <p>Here's how information flows from external sources to lab members. Slack's <code>#firehose</code> channel is the automated hub &mdash; daemons write classified content here. Three daemons read from it: <em>yesterday-in-ai</em> produces a daily digest for <code>#mint-community</code>, <em>news-pdf-bot</em> finds PDFs, and <em>corpus-ingest</em> feeds the research database.</p>
 
   <div class="pipeline-wrap">
     <svg viewBox="0 0 960 710" width="100%" xmlns="http://www.w3.org/2000/svg">
       <defs>
-        <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#38bdf8"/></marker>
-        <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#4ade80"/></marker>
-        <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#fb923c"/></marker>
+        <marker id="arrowBlue" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#22d3ee"/></marker>
+        <marker id="arrowGreen" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#00e8a2"/></marker>
+        <marker id="arrowOrange" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f59e0b"/></marker>
         <marker id="arrowPurple" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#a78bfa"/></marker>
         <marker id="arrowTeal" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#2dd4bf"/></marker>
         <marker id="arrowPink" markerWidth="8" markerHeight="6" refX="8" refY="3" orient="auto"><path d="M0,0 L8,3 L0,6" fill="#f472b6"/></marker>
-        <linearGradient id="nodeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a2540"/><stop offset="100%" stop-color="#131c31"/></linearGradient>
-        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+        <linearGradient id="nodeGrad" x1="0" y1="0" x2="0" y2="1"><stop offset="0%" stop-color="#1a1f2c"/><stop offset="100%" stop-color="#13171f"/></linearGradient>
+        <filter id="glow"><feGaussianBlur stdDeviation="3" result="blur"/><feFlood flood-color="#00e8a2" flood-opacity="0.3" result="color"/><feComposite in="color" in2="blur" operator="in" result="colorBlur"/><feMerge><feMergeNode in="colorBlur"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
       </defs>
 
-      <!-- ===== ROW 0: Horizontal input chain (Sources → feedme → #feed → Seth → feed-promote) ===== -->
+      <!-- ===== ROW 0: Horizontal input chain (Sources -> feedme -> #feed -> Seth -> feed-promote) ===== -->
       <g transform="translate(20,15)">
-        <rect width="135" height="48" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <rect width="135" height="48" rx="8" fill="url(#nodeGrad)" stroke="rgba(255,255,255,0.1)"/>
         <text x="68" y="18" text-anchor="middle" fill="#94a3b8" font-size="9" font-weight="600">EXTERNAL SOURCES</text>
         <text x="68" y="32" text-anchor="middle" fill="#e2e8f0" font-size="9">Twitter, arXiv, RSS, Substack</text>
         <text x="68" y="43" text-anchor="middle" fill="#e2e8f0" font-size="9">Bluesky, Email, PhilPapers</text>
       </g>
-      <line x1="155" y1="39" x2="175" y2="39" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+      <line x1="155" y1="39" x2="175" y2="39" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
       <g transform="translate(183,18)">
-        <rect width="120" height="42" rx="8" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-        <text x="60" y="18" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700">feedme-daily</text>
+        <rect width="120" height="42" rx="8" fill="url(#nodeGrad)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="60" y="18" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="700">feedme-daily</text>
         <text x="60" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Fetch, Classify, Rank</text>
       </g>
-      <line x1="303" y1="39" x2="323" y2="39" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+      <line x1="303" y1="39" x2="323" y2="39" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
       <g transform="translate(331,18)">
-        <rect width="95" height="42" rx="8" fill="#0d2847" stroke="#1e3a5f"/>
+        <rect width="95" height="42" rx="8" fill="#0f1520" stroke="rgba(255,255,255,0.1)"/>
         <text x="48" y="18" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">#feed-{day}</text>
         <text x="48" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Slack channel</text>
       </g>
@@ -424,45 +1271,45 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
         <rect width="80" height="34" rx="6" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
         <text x="40" y="22" text-anchor="middle" fill="#fbbf24" font-size="10">Seth &#x1F44D;</text>
       </g>
-      <line x1="529" y1="39" x2="549" y2="39" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+      <line x1="529" y1="39" x2="549" y2="39" stroke="#00e8a2" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
 
       <g transform="translate(557,18)">
-        <rect width="120" height="42" rx="8" fill="url(#nodeGrad)" stroke="#4ade80" stroke-width="1.5"/>
-        <text x="60" y="18" text-anchor="middle" fill="#4ade80" font-size="10" font-weight="700">feed-promote</text>
+        <rect width="120" height="42" rx="8" fill="url(#nodeGrad)" stroke="#00e8a2" stroke-width="1.5"/>
+        <text x="60" y="18" text-anchor="middle" fill="#00e8a2" font-size="10" font-weight="700">feed-promote</text>
         <text x="60" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Copy to #firehose</text>
       </g>
 
       <!-- feed-promote arrow DOWN to hub -->
-      <line x1="617" y1="60" x2="617" y2="85" stroke="#4ade80" stroke-width="1.5"/>
-      <line x1="617" y1="85" x2="510" y2="85" stroke="#4ade80" stroke-width="1.5"/>
-      <line x1="510" y1="85" x2="510" y2="105" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+      <line x1="617" y1="60" x2="617" y2="85" stroke="#00e8a2" stroke-width="1.5"/>
+      <line x1="617" y1="85" x2="510" y2="85" stroke="#00e8a2" stroke-width="1.5"/>
+      <line x1="510" y1="85" x2="510" y2="105" stroke="#00e8a2" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
 
-      <!-- ===== ROW 1: Two writers → #firehose hub ===== -->
+      <!-- ===== ROW 1: Two writers -> #firehose hub ===== -->
 
-      <!-- Seth's devices → share-to-minty (left) -->
+      <!-- Seth's devices -> share-to-minty (left) -->
       <g transform="translate(30,108)">
         <rect width="140" height="42" rx="8" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
         <text x="70" y="17" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="600">SETH'S DEVICES</text>
         <text x="70" y="32" text-anchor="middle" fill="#e2e8f0" font-size="9">iPhone, Mac, Chrome</text>
       </g>
-      <line x1="170" y1="129" x2="195" y2="129" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+      <line x1="170" y1="129" x2="195" y2="129" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
 
       <g transform="translate(203,108)">
-        <rect width="130" height="42" rx="8" fill="url(#nodeGrad)" stroke="#fb923c" stroke-width="1.5"/>
-        <text x="65" y="17" text-anchor="middle" fill="#fb923c" font-size="10" font-weight="700">share-to-minty</text>
+        <rect width="130" height="42" rx="8" fill="url(#nodeGrad)" stroke="#f59e0b" stroke-width="1.5"/>
+        <text x="65" y="17" text-anchor="middle" fill="#f59e0b" font-size="10" font-weight="700">share-to-minty</text>
         <text x="65" y="32" text-anchor="middle" fill="#94a3b8" font-size="8">Classify &amp; post to #firehose</text>
       </g>
-      <line x1="333" y1="129" x2="440" y2="129" stroke="#fb923c" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
+      <line x1="333" y1="129" x2="440" y2="129" stroke="#f59e0b" stroke-width="1.5" marker-end="url(#arrowOrange)"/>
 
       <!-- #firehose central hub -->
       <g transform="translate(440,105)">
-        <rect width="140" height="65" rx="12" fill="#0d2847" stroke="#38bdf8" stroke-width="2" filter="url(#glow)"/>
-        <text x="70" y="25" text-anchor="middle" fill="#38bdf8" font-size="13" font-weight="800">#firehose</text>
+        <rect width="140" height="65" rx="12" fill="#0f1520" stroke="#22d3ee" stroke-width="2" filter="url(#glow)"/>
+        <text x="70" y="25" text-anchor="middle" fill="#22d3ee" font-size="13" font-weight="800">#firehose</text>
         <text x="70" y="42" text-anchor="middle" fill="#94a3b8" font-size="9">Automated Hub</text>
         <text x="70" y="55" text-anchor="middle" fill="#64748b" font-size="9">2 writers / 3 readers</text>
       </g>
 
-      <!-- ===== RIGHT COLUMN: Digest loop (#firehose → y-in-ai → #mint-community → #firehose) ===== -->
+      <!-- ===== RIGHT COLUMN: Digest loop (#firehose -> y-in-ai -> #mint-community -> #firehose) ===== -->
 
       <!-- Arrow RIGHT from #firehose to yesterday-in-ai -->
       <line x1="580" y1="130" x2="640" y2="130" stroke="#f472b6" stroke-width="1.5" marker-end="url(#arrowPink)"/>
@@ -478,8 +1325,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <!-- Email offshoot (right of yesterday-in-ai) -->
       <line x1="798" y1="133" x2="838" y2="133" stroke="#f472b6" stroke-width="1" marker-end="url(#arrowPink)"/>
       <g transform="translate(846,114)">
-        <rect width="100" height="38" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
-        <text x="50" y="16" text-anchor="middle" fill="#f472b6" font-size="9" font-weight="600">&#x2709; Email</text>
+        <rect width="100" height="38" rx="8" fill="url(#nodeGrad)" stroke="rgba(255,255,255,0.1)"/>
+        <text x="50" y="16" text-anchor="middle" fill="#f472b6" font-size="9" font-weight="600">Email</text>
         <text x="50" y="30" text-anchor="middle" fill="#64748b" font-size="8">28 lab members</text>
       </g>
 
@@ -489,12 +1336,12 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
       <!-- #mint-community (below yesterday-in-ai) -->
       <g transform="translate(633,208)">
-        <rect width="180" height="58" rx="10" fill="#0d2847" stroke="#4ade80" stroke-width="1.5"/>
-        <text x="90" y="18" text-anchor="middle" fill="#4ade80" font-size="11" font-weight="700">#mint-community</text>
+        <rect width="180" height="58" rx="10" fill="#0f1520" stroke="#00e8a2" stroke-width="1.5"/>
+        <text x="90" y="18" text-anchor="middle" fill="#00e8a2" font-size="11" font-weight="700">#mint-community</text>
         <text x="90" y="33" text-anchor="middle" fill="#94a3b8" font-size="8">Human discussion channel</text>
         <text x="90" y="46" text-anchor="middle" fill="#64748b" font-size="8">Daily digest + Seth &amp; lab Q&amp;A</text>
       </g>
-      <!-- Lab members → #mint-community -->
+      <!-- Lab members -> #mint-community -->
       <g transform="translate(846,218)">
         <rect width="100" height="38" rx="6" fill="url(#nodeGrad)" stroke="#fbbf24" stroke-dasharray="4,3"/>
         <text x="50" y="16" text-anchor="middle" fill="#fbbf24" font-size="9" font-weight="600">Lab Members</text>
@@ -503,12 +1350,12 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       <line x1="846" y1="237" x2="813" y2="237" stroke="#fbbf24" stroke-width="1" stroke-dasharray="3,3" marker-end="url(#arrowOrange)"/>
 
       <!-- Annotation: share-to-minty also watches #mint-community -->
-      <text x="723" y="276" text-anchor="middle" fill="#fb923c" font-size="7" opacity=".75" font-style="italic">share-to-minty also watches</text>
+      <text x="723" y="276" text-anchor="middle" fill="#f59e0b" font-size="7" opacity=".75" font-style="italic">share-to-minty also watches</text>
 
-      <!-- Loop back: #mint-community left → up → #firehose right -->
-      <line x1="633" y1="245" x2="605" y2="245" stroke="#4ade80" stroke-width="1.5"/>
-      <line x1="605" y1="245" x2="605" y2="152" stroke="#4ade80" stroke-width="1.5"/>
-      <line x1="605" y1="152" x2="580" y2="152" stroke="#4ade80" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
+      <!-- Loop back: #mint-community left -> up -> #firehose right -->
+      <line x1="633" y1="245" x2="605" y2="245" stroke="#00e8a2" stroke-width="1.5"/>
+      <line x1="605" y1="245" x2="605" y2="152" stroke="#00e8a2" stroke-width="1.5"/>
+      <line x1="605" y1="152" x2="580" y2="152" stroke="#00e8a2" stroke-width="1.5" marker-end="url(#arrowGreen)"/>
 
       <!-- ===== ROW 2: Paper pipeline (straight down from hub) ===== -->
 
@@ -528,7 +1375,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
       <!-- #papers -->
       <g transform="translate(450,306)">
-        <rect width="120" height="38" rx="8" fill="#0d2847" stroke="#fbbf24" stroke-width="1"/>
+        <rect width="120" height="38" rx="8" fill="#0f1520" stroke="#fbbf24" stroke-width="1"/>
         <text x="60" y="15" text-anchor="middle" fill="#fbbf24" font-size="10" font-weight="700">#papers</text>
         <text x="60" y="30" text-anchor="middle" fill="#94a3b8" font-size="8">PDFs + notifications</text>
       </g>
@@ -552,27 +1399,27 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </g>
 
       <!-- ===== ROW 4: corpus-agent (below LanceDB, centered on spine) ===== -->
-      <line x1="510" y1="525" x2="510" y2="555" stroke="#38bdf8" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
+      <line x1="510" y1="525" x2="510" y2="555" stroke="#22d3ee" stroke-width="1.5" marker-end="url(#arrowBlue)"/>
 
       <!-- corpus-agent -->
       <g transform="translate(415,558)">
-        <rect width="190" height="52" rx="8" fill="url(#nodeGrad)" stroke="#38bdf8" stroke-width="1.5"/>
-        <text x="95" y="17" text-anchor="middle" fill="#38bdf8" font-size="10" font-weight="700">corpus-agent</text>
-        <text x="95" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@robo-minty &bull; 7 modes &bull; News Search</text>
-        <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Deep Review &bull; Catch Me Up &bull; more</text>
+        <rect width="190" height="52" rx="8" fill="url(#nodeGrad)" stroke="#22d3ee" stroke-width="1.5"/>
+        <text x="95" y="17" text-anchor="middle" fill="#22d3ee" font-size="10" font-weight="700">corpus-agent</text>
+        <text x="95" y="31" text-anchor="middle" fill="#94a3b8" font-size="8">@robo-minty &#x2022; 7 modes &#x2022; News Search</text>
+        <text x="95" y="43" text-anchor="middle" fill="#64748b" font-size="8">Deep Review &#x2022; Catch Me Up &#x2022; more</text>
       </g>
 
       <!-- ===== BOTTOM-LEFT: Background services ===== -->
       <g transform="translate(20,460)">
-        <rect width="180" height="190" rx="8" fill="url(#nodeGrad)" stroke="#1e3a5f"/>
+        <rect width="180" height="190" rx="8" fill="url(#nodeGrad)" stroke="rgba(255,255,255,0.1)"/>
         <text x="90" y="18" text-anchor="middle" fill="#94a3b8" font-size="8" font-weight="600">BACKGROUND SERVICES</text>
         <text x="90" y="40" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">minty-search</text>
-        <text x="90" y="52" text-anchor="middle" fill="#64748b" font-size="8">@minty-search &bull; Slack search</text>
-        <text x="90" y="64" text-anchor="middle" fill="#64748b" font-size="8">Multi-query RRF &bull; Agentic</text>
+        <text x="90" y="52" text-anchor="middle" fill="#64748b" font-size="8">@minty-search &#x2022; Slack search</text>
+        <text x="90" y="64" text-anchor="middle" fill="#64748b" font-size="8">Multi-query RRF &#x2022; Agentic</text>
         <text x="90" y="84" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">slack-index</text>
-        <text x="90" y="96" text-anchor="middle" fill="#64748b" font-size="8">Every 4h &rarr; ChromaDB</text>
+        <text x="90" y="96" text-anchor="middle" fill="#64748b" font-size="8">Every 4h &#x2192; ChromaDB</text>
         <text x="90" y="116" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">workspace-index</text>
-        <text x="90" y="128" text-anchor="middle" fill="#64748b" font-size="8">Every 6h &rarr; ChromaDB</text>
+        <text x="90" y="128" text-anchor="middle" fill="#64748b" font-size="8">Every 6h &#x2192; ChromaDB</text>
         <text x="90" y="148" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">rclone-sync</text>
         <text x="90" y="160" text-anchor="middle" fill="#64748b" font-size="8">Drive sync + backups</text>
         <text x="90" y="180" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="600">cli-health-probe</text>
@@ -582,7 +1429,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
       <!-- Main dot -->
       <circle cx="88" cy="39" r="3" fill="#e2e8f0" filter="url(#glow)" opacity="0">
-        <!-- cx: Sources→feedme→#feed→Seth→feed-promote→L-down→L-left→hub→R-exit→y-in-ai→y-bot→mc→mc-L→corner→up→hub-R→hub-L→hub-bot→npb→#papers→ci→lance→agent→pause→fade→reset -->
+        <!-- cx: Sources->feedme->#feed->Seth->feed-promote->L-down->L-left->hub->R-exit->y-in-ai->y-bot->mc->mc-L->corner->up->hub-R->hub-L->hub-bot->npb->#papers->ci->lance->agent->pause->fade->reset -->
         <animate attributeName="cx" dur="12s" repeatCount="indefinite" calcMode="linear"
           keyTimes="0;0.01;0.05;0.09;0.12;0.16;0.19;0.22;0.25;0.28;0.32;0.34;0.38;0.41;0.43;0.47;0.49;0.50;0.51;0.57;0.62;0.68;0.76;0.84;0.93;0.97;1"
           values="88;88;243;379;489;617;617;510;510;580;723;723;723;633;605;605;580;510;510;510;510;510;510;510;510;510;88"/>
@@ -597,8 +1444,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
           values="0;0;0.9;0.9;0;0"/>
       </circle>
 
-      <!-- Merge dot: Seth's devices → share-to-minty → #firehose -->
-      <circle cx="100" cy="129" r="3.5" fill="#fb923c" opacity="0">
+      <!-- Merge dot: Seth's devices -> share-to-minty -> #firehose -->
+      <circle cx="100" cy="129" r="3.5" fill="#f59e0b" opacity="0">
         <animate attributeName="cx" dur="12s" repeatCount="indefinite" calcMode="linear"
           keyTimes="0;0.09;0.10;0.14;0.18;0.22;0.25;1"
           values="100;100;100;268;333;440;510;510"/>
@@ -610,7 +1457,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
           values="0;0;0.9;0.9;0.9;0.4;0;0"/>
       </circle>
 
-      <!-- Merge dot: Lab members → #mint-community -->
+      <!-- Merge dot: Lab members -> #mint-community -->
       <circle cx="896" cy="237" r="3" fill="#fbbf24" opacity="0">
         <animate attributeName="cx" dur="12s" repeatCount="indefinite" calcMode="linear"
           keyTimes="0;0.28;0.29;0.32;0.35;0.37;0.38;1"
@@ -626,17 +1473,18 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
     <p><strong>Key insight:</strong> The system forms a funnel. External sources produce hundreds of items daily. <em>feedme-daily</em> classifies them down to ~20-40%. Seth's thumbs-up on <em>#feed</em> curates further. Everything that reaches <em>#firehose</em> gets PDFs attached, ingested into the corpus, and summarized in the daily digest posted to <em>#mint-community</em>.</p>
   </div>
 </section>
-
-<!-- ============ DAEMONS ============ -->
 <section id="daemons" class="fade-in">
-  <h2><span class="icon">&#9881;</span> The 12 Daemons</h2>
+  <span class="section-num">04</span>
+  <h2>The 12 Daemons</h2>
   <p>All daemons run on the Mac Studio via macOS <code>launchd</code>. Most share a Python 3.12 venv at <code>daemons/pipeline/.venv/</code>. <span style="color:var(--text3);font-size:12px">Tap any card to expand.</span></p>
 
   <div class="cards" id="daemonCards">
 
     <div class="card" data-search="feedme-daily feed fetch classify rank twitter arxiv rss bluesky email linkedin">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(56,189,248,.15)">&#128225;</div>
+        <div class="card-icon" style="background:rgba(34,211,238,0.08);color:#22d3ee">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 7h14M3 10h14M3 13h14" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/></svg>
+        </div>
         <div><div class="card-title">feedme-daily</div><div class="card-sub"><span class="tag tag-daily">Daily 06:15</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
@@ -652,7 +1500,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="feed-promote promote thumbsup reaction curate news">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(74,222,128,.15)">&#128077;</div>
+        <div class="card-icon" style="background:rgba(0,232,162,0.08);color:#00e8a2">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 15V5m0 0l-4 4m4-4l4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <div><div class="card-title">feed-promote</div><div class="card-sub"><span class="tag tag-polling">Every 60s</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
@@ -665,8 +1515,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="share-to-minty share iphone mac chrome url inbox socket">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(251,146,60,.15)">&#128241;</div>
-        <div><div class="card-title">share-to-minty</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+        <div class="card-icon" style="background:rgba(245,158,11,0.08);color:#f59e0b">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="6" cy="6" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="14" cy="6" r="2" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="14" r="2" stroke="currentColor" stroke-width="1.5"/><path d="M7.5 7.5L10 12M12.5 7.5L10 12" stroke="currentColor" stroke-width="1.2"/></svg>
+        </div>
+        <div><div class="card-title">share-to-minty</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok status-pulse">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Real-time ingestion for URLs shared by Seth from any device (iPhone via iOS Shortcut, Mac via Keyboard Maestro Cmd+Shift+M, Chrome extension). Uses Slack Socket Mode &mdash; no public URL needed. Watches <code>#minty-inbox</code> and <code>#mint-community</code>, classifies content, and posts results to <code>#firehose</code> with guaranteed delivery.</p>
@@ -679,7 +1531,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="news-pdf-bot pdf paper download arxiv find agent browser selenium">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(167,139,250,.15)">&#128196;</div>
+        <div class="card-icon" style="background:rgba(167,139,250,0.08);color:#a78bfa">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M6 3h5l4 4v10H6V3z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/><path d="M11 3v4h4" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
         <div><div class="card-title">news-pdf-bot</div><div class="card-sub"><span class="tag tag-polling">Every 60s</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
@@ -693,7 +1547,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="yesterday-in-ai digest email newsletter ghost lab members daily news summary">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(244,114,182,.15)">&#128232;</div>
+        <div class="card-icon" style="background:rgba(244,114,182,0.08);color:#f472b6">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="4" y="2" width="10" height="13" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M7 6h4M7 9h6M7 12h3" stroke="currentColor" stroke-width="1.2" stroke-linecap="round"/></svg>
+        </div>
         <div><div class="card-title">yesterday-in-ai</div><div class="card-sub"><span class="tag tag-daily">Daily 05:30</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
@@ -707,8 +1563,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="corpus-agent robo-minty research bot slack mcp search papers query">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(56,189,248,.15)">&#129302;</div>
-        <div><div class="card-title">corpus-agent</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+        <div class="card-icon" style="background:rgba(34,211,238,0.08);color:#22d3ee">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M10 2l7 4v8l-7 4-7-4V6l7-4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+        <div><div class="card-title">corpus-agent</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok status-pulse">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Slack bot (<code>@robo-minty</code>) that answers research questions over the 2,151-paper corpus. Offers 7 modes via interactive Slack menu: Fast Search (semantic query expansion + unified search), Fast Review (~15 min literature review), Deep Search (multi-round gap analysis), Deep Review (60+ min full pipeline with parallel readers and synthesis), Conversation (direct Q&amp;A with tool access), News Search (search recent news from <code>#mint-community</code> and <code>#firehose</code>), and Catch Me Up (summarize what you missed over the past N days). Creates Slack canvases for long-form output.</p>
@@ -723,8 +1581,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="corpus-ingest ingest pipeline embed analyze raptor zotero paper pdf download markdown batch slack">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(45,212,191,.15)">&#128230;</div>
-        <div><div class="card-title">corpus-ingest</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+        <div class="card-icon" style="background:rgba(45,212,191,0.08);color:#2dd4bf">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M3 4h14l-5 6v5l-4 2v-7L3 4z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round"/></svg>
+        </div>
+        <div><div class="card-title">corpus-ingest</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok status-pulse">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Unified paper ingestion pipeline. Monitors Slack <code>#firehose</code> and <code>#papers</code> for PDF uploads, running an 11-stage pipeline per paper: pre-check (arXiv/CrossRef metadata), markdown conversion (6-tier cascade), chunk+embed (Voyage voyage-context-3 2048d into LanceDB), 41-question semantic analysis, RAPTOR hierarchical summaries, rename, citation enrichment, Google Drive upload, JSON write, archive, and Zotero cataloguing.</p>
@@ -737,8 +1597,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="slack-index slack-search minty-search semantic chromadb voyage index messages agentic rrf">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(129,140,248,.15)">&#128270;</div>
-        <div><div class="card-title">slack-index / minty-search</div><div class="card-sub"><span class="tag tag-polling">4h index</span> <span class="tag tag-persistent">Persistent bot</span> <span class="health-ok">&#9679;</span></div></div>
+        <div class="card-icon" style="background:rgba(129,140,248,0.08);color:#818cf8">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="3" stroke="currentColor" stroke-width="1.5"/><circle cx="10" cy="10" r="6" stroke="currentColor" stroke-width="1" opacity="0.5"/><circle cx="10" cy="10" r="8.5" stroke="currentColor" stroke-width="0.75" opacity="0.3"/></svg>
+        </div>
+        <div><div class="card-title">slack-index / minty-search</div><div class="card-sub"><span class="tag tag-polling">4h index</span> <span class="tag tag-persistent">Persistent bot</span> <span class="health-ok status-pulse">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Two-part system. The <strong>indexer</strong> runs every 4 hours, incrementally embedding all public Slack messages into ChromaDB via Voyage AI voyage-3, with per-channel watermarks and thread replies concatenated into parent documents.</p>
@@ -755,7 +1617,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="cli-health-probe health auth monitor probe alert email">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#128161;</div>
+        <div class="card-icon" style="background:rgba(136,146,166,0.08);color:#8892a6">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M2 10h4l2-5 2 10 2-5h6" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <div><div class="card-title">cli-health-probe</div><div class="card-sub"><span class="tag tag-polling">Every 10m</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
@@ -768,8 +1632,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="ghost cms website newsletter mintresearch blog">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#127760;</div>
-        <div><div class="card-title">ghost</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+        <div class="card-icon" style="background:rgba(136,146,166,0.08);color:#8892a6">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><circle cx="10" cy="10" r="7" stroke="currentColor" stroke-width="1.5"/><path d="M3 10h14M10 3c-2 2-3 4.5-3 7s1 5 3 7M10 3c2 2 3 4.5 3 7s-1 5-3 7" stroke="currentColor" stroke-width="1" opacity="0.5"/></svg>
+        </div>
+        <div><div class="card-title">ghost</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok status-pulse">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Ghost CMS instance powering mintresearch.org. Hosts the lab website and newsletter platform. Runs locally on port 2368, exposed via Cloudflare Tunnel.</p>
@@ -780,8 +1646,10 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="subscribe-endpoint subscribe email newsletter http api endpoint">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#9993;</div>
-        <div><div class="card-title">subscribe-endpoint</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok">&#9679;</span></div></div>
+        <div class="card-icon" style="background:rgba(136,146,166,0.08);color:#8892a6">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><rect x="3" y="5" width="14" height="10" rx="1.5" stroke="currentColor" stroke-width="1.5"/><path d="M3 5l7 5 7-5" stroke="currentColor" stroke-width="1.5"/></svg>
+        </div>
+        <div><div class="card-title">subscribe-endpoint</div><div class="card-sub"><span class="tag tag-persistent">Persistent</span> <span class="health-ok status-pulse">&#9679;</span></div></div>
       </div>
       <div class="card-body">
         <p>Tiny HTTP server on <code>127.0.0.1:8099</code> accepting newsletter subscription requests. Validates email format, checks for duplicates, and appends to <code>yesterday-in-ai/subscribers.txt</code>. Public access via Cloudflare Tunnel at <code>/api/subscribe</code>.</p>
@@ -793,7 +1661,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
     <div class="card" data-search="guide-updater guide infrastructure html auto-sync">
       <div class="card-head" onclick="toggleCard(this)">
-        <div class="card-icon" style="background:rgba(148,163,184,.15)">&#128196;</div>
+        <div class="card-icon" style="background:rgba(136,146,166,0.08);color:#8892a6">
+          <svg width="20" height="20" viewBox="0 0 20 20" fill="none"><path d="M14 6A5 5 0 1 1 6 8" stroke="currentColor" stroke-width="1.5" stroke-linecap="round"/><path d="M14 2v4h-4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
         <div><div class="card-title">guide-updater</div><div class="card-sub"><span class="tag tag-daily">06:00 &amp; 18:00</span> <span class="health-ok">&#9679;</span></div></div>
       </div>
       <div class="card-body">
@@ -809,7 +1679,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ TIMELINE ============ -->
 <section id="timeline" class="fade-in">
-  <h2><span class="icon">&#128339;</span> 24-Hour Daemon Schedule</h2>
+  <span class="section-num">05</span>
+  <h2>24-Hour Daemon Schedule</h2>
   <p>When each daemon runs throughout the day (times in local/AEDT). Persistent daemons run continuously; polled daemons run at fixed intervals.</p>
   <div class="timeline-wrap">
     <div id="timelineChart"></div>
@@ -821,7 +1692,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ CORPUS ============ -->
 <section id="corpus" class="fade-in">
-  <h2><span class="icon">&#128218;</span> The Research Corpus</h2>
+  <span class="section-num">06</span>
+  <h2>The Research Corpus</h2>
   <p>The MINT Lab's intellectual engine: 2,151 papers on AI safety, ethics, alignment, governance, and capabilities &mdash; all embedded, analyzed, and searchable.</p>
 
   <div class="grid-2" style="margin-top:16px">
@@ -854,112 +1726,234 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </div>
 
   <h3>41-Question Semantic Analysis</h3>
-  <p>Every paper is analyzed across 41 dimensions, each producing text content and a 2048d embedding vector. Click each category to see the full question list:</p>
+  <p>Every paper is analyzed across 41 dimensions, each producing text content and a 2048d embedding vector. Hover any cell to see the full question.</p>
 
-  <div class="accordion-item" onclick="toggleAcc(this)">
-    <div class="accordion-head"><span style="color:var(--accent)">Research Core (q01&ndash;q05)</span> <span class="arrow">&#9654;</span></div>
-    <div class="accordion-body">
-      <table class="ref-table">
-        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
-        <tbody>
-          <tr><td>q01</td><td><code>research_question</code></td><td>Core research question in one specific sentence</td></tr>
-          <tr><td>q02</td><td><code>thesis</code></td><td>Main thesis or finding in 1&ndash;2 sentences</td></tr>
-          <tr><td>q03</td><td><code>key_claims</code></td><td>3&ndash;5 specific, falsifiable claims</td></tr>
-          <tr><td>q04</td><td><code>evidence</code></td><td>Type and quality of evidence &mdash; experiments, models, sample sizes, rigor</td></tr>
-          <tr><td>q05</td><td><code>limitations</code></td><td>Acknowledged AND unacknowledged limitations</td></tr>
-        </tbody>
-      </table>
+  <h3 style="font-size:12px;color:var(--mint);margin-top:24px">Research Core</h3>
+  <div class="q-grid">
+    <div class="q-cell" style="border-top-color:var(--mint)">
+      <div class="q-id">q01</div>
+      <div class="q-key">research_question</div>
+      <div class="q-tooltip">Core research question in one specific sentence</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--mint)">
+      <div class="q-id">q02</div>
+      <div class="q-key">thesis</div>
+      <div class="q-tooltip">Main thesis or finding in 1&ndash;2 sentences</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--mint)">
+      <div class="q-id">q03</div>
+      <div class="q-key">key_claims</div>
+      <div class="q-tooltip">3&ndash;5 specific, falsifiable claims</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--mint)">
+      <div class="q-id">q04</div>
+      <div class="q-key">evidence</div>
+      <div class="q-tooltip">Type and quality of evidence &mdash; experiments, models, sample sizes, rigor</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--mint)">
+      <div class="q-id">q05</div>
+      <div class="q-key">limitations</div>
+      <div class="q-tooltip">Acknowledged AND unacknowledged limitations</div>
     </div>
   </div>
 
-  <div class="accordion-item" onclick="toggleAcc(this)">
-    <div class="accordion-head"><span style="color:var(--accent)">Methodology (q06&ndash;q10)</span> <span class="arrow">&#9654;</span></div>
-    <div class="accordion-body">
-      <table class="ref-table">
-        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
-        <tbody>
-          <tr><td>q06</td><td><code>paradigm</code></td><td>Research paradigm with detail (not just &lsquo;survey&rsquo;)</td></tr>
-          <tr><td>q07</td><td><code>methods</code></td><td>Specific methods, techniques, frameworks, tools</td></tr>
-          <tr><td>q08</td><td><code>data</code></td><td>Datasets, models, sample sizes, versions</td></tr>
-          <tr><td>q09</td><td><code>reproducibility</code></td><td>Reproducibility assessment &mdash; resources needed, code/data availability</td></tr>
-          <tr><td>q10</td><td><code>framework</code></td><td>Theoretical/conceptual framework &mdash; specific theories, authors, application</td></tr>
-        </tbody>
-      </table>
+  <h3 style="font-size:12px;color:var(--cyan);margin-top:16px">Methodology</h3>
+  <div class="q-grid">
+    <div class="q-cell" style="border-top-color:var(--cyan)">
+      <div class="q-id">q06</div>
+      <div class="q-key">paradigm</div>
+      <div class="q-tooltip">Research paradigm with detail (not just &lsquo;survey&rsquo;)</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--cyan)">
+      <div class="q-id">q07</div>
+      <div class="q-key">methods</div>
+      <div class="q-tooltip">Specific methods, techniques, frameworks, tools</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--cyan)">
+      <div class="q-id">q08</div>
+      <div class="q-key">data</div>
+      <div class="q-tooltip">Datasets, models, sample sizes, versions</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--cyan)">
+      <div class="q-id">q09</div>
+      <div class="q-key">reproducibility</div>
+      <div class="q-tooltip">Reproducibility assessment -- resources needed, code/data availability</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--cyan)">
+      <div class="q-id">q10</div>
+      <div class="q-key">framework</div>
+      <div class="q-tooltip">Theoretical/conceptual framework -- specific theories, authors, application</div>
     </div>
   </div>
 
-  <div class="accordion-item" onclick="toggleAcc(this)">
-    <div class="accordion-head"><span style="color:var(--accent)">Context (q11&ndash;q14)</span> <span class="arrow">&#9654;</span></div>
-    <div class="accordion-body">
-      <table class="ref-table">
-        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
-        <tbody>
-          <tr><td>q11</td><td><code>traditions</code></td><td>Intellectual traditions &mdash; academic lineages and schools of thought</td></tr>
-          <tr><td>q12</td><td><code>key_citations</code></td><td>2&ndash;3 papers/authors most engaged with (not just cited)</td></tr>
-          <tr><td>q13</td><td><code>assumptions</code></td><td>Key assumptions &mdash; philosophical, empirical, scope</td></tr>
-          <tr><td>q14</td><td><code>counterarguments</code></td><td>Substantive objections from different perspectives</td></tr>
-        </tbody>
-      </table>
+  <h3 style="font-size:12px;color:var(--indigo);margin-top:16px">Context</h3>
+  <div class="q-grid">
+    <div class="q-cell" style="border-top-color:var(--indigo)">
+      <div class="q-id">q11</div>
+      <div class="q-key">traditions</div>
+      <div class="q-tooltip">Intellectual traditions -- academic lineages and schools of thought</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--indigo)">
+      <div class="q-id">q12</div>
+      <div class="q-key">key_citations</div>
+      <div class="q-tooltip">2-3 papers/authors most engaged with (not just cited)</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--indigo)">
+      <div class="q-id">q13</div>
+      <div class="q-key">assumptions</div>
+      <div class="q-tooltip">Key assumptions -- philosophical, empirical, scope</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--indigo)">
+      <div class="q-id">q14</div>
+      <div class="q-key">counterarguments</div>
+      <div class="q-tooltip">Substantive objections from different perspectives</div>
     </div>
   </div>
 
-  <div class="accordion-item" onclick="toggleAcc(this)">
-    <div class="accordion-head"><span style="color:var(--accent)">AI-Specific (q15&ndash;q18)</span> <span class="arrow">&#9654;</span></div>
-    <div class="accordion-body">
-      <table class="ref-table">
-        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
-        <tbody>
-          <tr><td>q15</td><td><code>llm_role</code></td><td>Category (SUBJECT/TOOL/CONCERN/TECHNICAL/NONE) + detailed explanation</td></tr>
-          <tr><td>q16</td><td><code>models</code></td><td>Specific AI/LLM models discussed &mdash; names, versions, comparisons</td></tr>
-          <tr><td>q17</td><td><code>capability_claims</code></td><td>Claims about what LLMs can or cannot do</td></tr>
-          <tr><td>q18</td><td><code>risk_claims</code></td><td>Claims about risks, dangers, harms &mdash; severity, likelihood, evidence</td></tr>
-        </tbody>
-      </table>
+  <h3 style="font-size:12px;color:var(--purple);margin-top:16px">AI-Specific</h3>
+  <div class="q-grid">
+    <div class="q-cell" style="border-top-color:var(--purple)">
+      <div class="q-id">q15</div>
+      <div class="q-key">llm_role</div>
+      <div class="q-tooltip">Category (SUBJECT/TOOL/CONCERN/TECHNICAL/NONE) + detailed explanation</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--purple)">
+      <div class="q-id">q16</div>
+      <div class="q-key">models</div>
+      <div class="q-tooltip">Specific AI/LLM models discussed -- names, versions, comparisons</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--purple)">
+      <div class="q-id">q17</div>
+      <div class="q-key">capability_claims</div>
+      <div class="q-tooltip">Claims about what LLMs can or cannot do</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--purple)">
+      <div class="q-id">q18</div>
+      <div class="q-key">risk_claims</div>
+      <div class="q-tooltip">Claims about risks, dangers, harms -- severity, likelihood, evidence</div>
     </div>
   </div>
 
-  <div class="accordion-item" onclick="toggleAcc(this)">
-    <div class="accordion-head"><span style="color:var(--accent)">Meta (q19&ndash;q26)</span> <span class="arrow">&#9654;</span></div>
-    <div class="accordion-body">
-      <table class="ref-table">
-        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
-        <tbody>
-          <tr><td>q19</td><td><code>novelty</code></td><td>What is claimed as new &mdash; method, evidence, framework</td></tr>
-          <tr><td>q20</td><td><code>field</code></td><td>Primary subfield or research area</td></tr>
-          <tr><td>q21</td><td><code>audience</code></td><td>Intended readers</td></tr>
-          <tr><td>q22</td><td><code>implications</code></td><td>Practical implications if claims are correct</td></tr>
-          <tr><td>q23</td><td><code>future_work</code></td><td>Suggested future directions &mdash; explicit and implicit</td></tr>
-          <tr><td>q24</td><td><code>quality</code></td><td>Quality rating 1&ndash;5 with explanation</td></tr>
-          <tr><td>q25</td><td><code>stance</code></td><td>Stance on AI development &mdash; nuanced characterization</td></tr>
-          <tr><td>q26</td><td><code>other</code></td><td>Anything else notable &mdash; surprising findings, innovations</td></tr>
-        </tbody>
-      </table>
+  <h3 style="font-size:12px;color:var(--amber);margin-top:16px">Meta</h3>
+  <div class="q-grid">
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q19</div>
+      <div class="q-key">novelty</div>
+      <div class="q-tooltip">What is claimed as new -- method, evidence, framework</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q20</div>
+      <div class="q-key">field</div>
+      <div class="q-tooltip">Primary subfield or research area</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q21</div>
+      <div class="q-key">audience</div>
+      <div class="q-tooltip">Intended readers</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q22</div>
+      <div class="q-key">implications</div>
+      <div class="q-tooltip">Practical implications if claims are correct</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q23</div>
+      <div class="q-key">future_work</div>
+      <div class="q-tooltip">Suggested future directions -- explicit and implicit</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q24</div>
+      <div class="q-key">quality</div>
+      <div class="q-tooltip">Quality rating 1-5 with explanation</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q25</div>
+      <div class="q-key">stance</div>
+      <div class="q-tooltip">Stance on AI development -- nuanced characterization</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--amber)">
+      <div class="q-id">q26</div>
+      <div class="q-key">other</div>
+      <div class="q-tooltip">Anything else notable -- surprising findings, innovations</div>
     </div>
   </div>
 
-  <div class="accordion-item" onclick="toggleAcc(this)">
-    <div class="accordion-head"><span style="color:var(--accent)">Advanced (q27&ndash;q41)</span> <span class="arrow">&#9654;</span></div>
-    <div class="accordion-body">
-      <table class="ref-table">
-        <thead><tr><th>ID</th><th>Key</th><th>Question</th></tr></thead>
-        <tbody>
-          <tr><td>q27</td><td><code>source_type</code></td><td>Publication type &mdash; venue, prestige, implications</td></tr>
-          <tr><td>q28</td><td><code>institutional_context</code></td><td>Institutions, their interests, potential bias</td></tr>
-          <tr><td>q29</td><td><code>historical_timing</code></td><td>Timing relative to AI developments &mdash; how timing affects interpretation</td></tr>
-          <tr><td>q30</td><td><code>paradigm_influence</code></td><td>Foundational, refinement, or application</td></tr>
-          <tr><td>q31</td><td><code>disciplines_bridged</code></td><td>Cross-disciplinary connections</td></tr>
-          <tr><td>q32</td><td><code>cross_domain_insights</code></td><td>Insights imported from other fields</td></tr>
-          <tr><td>q33</td><td><code>deployment_gap</code></td><td>Gap between research and real-world deployment</td></tr>
-          <tr><td>q34</td><td><code>infrastructure_contribution</code></td><td>Benchmarks, datasets, tools contributed</td></tr>
-          <tr><td>q35</td><td><code>cultural_scope</code></td><td>Geographic/cultural assumptions &mdash; would findings generalize globally</td></tr>
-          <tr><td>q36</td><td><code>philosophical_assumptions</code></td><td>Views on consciousness, agency, intelligence</td></tr>
-          <tr><td>q37</td><td><code>power_dynamics</code></td><td>Who benefits, who might be harmed</td></tr>
-          <tr><td>q38</td><td><code>gaps_and_omissions</code></td><td>What is NOT addressed that should be</td></tr>
-          <tr><td>q39</td><td><code>dual_use_concerns</code></td><td>Could this research be misused</td></tr>
-          <tr><td>q40</td><td><code>emergence_claims</code></td><td>Claims about emergent capabilities &mdash; evidence strength</td></tr>
-          <tr><td>q41</td><td><code>remaining_other</code></td><td>Final catch-all for important observations</td></tr>
-        </tbody>
-      </table>
+  <h3 style="font-size:12px;color:var(--teal);margin-top:16px">Advanced</h3>
+  <div class="q-grid">
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q27</div>
+      <div class="q-key">source_type</div>
+      <div class="q-tooltip">Publication type -- venue, prestige, implications</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q28</div>
+      <div class="q-key">institutional_context</div>
+      <div class="q-tooltip">Institutions, their interests, potential bias</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q29</div>
+      <div class="q-key">historical_timing</div>
+      <div class="q-tooltip">Timing relative to AI developments -- how timing affects interpretation</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q30</div>
+      <div class="q-key">paradigm_influence</div>
+      <div class="q-tooltip">Foundational, refinement, or application</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q31</div>
+      <div class="q-key">disciplines_bridged</div>
+      <div class="q-tooltip">Cross-disciplinary connections</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q32</div>
+      <div class="q-key">cross_domain_insights</div>
+      <div class="q-tooltip">Insights imported from other fields</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q33</div>
+      <div class="q-key">deployment_gap</div>
+      <div class="q-tooltip">Gap between research and real-world deployment</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q34</div>
+      <div class="q-key">infrastructure_contribution</div>
+      <div class="q-tooltip">Benchmarks, datasets, tools contributed</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q35</div>
+      <div class="q-key">cultural_scope</div>
+      <div class="q-tooltip">Geographic/cultural assumptions -- would findings generalize globally</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q36</div>
+      <div class="q-key">philosophical_assumptions</div>
+      <div class="q-tooltip">Views on consciousness, agency, intelligence</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q37</div>
+      <div class="q-key">power_dynamics</div>
+      <div class="q-tooltip">Who benefits, who might be harmed</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q38</div>
+      <div class="q-key">gaps_and_omissions</div>
+      <div class="q-tooltip">What is NOT addressed that should be</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q39</div>
+      <div class="q-key">dual_use_concerns</div>
+      <div class="q-tooltip">Could this research be misused</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q40</div>
+      <div class="q-key">emergence_claims</div>
+      <div class="q-tooltip">Claims about emergent capabilities -- evidence strength</div>
+    </div>
+    <div class="q-cell" style="border-top-color:var(--teal)">
+      <div class="q-id">q41</div>
+      <div class="q-key">remaining_other</div>
+      <div class="q-tooltip">Final catch-all for important observations</div>
     </div>
   </div>
 
@@ -975,93 +1969,92 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </defs>
       <!-- Stage boxes -->
       <g transform="translate(10,30)">
-        <rect width="75" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <rect width="75" height="36" rx="6" fill="#13171f" stroke="#2dd4bf" stroke-width="1.2"/>
         <text x="37" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Download</text>
-        <text x="37" y="28" text-anchor="middle" fill="#64748b" font-size="7">SHA-256 dedup</text>
+        <text x="37" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">SHA-256 dedup</text>
       </g>
       <line x1="88" y1="48" x2="97" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(100,30)">
-        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <rect width="65" height="36" rx="6" fill="#13171f" stroke="#2dd4bf" stroke-width="1.2"/>
         <text x="32" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Rename</text>
-        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Metadata extract</text>
+        <text x="32" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">Metadata extract</text>
       </g>
       <line x1="168" y1="48" x2="177" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(180,30)">
-        <rect width="80" height="36" rx="6" fill="#0f1b32" stroke="#fb923c" stroke-width="1.2"/>
+        <rect width="80" height="36" rx="6" fill="#13171f" stroke="#fb923c" stroke-width="1.2"/>
         <text x="40" y="16" text-anchor="middle" fill="#fb923c" font-size="9" font-weight="700">Markdown</text>
-        <text x="40" y="28" text-anchor="middle" fill="#64748b" font-size="7">6-tier cascade</text>
+        <text x="40" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">6-tier cascade</text>
       </g>
       <line x1="263" y1="48" x2="272" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(275,30)">
-        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#818cf8" stroke-width="1.2"/>
+        <rect width="65" height="36" rx="6" fill="#13171f" stroke="#818cf8" stroke-width="1.2"/>
         <text x="32" y="16" text-anchor="middle" fill="#818cf8" font-size="9" font-weight="700">Embed</text>
-        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Voyage 2048d</text>
+        <text x="32" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">Voyage 2048d</text>
       </g>
       <line x1="343" y1="48" x2="352" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(355,30)">
-        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <rect width="65" height="36" rx="6" fill="#13171f" stroke="#2dd4bf" stroke-width="1.2"/>
         <text x="32" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Enrich</text>
-        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">CrossRef/S2</text>
+        <text x="32" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">CrossRef/S2</text>
       </g>
       <line x1="423" y1="48" x2="432" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(435,30)">
-        <rect width="70" height="36" rx="6" fill="#0f1b32" stroke="#a78bfa" stroke-width="1.2"/>
+        <rect width="70" height="36" rx="6" fill="#13171f" stroke="#a78bfa" stroke-width="1.2"/>
         <text x="35" y="16" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">Analyze</text>
-        <text x="35" y="28" text-anchor="middle" fill="#64748b" font-size="7">41Q via LLM</text>
+        <text x="35" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">41Q via LLM</text>
       </g>
       <line x1="508" y1="48" x2="517" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(520,30)">
-        <rect width="70" height="36" rx="6" fill="#0f1b32" stroke="#a78bfa" stroke-width="1.2"/>
+        <rect width="70" height="36" rx="6" fill="#13171f" stroke="#a78bfa" stroke-width="1.2"/>
         <text x="35" y="16" text-anchor="middle" fill="#a78bfa" font-size="9" font-weight="700">RAPTOR</text>
-        <text x="35" y="28" text-anchor="middle" fill="#64748b" font-size="7">Summaries</text>
+        <text x="35" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">Summaries</text>
       </g>
       <line x1="593" y1="48" x2="602" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(605,30)">
-        <rect width="60" height="36" rx="6" fill="#0f1b32" stroke="#2dd4bf" stroke-width="1.2"/>
+        <rect width="60" height="36" rx="6" fill="#13171f" stroke="#2dd4bf" stroke-width="1.2"/>
         <text x="30" y="16" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="700">Verify</text>
-        <text x="30" y="28" text-anchor="middle" fill="#64748b" font-size="7">DB check</text>
+        <text x="30" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">DB check</text>
       </g>
       <line x1="668" y1="48" x2="677" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(680,30)">
-        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#4ade80" stroke-width="1.2"/>
+        <rect width="65" height="36" rx="6" fill="#13171f" stroke="#4ade80" stroke-width="1.2"/>
         <text x="32" y="16" text-anchor="middle" fill="#4ade80" font-size="9" font-weight="700">Drive</text>
-        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Upload PDF+MD</text>
+        <text x="32" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">Upload PDF+MD</text>
       </g>
       <line x1="748" y1="48" x2="757" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(760,30)">
-        <rect width="60" height="36" rx="6" fill="#0f1b32" stroke="#38bdf8" stroke-width="1.2"/>
+        <rect width="60" height="36" rx="6" fill="#13171f" stroke="#38bdf8" stroke-width="1.2"/>
         <text x="30" y="16" text-anchor="middle" fill="#38bdf8" font-size="9" font-weight="700">Zotero</text>
-        <text x="30" y="28" text-anchor="middle" fill="#64748b" font-size="7">Catalog</text>
+        <text x="30" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">Catalog</text>
       </g>
       <line x1="823" y1="48" x2="832" y2="48" stroke="#2dd4bf" stroke-width="1" marker-end="url(#arrowTeal2)"/>
       <g transform="translate(835,30)">
-        <rect width="65" height="36" rx="6" fill="#0f1b32" stroke="#f472b6" stroke-width="1.2"/>
+        <rect width="65" height="36" rx="6" fill="#13171f" stroke="#f472b6" stroke-width="1.2"/>
         <text x="32" y="16" text-anchor="middle" fill="#f472b6" font-size="9" font-weight="700">Report</text>
-        <text x="32" y="28" text-anchor="middle" fill="#64748b" font-size="7">Slack notify</text>
+        <text x="32" y="28" text-anchor="middle" fill="#4f5b6e" font-size="7">Slack notify</text>
       </g>
       <!-- Markdown cascade detail -->
       <g transform="translate(155,90)">
         <text x="0" y="10" fill="#fb923c" font-size="9" font-weight="600">Markdown Conversion Cascade:</text>
-        <text x="0" y="26" fill="#94a3b8" font-size="8">Companion (pre-extracted) &rarr; arXiv HTML &rarr; ar5iv &rarr; Marker &rarr; PyMuPDF &rarr; Tesseract OCR</text>
-        <text x="0" y="40" fill="#64748b" font-size="7">Falls through tiers until successful conversion. Each tier is tried only if the previous one fails.</text>
+        <text x="0" y="26" fill="#8892a6" font-size="8">Companion (pre-extracted) &rarr; arXiv HTML &rarr; ar5iv &rarr; Marker &rarr; PyMuPDF &rarr; Tesseract OCR</text>
+        <text x="0" y="40" fill="#4f5b6e" font-size="7">Falls through tiers until successful conversion. Each tier is tried only if the previous one fails.</text>
       </g>
       <!-- Worker pool callout -->
       <g transform="translate(600,100)">
         <rect width="280" height="60" rx="8" fill="rgba(45,212,191,.06)" stroke="#2dd4bf" stroke-width="0.5" stroke-dasharray="3,2"/>
         <text x="140" y="18" text-anchor="middle" fill="#2dd4bf" font-size="9" font-weight="600">Worker Pools</text>
-        <text x="140" y="34" text-anchor="middle" fill="#94a3b8" font-size="8">Pipeline: 8 (local) / 2 (slack)</text>
-        <text x="140" y="48" text-anchor="middle" fill="#94a3b8" font-size="8">Embed: 4 &bull; Enrich: 4 &bull; Analyze: 6 &bull; RAPTOR: 6</text>
+        <text x="140" y="34" text-anchor="middle" fill="#8892a6" font-size="8">Pipeline: 8 (local) / 2 (slack)</text>
+        <text x="140" y="48" text-anchor="middle" fill="#8892a6" font-size="8">Embed: 4 &bull; Enrich: 4 &bull; Analyze: 6 &bull; RAPTOR: 6</text>
       </g>
       <!-- Animated dot (CSS for iOS) -->
       <style>@keyframes dot-ingest{0%{cx:48;cy:48;opacity:.8}10%{cx:100;cy:48}20%{cx:180;cy:48}30%{cx:275;cy:48}40%{cx:355;cy:48}50%{cx:435;cy:48}60%{cx:520;cy:48}70%{cx:605;cy:48}80%{cx:680;cy:48}90%{cx:760;cy:48}100%{cx:867;cy:48;opacity:.8}}</style>
       <circle r="3.5" fill="#2dd4bf" opacity=".7" style="animation:dot-ingest 6s ease-in-out infinite"/>
     </svg>
   </div>
-</section>
-
-<!-- ============ AGENT ARCHITECTURE ============ -->
+</section><!-- ============ AGENT ARCHITECTURE ============ -->
 <section id="agents" class="fade-in">
-  <h2><span class="icon">&#129302;</span> Agent Architecture</h2>
+  <span class="section-num">07</span>
+  <h2>Agent Architecture</h2>
   <p>Minty is the interactive research management agent. It delegates work to specialized subagents, each with fresh context windows.</p>
 
   <h3>Deep Review Pipeline (corpus-agent)</h3>
@@ -1069,16 +2062,16 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
   <div class="hierarchy">
     <div class="h-tier">
-      <div class="h-node" style="border-color:var(--accent)"><div class="h-title" style="color:var(--accent)">Orchestrator</div><div class="h-sub">Python (persistent)<br>Dispatches pipeline modes,<br>manages Slack interaction</div></div>
+      <div class="h-node" style="border-color:var(--mint)"><div class="h-title" style="color:var(--mint)">Orchestrator</div><div class="h-sub">Python (persistent)<br>Dispatches pipeline modes,<br>manages Slack interaction</div></div>
     </div>
     <div class="h-connector"></div>
     <div class="h-tier">
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Phase 1:<br>Search</div><div class="h-sub">Opus &bull; Fast search +<br>up to 2 gap-analysis rounds</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Phase 2:<br>Readers</div><div class="h-sub">Codex GPT-5.2 &bull; Parallel<br>Top-tier (xhigh) + Summary-tier (medium)</div></div>
       <div class="h-node" style="border-color:var(--green)"><div class="h-title" style="color:var(--green)">Phase 3:<br>Synthesis</div><div class="h-sub">Opus &bull; 3,000&ndash;5,000 word<br>Literature Review + Critical Assessment</div></div>
-      <div class="h-node" style="border-color:var(--orange)"><div class="h-title" style="color:var(--orange)">Phase 4:<br>QA</div><div class="h-sub">Opus &bull; Cross-reference<br>verification + citation fix pass</div></div>
+      <div class="h-node" style="border-color:var(--amber)"><div class="h-title" style="color:var(--amber)">Phase 4:<br>QA</div><div class="h-sub">Opus &bull; Cross-reference<br>verification + citation fix pass</div></div>
     </div>
-    <div style="font-size:11px;color:var(--text3);text-align:center;margin-top:-4px">Pipeline workers &mdash; Claude Opus (search, synthesis, QA) + Codex GPT-5.2 (parallel readers, up to 6 concurrent)</div>
+    <div style="font-size:11px;color:var(--text-3);text-align:center;margin-top:-4px">Pipeline workers &mdash; Claude Opus (search, synthesis, QA) + Codex GPT-5.2 (parallel readers, up to 6 concurrent)</div>
   </div>
 
   <h3>Deep Review Pipeline Phases</h3>
@@ -1128,7 +2121,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ SKILLS & COMMANDS ============ -->
 <section id="skills" class="fade-in">
-  <h2><span class="icon">&#128295;</span> Skills &amp; Commands</h2>
+  <span class="section-num">08</span>
+  <h2>Skills &amp; Commands</h2>
 
   <div class="tabs">
     <button class="tab-btn active" onclick="switchTab(event,'tab-skills')">Skills (16)</button>
@@ -1137,9 +2131,9 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </div>
 
   <div class="tab-panel active" id="tab-skills">
-    <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Skills are reusable knowledge patterns in <code>.claude/skills/</code>. Each has a <code>SKILL.md</code> with triggers, scope, and detailed instructions.</p>
+    <p style="font-size:13px;color:var(--text-3);margin-bottom:12px">Skills are reusable knowledge patterns in <code>.claude/skills/</code>. Each has a <code>SKILL.md</code> with triggers, scope, and detailed instructions.</p>
 
-    <h3 style="color:var(--accent2)">Research &amp; Corpus</h3>
+    <h3 style="color:var(--indigo)">Research &amp; Corpus</h3>
     <table class="ref-table">
       <thead><tr><th>Skill</th><th>Purpose</th></tr></thead>
       <tbody>
@@ -1148,7 +2142,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </tbody>
     </table>
 
-    <h3 style="color:var(--accent2)">Communication</h3>
+    <h3 style="color:var(--indigo)">Communication</h3>
     <table class="ref-table">
       <thead><tr><th>Skill</th><th>Purpose</th></tr></thead>
       <tbody>
@@ -1159,7 +2153,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
       </tbody>
     </table>
 
-    <h3 style="color:var(--accent2)">Infrastructure</h3>
+    <h3 style="color:var(--indigo)">Infrastructure</h3>
     <table class="ref-table">
       <thead><tr><th>Skill</th><th>Purpose</th></tr></thead>
       <tbody>
@@ -1177,7 +2171,7 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </div>
 
   <div class="tab-panel" id="tab-commands">
-    <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Commands are user-invocable slash commands in <code>.claude/commands/</code>. Invoke with <code>/name</code>.</p>
+    <p style="font-size:13px;color:var(--text-3);margin-bottom:12px">Commands are user-invocable slash commands in <code>.claude/commands/</code>. Invoke with <code>/name</code>.</p>
 
     <h3 style="color:var(--green)">Session Lifecycle</h3>
     <table class="ref-table">
@@ -1225,18 +2219,18 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </div>
 
   <div class="tab-panel" id="tab-hooks">
-    <p style="font-size:13px;color:var(--text3);margin-bottom:12px">Hooks are Python scripts that run before/after tool calls to enforce guardrails. 5 are wired in <code>settings.json</code>; 3 exist but are currently disabled.</p>
+    <p style="font-size:13px;color:var(--text-3);margin-bottom:12px">Hooks are Python scripts that run before/after tool calls to enforce guardrails. 5 are wired in <code>settings.json</code>; 3 exist but are currently disabled.</p>
     <table class="ref-table">
       <thead><tr><th>Hook</th><th>Trigger</th><th>Effect</th><th>Status</th></tr></thead>
       <tbody>
-        <tr><td><code>block-rm.py</code></td><td>PreToolUse (Bash)</td><td><span class="badge badge-orange">Hard block</span> Prevents <code>rm</code>, <code>shred</code>, <code>unlink</code>. Forces <code>trash</code> CLI.</td><td><span class="health-ok">&#9679;</span></td></tr>
-        <tr><td><code>block-web-direct.py</code></td><td>PreToolUse (Web*)</td><td><span class="badge badge-blue">Soft nudge</span> Reminds agent to delegate web searches to subagents</td><td><span class="health-ok">&#9679;</span></td></tr>
-        <tr><td><code>delegation-nudge.py</code></td><td>PreToolUse (Read/Grep/Glob)</td><td><span class="badge badge-blue">Soft nudge</span> Warns after 15 consecutive file reads without delegation</td><td><span class="health-ok">&#9679;</span></td></tr>
-        <tr><td><code>python-check.py</code></td><td>PostToolUse (Edit/Write)</td><td><span class="badge badge-purple">Quality</span> Runs py_compile + Python 3.9 compat check on .py files</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>block-rm.py</code></td><td>PreToolUse (Bash)</td><td><span class="badge badge-amber">Hard block</span> Prevents <code>rm</code>, <code>shred</code>, <code>unlink</code>. Forces <code>trash</code> CLI.</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>block-web-direct.py</code></td><td>PreToolUse (Web*)</td><td><span class="badge badge-cyan">Soft nudge</span> Reminds agent to delegate web searches to subagents</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>delegation-nudge.py</code></td><td>PreToolUse (Read/Grep/Glob)</td><td><span class="badge badge-cyan">Soft nudge</span> Warns after 15 consecutive file reads without delegation</td><td><span class="health-ok">&#9679;</span></td></tr>
+        <tr><td><code>python-check.py</code></td><td>PostToolUse (Edit/Write)</td><td><span class="badge badge-indigo">Quality</span> Runs py_compile + Python 3.9 compat check on .py files</td><td><span class="health-ok">&#9679;</span></td></tr>
         <tr><td><code>statusline.py</code></td><td>StatusLine</td><td><span class="badge badge-green">Display</span> Context-aware status bar with color-coded usage</td><td><span class="health-ok">&#9679;</span></td></tr>
-        <tr><td><code>bedtime.py</code></td><td>UserPromptSubmit</td><td><span class="badge badge-orange">Hard block</span> Blocks prompts between 23:55&ndash;06:00. "Go to bed, Seth."</td><td style="color:var(--text3)">Unwired</td></tr>
-        <tr><td><code>block-plan-mode.py</code></td><td>PreToolUse (EnterPlanMode)</td><td><span class="badge badge-orange">Hard block</span> Prevents plan mode (wipes context on exit)</td><td style="color:var(--text3)">Unwired</td></tr>
-        <tr><td><code>context-threshold.py</code></td><td>UserPromptSubmit</td><td><span class="badge badge-blue">Soft nudge</span> Warns when context usage exceeds threshold (currently disabled internally)</td><td style="color:var(--text3)">Unwired</td></tr>
+        <tr><td><code>bedtime.py</code></td><td>UserPromptSubmit</td><td><span class="badge badge-amber">Hard block</span> Blocks prompts between 23:55&ndash;06:00. "Go to bed, Seth."</td><td style="color:var(--text-3)">Unwired</td></tr>
+        <tr><td><code>block-plan-mode.py</code></td><td>PreToolUse (EnterPlanMode)</td><td><span class="badge badge-amber">Hard block</span> Prevents plan mode (wipes context on exit)</td><td style="color:var(--text-3)">Unwired</td></tr>
+        <tr><td><code>context-threshold.py</code></td><td>UserPromptSubmit</td><td><span class="badge badge-cyan">Soft nudge</span> Warns when context usage exceeds threshold (currently disabled internally)</td><td style="color:var(--text-3)">Unwired</td></tr>
       </tbody>
     </table>
   </div>
@@ -1244,7 +2238,8 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
 
 <!-- ============ INFRASTRUCTURE ============ -->
 <section id="infra" class="fade-in">
-  <h2><span class="icon">&#128274;</span> Infrastructure</h2>
+  <span class="section-num">09</span>
+  <h2>Infrastructure</h2>
 
   <h3>Vault (Single-Tier Credential Management)</h3>
   <p style="font-size:13px">All credentials stored in macOS login keychain via a custom vault CLI. Direct, silent access from all daemons and agents &mdash; no GUI prompts, no session auth. Managed by <code>SCRIPTS/vault.py</code>.</p>
@@ -1286,14 +2281,14 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </div>
 
   <h3>The Iron Laws</h3>
-  <p>Foundational rules that override all other behavior:</p>
-  <div class="cards" style="grid-template-columns: repeat(auto-fill, minmax(200px, 1fr))">
-    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--red)">Law 0: No Shortcuts</div><div class="card-sub">When asked for "all" &mdash; do ALL. Cherry-picking = failure.</div></div></div></div>
-    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--orange)">Law 1: Evidence Over Claims</div><div class="card-sub">"It should work" = failure. Verify now, not later.</div></div></div></div>
-    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--yellow)">Law 2: Document Everything</div><div class="card-sub">If not written down, didn't happen.</div></div></div></div>
-    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--green)">Law 3: Persistence</div><div class="card-sub">Try 3+ approaches before asking. Solve, don't report.</div></div></div></div>
-    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--teal)">Law 5: Complete the Checklist</div><div class="card-sub">"Partially done" = not done.</div></div></div></div>
-    <div class="card" style="cursor:default"><div class="card-head"><div><div class="card-title" style="font-size:13px;color:var(--accent)">Law 6: Think Before Acting</div><div class="card-sub">Never <code>rm</code> &mdash; use <code>trash</code>. Map dependencies first.</div></div></div></div>
+  <p style="text-align:center;margin-bottom:8px">Foundational rules that override all other behavior.</p>
+  <div class="iron-laws">
+    <div class="law"><div class="law-name">Law 0 — No Shortcuts</div><div class="law-text">When asked for "all" — do ALL. Cherry-picking = failure.</div></div>
+    <div class="law"><div class="law-name">Law 1 — Evidence Over Claims</div><div class="law-text">"It should work" = failure. Verify now, not later.</div></div>
+    <div class="law"><div class="law-name">Law 2 — Document Everything</div><div class="law-text">If not written down, didn't happen.</div></div>
+    <div class="law"><div class="law-name">Law 3 — Persistence</div><div class="law-text">Try 3+ approaches before asking. Solve, don't report.</div></div>
+    <div class="law"><div class="law-name">Law 5 — Complete the Checklist</div><div class="law-text">"Partially done" = not done.</div></div>
+    <div class="law"><div class="law-name">Law 6 — Think Before Acting</div><div class="law-text">Never rm — use trash. Map dependencies first.</div></div>
   </div>
 
   <h3>Model Policy</h3>
@@ -1301,31 +2296,32 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   <table class="ref-table">
     <thead><tr><th>Tier</th><th>Model</th><th>Use Case</th></tr></thead>
     <tbody>
-      <tr><td><span class="badge badge-purple">Default</span></td><td>Claude Opus</td><td>All substantive work: analysis, classification, code generation, writing, debugging</td></tr>
-      <tr><td><span class="badge badge-blue">Retrieval</span></td><td>Claude Sonnet 4.6</td><td>Retrieval-only tasks: fetching data, reading files, checking status, simple lookups</td></tr>
+      <tr><td><span class="badge badge-indigo">Default</span></td><td>Claude Opus</td><td>All substantive work: analysis, classification, code generation, writing, debugging</td></tr>
+      <tr><td><span class="badge badge-cyan">Retrieval</span></td><td>Claude Sonnet 4.6</td><td>Retrieval-only tasks: fetching data, reading files, checking status, simple lookups</td></tr>
       <tr><td><span class="badge badge-green">Review / Analysis</span></td><td>Codex gpt-5.2 / gpt-5.3-codex-spark</td><td>Code review, corpus analysis, enrichment, fact-checking, and link verification. Spark used for verification and enrichment tasks.</td></tr>
-      <tr><td><span class="badge badge-orange">Startup</span></td><td>Claude Haiku</td><td>Lightweight data-gathering subagents during /start Phase 2 only</td></tr>
+      <tr><td><span class="badge badge-amber">Startup</span></td><td>Claude Haiku</td><td>Lightweight data-gathering subagents during /start Phase 2 only</td></tr>
     </tbody>
   </table>
 </section>
 
 <!-- ============ INTEGRATIONS ============ -->
 <section id="integrations" class="fade-in">
-  <h2><span class="icon">&#128279;</span> External Integrations</h2>
+  <span class="section-num">10</span>
+  <h2>External Integrations</h2>
   <p>The system connects to 16 external services across four categories.</p>
 
-  <h3 style="margin-top:20px">&#129302; LLM &amp; Embedding</h3>
+  <h3 style="margin-top:20px">LLM &amp; Embedding</h3>
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
-    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Claude Opus</span>
-    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Claude Sonnet</span>
-    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Codex GPT-5.2</span>
-    <span class="badge badge-purple" style="font-size:12px;padding:5px 12px">Codex Spark</span>
-    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">Voyage context-3</span>
-    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">Voyage voyage-3</span>
+    <span class="badge badge-indigo" style="font-size:12px;padding:5px 12px">Claude Opus</span>
+    <span class="badge badge-indigo" style="font-size:12px;padding:5px 12px">Claude Sonnet</span>
+    <span class="badge badge-indigo" style="font-size:12px;padding:5px 12px">Codex GPT-5.2</span>
+    <span class="badge badge-indigo" style="font-size:12px;padding:5px 12px">Codex Spark</span>
+    <span class="badge badge-cyan" style="font-size:12px;padding:5px 12px">Voyage context-3</span>
+    <span class="badge badge-cyan" style="font-size:12px;padding:5px 12px">Voyage voyage-3</span>
   </div>
-  <p style="font-size:12px;color:var(--text3)">All LLM calls via CLI subscriptions (<code>claude -p</code>, <code>codex exec</code>), not metered API. Voyage for embeddings (corpus 2048d, Slack 1024d).</p>
+  <p style="font-size:12px;color:var(--text-3)">All LLM calls via CLI subscriptions (<code>claude -p</code>, <code>codex exec</code>), not metered API. Voyage for embeddings (corpus 2048d, Slack 1024d).</p>
 
-  <h3>&#128172; Communication</h3>
+  <h3>Communication</h3>
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
     <span class="badge badge-green" style="font-size:12px;padding:5px 12px">Slack &mdash; 3 bots, 6+ channels</span>
     <span class="badge badge-green" style="font-size:12px;padding:5px 12px">Gmail &mdash; digest &amp; agent inbox</span>
@@ -1333,16 +2329,16 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
     <span class="badge badge-green" style="font-size:12px;padding:5px 12px">Telegram &mdash; admin alerts</span>
   </div>
 
-  <h3>&#128218; Academic Sources</h3>
+  <h3>Academic Sources</h3>
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
-    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">arXiv</span>
-    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">Semantic Scholar</span>
-    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">CrossRef / Unpaywall</span>
-    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">Zotero</span>
-    <span class="badge badge-orange" style="font-size:12px;padding:5px 12px">PhilPapers</span>
+    <span class="badge badge-amber" style="font-size:12px;padding:5px 12px">arXiv</span>
+    <span class="badge badge-amber" style="font-size:12px;padding:5px 12px">Semantic Scholar</span>
+    <span class="badge badge-amber" style="font-size:12px;padding:5px 12px">CrossRef / Unpaywall</span>
+    <span class="badge badge-amber" style="font-size:12px;padding:5px 12px">Zotero</span>
+    <span class="badge badge-amber" style="font-size:12px;padding:5px 12px">PhilPapers</span>
   </div>
 
-  <h3>&#127760; Content &amp; Social Feeds</h3>
+  <h3>Content &amp; Social Feeds</h3>
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
     <span class="badge" style="font-size:12px;padding:5px 12px;background:rgba(248,113,113,.15);color:var(--red)">Twitter/X API v2</span>
     <span class="badge" style="font-size:12px;padding:5px 12px;background:rgba(248,113,113,.15);color:var(--red)">Bluesky</span>
@@ -1350,16 +2346,17 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
     <span class="badge" style="font-size:12px;padding:5px 12px;background:rgba(248,113,113,.15);color:var(--red)">Brave Search</span>
   </div>
 
-  <h3>&#9729;&#65039; Infrastructure</h3>
+  <h3>Infrastructure</h3>
   <div style="display:flex;flex-wrap:wrap;gap:8px;margin:8px 0 16px">
-    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">Google Drive &mdash; bidirectional sync</span>
-    <span class="badge badge-blue" style="font-size:12px;padding:5px 12px">GitHub &mdash; mint-philosophy org</span>
+    <span class="badge badge-cyan" style="font-size:12px;padding:5px 12px">Google Drive &mdash; bidirectional sync</span>
+    <span class="badge badge-cyan" style="font-size:12px;padding:5px 12px">GitHub &mdash; mint-philosophy org</span>
   </div>
 </section>
 
 <!-- ============ DIRECTORY MAP ============ -->
 <section id="files" class="fade-in">
-  <h2><span class="icon">&#128193;</span> Directory Map</h2>
+  <span class="section-num">11</span>
+  <h2>Directory Map</h2>
   <p>The workspace lives at <code>/Users/seth/Active-Research/</code> with several sibling directories:</p>
 
   <div class="accordion-item" onclick="toggleAcc(this)">
@@ -1418,28 +2415,32 @@ ul.clean li::before { content:'›'; color:var(--accent); margin-right:8px; font
   </table>
 </section>
 
-<section id="subscribe" style="text-align:center;padding:48px 48px 56px;max-width:600px">
-  <h2 style="justify-content:center"><span class="icon">&#9993;</span> Yesterday in AI</h2>
-  <p style="color:var(--text2);margin-bottom:24px">Daily AI news digest from the MINT Lab. One email per weekday morning.</p>
-  <form id="subscribe-form" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap">
-    <input type="email" name="email" required placeholder="you@example.com"
-      style="padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:15px;width:280px;outline:none"
-      onfocus="this.style.borderColor='var(--accent)'" onblur="this.style.borderColor='var(--border)'">
-    <div style="position:absolute;left:-9999px" aria-hidden="true">
-      <input type="text" name="website" tabindex="-1" autocomplete="off">
-    </div>
-    <button type="submit"
-      style="padding:10px 24px;border-radius:8px;border:none;background:var(--accent);color:#0b1120;font-size:15px;font-weight:600;cursor:pointer;transition:opacity .2s"
-      onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Subscribe</button>
+<!-- ============ SUBSCRIBE ============ -->
+<section id="subscribe" style="text-align:center;padding:48px;max-width:700px">
+  <span class="section-num" style="opacity:0.3">&#10022;</span>
+  <h2 style="justify-content:center">Yesterday in AI</h2>
+  <p style="color:var(--text-2);margin-bottom:8px">Daily AI news digest from the MINT Lab. One email per weekday morning.</p>
+  <p style="font-size:12px;font-family:'JetBrains Mono',monospace;color:var(--text-3);letter-spacing:0.5px;margin-bottom:20px">28 researchers &middot; 6 universities &middot; ANU &middot; Stanford &middot; JHU &middot; Vanderbilt &middot; Oregon State &middot; Michigan</p>
+  <div style="background:var(--bg-0);border-radius:8px;padding:16px 20px;margin:20px 0;text-align:left;font-size:13px;border:1px solid var(--border)">
+    <div style="font-size:11px;color:var(--text-3);margin-bottom:8px;font-family:'JetBrains Mono',monospace;letter-spacing:1px">SAMPLE DIGEST</div>
+    <div style="margin:6px 0;color:var(--text-2)">&#9656; Anthropic releases Claude 4.5 Opus with extended thinking</div>
+    <div style="margin:6px 0;color:var(--text-2)">&#9656; DeepMind publishes safety case framework for frontier models</div>
+    <div style="margin:6px 0;color:var(--text-2)">&#9656; EU AI Act enforcement begins for general-purpose AI providers</div>
+    <div style="margin:6px 0;color:var(--text-3);font-style:italic">+ 4 more items with full context and analysis</div>
+  </div>
+  <form id="subscribe-form" style="display:flex;gap:10px;justify-content:center;flex-wrap:wrap;margin-top:20px">
+    <input type="email" name="email" required placeholder="you@university.edu" style="padding:10px 16px;border-radius:8px;border:1px solid var(--border);background:var(--bg-0);color:var(--text-1);font-size:14px;font-family:'Sora',sans-serif;width:280px;outline:none;transition:border-color 0.2s" onfocus="this.style.borderColor='var(--mint)'" onblur="this.style.borderColor='var(--border)'">
+    <div style="position:absolute;left:-9999px" aria-hidden="true"><input type="text" name="website" tabindex="-1" autocomplete="off"></div>
+    <button type="submit" style="padding:10px 24px;border-radius:8px;border:none;background:var(--mint);color:#06080c;font-size:14px;font-family:'Sora',sans-serif;font-weight:600;cursor:pointer;transition:opacity 0.2s" onmouseover="this.style.opacity='0.85'" onmouseout="this.style.opacity='1'">Subscribe</button>
   </form>
   <p id="subscribe-msg" style="margin-top:14px;font-size:14px;min-height:20px"></p>
 </section>
 
-<section style="text-align:center;padding:48px;color:var(--text3);font-size:13px">
+<!-- ============ FOOTER ============ -->
+<section style="text-align:center;padding:48px;color:var(--text-3);font-size:12px;font-family:'JetBrains Mono',monospace;letter-spacing:0.5px">
   <p>MINT Lab &mdash; Machine Intelligence &amp; Normative Theory &mdash; Johns Hopkins University</p>
-  <p>Updated 28 February 2026</p>
+  <p style="margin-top:4px">Updated 28 February 2026</p>
 </section>
-
 </main>
 
 <script>
@@ -1541,7 +2542,7 @@ function doSearch(q) {
       <span class="sr-title">${s.t}</span>
       <div class="sr-desc">${s.d}</div>
     </div>
-  `).join('') || '<div style="padding:20px;text-align:center;color:var(--text3)">No results</div>';
+  `).join('') || '<div style="padding:20px;text-align:center;color:var(--text-3)">No results</div>';
 }
 
 // Ctrl/Cmd+K
@@ -1617,7 +2618,7 @@ document.getElementById('subscribe-form').addEventListener('submit', function(e)
   btn.disabled = true;
   btn.textContent = 'Subscribing...';
   msg.textContent = '';
-  msg.style.color = 'var(--text2)';
+  msg.style.color = 'var(--text-2)';
   fetch('https://api.mintresearch.org/api/subscribe', {
     method: 'POST',
     headers: {'Content-Type': 'application/json'},
